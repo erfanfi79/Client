@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import models.Account;
 import models.LoginMenu;
+import packet.LoginPacket;
 import request.accountMenuRequest.AccountError;
 
 import java.io.IOException;
@@ -31,29 +32,18 @@ public class AccountMenuController {
     private PasswordField txtPassword;
 
     @FXML
-    void signIn(ActionEvent event) {
+    void signIn() {
         String userName = txtUsername.getText();
         String password = txtPassword.getText();
         if (userName.trim().isEmpty() || password.trim().isEmpty()) {
             loginError.setText(AccountError.FIELDS_CAN_NOT_BE_EMPTY.toString());
             return;
         }
-        if (LoginMenu.getInstance().checkIfAccountExist(userName)) {
-            account = LoginMenu.getInstance().login(userName, password);
-
-            if (account == null)
-                loginError.setText(AccountError.PASSWORD_IS_INCORRECT.toString());
-            else {
-                Controller.getInstance().setAccount(account);
-                gotoStartMenu();
-            }
-
-        } else
-            loginError.setText(AccountError.USERNAME_DOESENT_EXIST.toString());
+        Controller.getInstance().clientListener.sendPacket(new LoginPacket(userName,password,true));
     }
 
     @FXML
-    void signUp(ActionEvent event) {
+    void signUp() {
         String userName = txtUsername.getText();
         String password = txtPassword.getText();
         if (userName.trim().isEmpty() || password.trim().isEmpty()) {
