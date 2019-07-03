@@ -1,5 +1,6 @@
 package controller;
 
+import com.sun.webkit.LoadListenerClient;
 import javafx.stage.Stage;
 import models.Account;
 
@@ -8,6 +9,8 @@ public class Controller {
     private Account account = null;
     public ShopController shopController = null;
     public CollectionController collectionController = null;
+    public ListenerClient listenerClient;
+
     public static Stage stage;
     public double x, y;
 
