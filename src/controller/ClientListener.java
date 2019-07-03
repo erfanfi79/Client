@@ -7,12 +7,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class ListenerClient extends Thread{
+public class ClientListener extends Thread{
         private ObjectOutputStream objectOutputStream;
         private ObjectInputStream objectInputStream;
         private Socket socket;
 
-        public ListenerClient(Socket socket) {
+        public ClientListener(Socket socket) {
 
             this.socket = socket;
             try {

@@ -1,5 +1,5 @@
 import controller.Controller;
-import controller.ListenerClient;
+import controller.ClientListener;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,10 +18,10 @@ public class Client extends Application {
     public static void main(String[] args) {
         try {
             Socket socket=new Socket("local host",8888);
-            ListenerClient listenerClient =new ListenerClient(socket);
-            Controller.getInstance().listenerClient= listenerClient;
-            listenerClient.start();
-            listenerClient.setDaemon(true);
+            ClientListener clientListener =new ClientListener(socket);
+            Controller.getInstance().clientListener = clientListener;
+            clientListener.start();
+            clientListener.setDaemon(true);
         }catch (IOException e){
             e.printStackTrace();
         }
