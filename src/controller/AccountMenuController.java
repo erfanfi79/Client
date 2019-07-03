@@ -12,7 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import models.Account;
 import models.LoginMenu;
-import packet.LoginPacket;
+
 import request.accountMenuRequest.AccountError;
 
 import java.io.IOException;
@@ -39,7 +39,7 @@ public class AccountMenuController {
             loginError.setText(AccountError.FIELDS_CAN_NOT_BE_EMPTY.toString());
             return;
         }
-        Controller.getInstance().clientListener.sendPacket(new LoginPacket(userName,password,true));
+        //Controller.getInstance().clientListener.sendPacket(new LoginPacket(userName,password,true));
     }
 
     @FXML

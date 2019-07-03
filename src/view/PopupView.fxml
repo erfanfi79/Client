@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="211.0" prefWidth="774.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Popup">
+   <children>
+      <ImageView fitHeight="211.0" fitWidth="809.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../resources/ui/notification_challenge@2x.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="errorLabel" alignment="CENTER" layoutX="190.0" layoutY="26.0" prefHeight="120.0" prefWidth="515.0" text="Label" textAlignment="CENTER" textFill="#add4db" wrapText="true">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

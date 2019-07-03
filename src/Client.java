@@ -17,7 +17,7 @@ public class Client extends Application {
 
     public static void main(String[] args) {
         try {
-            Socket socket=new Socket("local host",8888);
+            Socket socket=new Socket("localhost",8888);
             ClientListener clientListener =new ClientListener(socket);
             Controller.getInstance().clientListener = clientListener;
             clientListener.start();

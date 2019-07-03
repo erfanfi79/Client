@@ -1,6 +1,6 @@
 package controller;
 
-import packet.Packet;
+
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -22,6 +22,7 @@ public class ClientListener extends Thread{
                 e.printStackTrace();
             }
         }
+/*
 
         @Override
         public void run() {
@@ -47,6 +48,7 @@ public class ClientListener extends Thread{
         public void disconnect() {
 
         }
+*/
 
     }
 
