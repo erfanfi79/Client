@@ -3,7 +3,6 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,10 +15,8 @@ import packet.serverPacket.ServerLogPacket;
 import request.accountMenuRequest.AccountError;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-public class AccountMenuController{
+public class AccountMenuController {
     private double x, y;
     @FXML
     private TextField txtUsername;
@@ -57,11 +54,13 @@ public class AccountMenuController{
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
     }
-    public void showError(ServerLogPacket serverLogPacket){
+
+    public void showError(ServerLogPacket serverLogPacket) {
         if (serverLogPacket.isSuccessful())
             gotoStartMenu();
         else loginError.setText(serverLogPacket.getLog());
     }
+
     public void gotoStartMenu() {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("../view/StartMenuView.fxml"));

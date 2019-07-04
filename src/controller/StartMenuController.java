@@ -42,11 +42,6 @@ public class StartMenuController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         money.setText(String.valueOf(Controller.getInstance().getAccount().getMoney()));
-        History history=new History();
-        history.setLocalDateTime();
-        history.setYourStatus(GameStatus.WIN);
-        history.setOponnentUserName("damet garm");
-        Controller.getInstance().getAccount().addMatchHistory(history);
     }
 
     @FXML

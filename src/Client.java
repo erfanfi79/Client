@@ -17,6 +17,7 @@ public class Client extends Application {
 
     public static void main(String[] args) {
 
+
                 try {
                     Socket socket=new Socket("localhost",8888);
                     ClientListener clientListener =new ClientListener(socket);
@@ -25,6 +26,7 @@ public class Client extends Application {
                 }catch (IOException e){
                     e.printStackTrace();
                 }
+
 
         launch(args);
 
@@ -35,6 +37,7 @@ public class Client extends Application {
         Controller.getInstance().stage = primaryStage;
         FXMLLoader fxmlLoader=new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("view/AccountMenuView.fxml"));
+
 
         Parent root = fxmlLoader.load();
         Controller.getInstance().currentController=fxmlLoader.getController();
