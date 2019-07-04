@@ -16,16 +16,18 @@ public class Client extends Application {
     private double x, y;
 
     public static void main(String[] args) {
-        try {
-            Socket socket=new Socket("localhost",8888);
-            ClientListener clientListener =new ClientListener(socket);
-            Controller.getInstance().clientListener = clientListener;
-            clientListener.start();
-            clientListener.setDaemon(true);
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+
+                try {
+                    Socket socket=new Socket("localhost",8888);
+                    ClientListener clientListener =new ClientListener(socket);
+                    Controller.getInstance().clientListener = clientListener;
+                    clientListener.start();
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+
         launch(args);
+
     }
 
     @Override

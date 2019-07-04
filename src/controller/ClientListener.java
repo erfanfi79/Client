@@ -2,6 +2,9 @@ package controller;
 
 
 
+import packet.clientPacket.ClientPacket;
+
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -16,19 +19,20 @@ public class ClientListener extends Thread{
 
             this.socket = socket;
             try {
-                objectInputStream = new ObjectInputStream(socket.getInputStream());
                 objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+                objectInputStream = new ObjectInputStream(socket.getInputStream());
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-/*
+
 
         @Override
         public void run() {
             while (true) {
                 try {
-                    Packet packet = (Packet) objectInputStream.readObject();
+                    ClientPacket packet = (ClientPacket) objectInputStream.readObject();
                 } catch (IOException e) {
                     break;
                 } catch (ClassNotFoundException e2) {
@@ -37,7 +41,7 @@ public class ClientListener extends Thread{
             }
         }
 
-        public void sendPacket(Packet packet) {
+        public void sendPacket(ClientPacket packet) {
             try {
                 objectOutputStream.writeObject(packet);
             } catch (IOException e) {
@@ -48,7 +52,7 @@ public class ClientListener extends Thread{
         public void disconnect() {
 
         }
-*/
+
 
     }
 

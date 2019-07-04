@@ -11,13 +11,10 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import models.Account;
-import models.LoginMenu;
-
+import packet.clientPacket.ClientLoginPacket;
 import request.accountMenuRequest.AccountError;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class AccountMenuController {
     private double x, y;
@@ -39,7 +36,7 @@ public class AccountMenuController {
             loginError.setText(AccountError.FIELDS_CAN_NOT_BE_EMPTY.toString());
             return;
         }
-        //Controller.getInstance().clientListener.sendPacket(new LoginPacket(userName,password,true));
+        Controller.getInstance().clientListener.sendPacket(new ClientLoginPacket(userName, password, true));
     }
 
     @FXML
@@ -50,15 +47,7 @@ public class AccountMenuController {
             loginError.setText(AccountError.FIELDS_CAN_NOT_BE_EMPTY.toString());
             return;
         }
-        if (LoginMenu.getInstance().checkIfAccountExist(userName)) {
-            loginError.setText(AccountError.USERNAME_ALREADY_EXIST.toString());
-            return;
-        }
-        Controller.getInstance().setAccount(account);
-        account = LoginMenu.getInstance().createAccount(userName, password);
-        Controller.getInstance().setAccount(account);
-        Account.save(account);
-        gotoStartMenu();
+        Controller.getInstance().clientListener.sendPacket(new ClientLoginPacket(userName, password, false));
     }
 
     @FXML
@@ -85,15 +74,5 @@ public class AccountMenuController {
             Controller.stage.setScene(scene);
         } catch (IOException e) {
         }
-    }
-
-    private void showLeaderboard() {
-        if (LoginMenu.getUsers().size() > 0)
-            Collections.sort(LoginMenu.getUsers(), new Comparator<Account>() {
-                public int compare(Account account1, Account account2) {
-                    return account1.getWinsNumber() - account2.getWinsNumber();
-                }
-            });
-        //AccountMenuView.getInstance().showLeaderBoard(LoginMenu.getUsers());
     }
 }
