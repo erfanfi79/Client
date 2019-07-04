@@ -10,15 +10,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import models.Account;
 import packet.clientPacket.ClientLoginPacket;
+import packet.serverPacket.ServerLogPacket;
 import request.accountMenuRequest.AccountError;
 
 import java.io.IOException;
 
 public class AccountMenuController {
     private double x, y;
-    private Account account;
     @FXML
     private TextField txtUsername;
 
@@ -55,7 +54,11 @@ public class AccountMenuController {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
     }
-
+    public void showError(ServerLogPacket serverLogPacket){
+        if (serverLogPacket.isSuccessful())
+            gotoStartMenu();
+        else loginError.setText(serverLogPacket.getLog());
+    }
     public void gotoStartMenu() {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("../view/StartMenuView.fxml"));

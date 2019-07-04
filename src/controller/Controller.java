@@ -9,7 +9,7 @@ public class Controller {
     public ShopController shopController = null;
     public CollectionController collectionController = null;
     public ClientListener clientListener;
-
+    public Object currentController;
     public static Stage stage;
     public double x, y;
 

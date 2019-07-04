@@ -1,9 +1,11 @@
 package packet.clientPacket;
 
-public class ClientLoginPacket extends ClientPacket {
+import java.io.Serializable;
 
-    String userName, password;
-    boolean isLogin;
+public class ClientLoginPacket extends ClientPacket implements Serializable {
+
+    public String userName, password;
+    public boolean isLogin;
 
     public ClientLoginPacket(String userName, String password,boolean isLogin) {
         this.userName = userName;

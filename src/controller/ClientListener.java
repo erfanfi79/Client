@@ -3,6 +3,8 @@ package controller;
 
 
 import packet.clientPacket.ClientPacket;
+import packet.serverPacket.ServerLogPacket;
+import packet.serverPacket.ServerPacket;
 
 
 import java.io.IOException;
@@ -27,12 +29,14 @@ public class ClientListener extends Thread{
             }
         }
 
-
         @Override
         public void run() {
             while (true) {
                 try {
-                    ClientPacket packet = (ClientPacket) objectInputStream.readObject();
+                    ServerPacket packet = (ServerPacket) objectInputStream.readObject();
+                    if (packet instanceof ServerLogPacket)
+                        handleLogs((ServerLogPacket) packet);
+
                 } catch (IOException e) {
                     break;
                 } catch (ClassNotFoundException e2) {
@@ -53,6 +57,10 @@ public class ClientListener extends Thread{
 
         }
 
+        public void handleLogs(ServerLogPacket logPacket){
+            if (Controller.getInstance().currentController instanceof AccountMenuController)
+                ((AccountMenuController) Controller.getInstance().currentController).showError(logPacket);
+        }
 
     }
 
