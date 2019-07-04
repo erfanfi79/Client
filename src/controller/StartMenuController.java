@@ -15,6 +15,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import models.Account;
+import packet.clientPacket.ClientEnterPartPacket;
+import packet.clientPacket.ClientPartsPacket;
 
 import java.io.IOException;
 import java.net.URL;
@@ -39,7 +41,8 @@ public class StartMenuController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        money.setText(String.valueOf(Controller.getInstance().getAccount().getMoney()));
+        Controller.getInstance().currentController=this;
+        Controller.getInstance().clientListener.sendPacket(new ClientEnterPartPacket(ClientPartsPacket.GET_MONEY));
     }
 
     @FXML
@@ -101,7 +104,9 @@ public class StartMenuController implements Initializable {
         } catch (IOException e) {
         }
     }
-
+    void showMoney(String money){
+        this.money.setText(money);
+    }
     @FXML
     void gotoBattleMenu() {
         openPage("../view/battleMenuView/BattleMenuView.fxml");

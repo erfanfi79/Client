@@ -16,8 +16,12 @@ public class Client extends Application {
     private double x, y;
 
     public static void main(String[] args) {
+        launch(args);
 
+    }
 
+    @Override
+    public void start(Stage primaryStage) throws Exception {
         try {
             Socket socket = new Socket("localhost", 8888);
             ClientListener clientListener = new ClientListener(socket);
@@ -26,15 +30,7 @@ public class Client extends Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-        launch(args);
-
-    }
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        Controller.getInstance().stage = primaryStage;
+        Controller.stage = primaryStage;
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("view/AccountMenuView.fxml"));
 

@@ -51,7 +51,6 @@ public class ShopController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Controller.getInstance().shopController = this;
-        money.setText(String.valueOf(Controller.getInstance().getAccount().getMoney()));
         showCards(shopCollection.getCards());
     }
 
@@ -79,6 +78,10 @@ public class ShopController implements Initializable {
             Button button = (Button) event.getSource();
             button.setOpacity(0.6);
         }
+    }
+
+    public void showMoney(String bill) {
+        money.setText(bill);
     }
 
     @FXML

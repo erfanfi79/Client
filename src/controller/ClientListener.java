@@ -4,6 +4,7 @@ package controller;
 import javafx.application.Platform;
 import packet.clientPacket.ClientPacket;
 import packet.serverPacket.ServerLogPacket;
+import packet.serverPacket.ServerMoneyPacket;
 import packet.serverPacket.ServerPacket;
 
 import java.io.IOException;
@@ -35,6 +36,8 @@ public class ClientListener extends Thread {
                 ServerPacket packet = (ServerPacket) objectInputStream.readObject();
                 if (packet instanceof ServerLogPacket)
                     handleLogs((ServerLogPacket) packet);
+                if (packet instanceof ServerMoneyPacket)
+                    Platform.runLater(()->Controller.getInstance().showMoney(((ServerMoneyPacket) packet).getMoney()));
 
             } catch (IOException e) {
                 break;
@@ -59,9 +62,12 @@ public class ClientListener extends Thread {
 
     public void handleLogs(ServerLogPacket logPacket) {
         if (Controller.getInstance().currentController instanceof AccountMenuController)
-            Platform.runLater(() -> {
-                ((AccountMenuController) Controller.getInstance().currentController).showError(logPacket);
-            });
+            if (logPacket.isSuccessful()) Platform.runLater(() -> {
+                    Controller.getInstance().gotoStartMenu(); });
+            else
+                Platform.runLater(()->((AccountMenuController) Controller.getInstance().currentController).showError(logPacket));
+
+
 
     }
 
