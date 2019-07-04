@@ -33,7 +33,11 @@ public class Client extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Controller.getInstance().stage = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getResource("view/AccountMenuView.fxml"));
+        FXMLLoader fxmlLoader=new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("view/AccountMenuView.fxml"));
+
+        Parent root = fxmlLoader.load();
+        Controller.getInstance().currentController=fxmlLoader.getController();
         primaryStage.initStyle(StageStyle.UNDECORATED);
 
         root.setOnMousePressed(event -> {

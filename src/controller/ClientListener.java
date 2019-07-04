@@ -2,6 +2,7 @@ package controller;
 
 
 
+import javafx.application.Platform;
 import packet.clientPacket.ClientPacket;
 import packet.serverPacket.ServerLogPacket;
 import packet.serverPacket.ServerPacket;
@@ -48,6 +49,7 @@ public class ClientListener extends Thread{
         public void sendPacket(ClientPacket packet) {
             try {
                 objectOutputStream.writeObject(packet);
+                objectOutputStream.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -59,7 +61,10 @@ public class ClientListener extends Thread{
 
         public void handleLogs(ServerLogPacket logPacket){
             if (Controller.getInstance().currentController instanceof AccountMenuController)
-                ((AccountMenuController) Controller.getInstance().currentController).showError(logPacket);
+                Platform.runLater(()->{
+                    ((AccountMenuController) Controller.getInstance().currentController).showError(logPacket);
+                });
+
         }
 
     }
