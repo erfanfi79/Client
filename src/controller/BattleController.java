@@ -5,11 +5,10 @@ import javafx.stage.Stage;
 import models.*;
 import models.GamePlay.GameLogic;
 import models.GamePlay.Match;
-import ui.battleUI.battleRequests.*;
 import ui.battleUI.BattleUI;
-import ui.battleUI.battleRequests.BattleRequest;
+import ui.battleUI.battleRequests.*;
 import ui.battleUI.battleViews.*;
-import view.battleView.*;
+import view.battleView.BattleLog;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,7 +43,7 @@ public class BattleController {
         BattleLog.logTurnForWho(match.findPlayerPlayingThisTurn().getUserName());
 
         new Thread(() -> {
-            Platform.runLater(()->{
+            Platform.runLater(() -> {
                 battleUI.battleUI(stage);
             });
         }).start();
@@ -59,8 +58,7 @@ public class BattleController {
             if (isEndedGame != 0) {
                 if (isEndedGame == 1) {
                     BattleLog.PlayerOneWins();
-                }
-                else {
+                } else {
                     BattleLog.PlayerTwoWins();
                 }
                 break;
@@ -338,7 +336,7 @@ public class BattleController {
     }
 
     private void insertCardRequestForSpell(Cell cell, Card card) {
-        for (Spell spell: card.getSpells()) {
+        for (Spell spell : card.getSpells()) {
             if (spell.getTarget().isAffectCells())
                 gameLogic.insertProcess(spell, cell);
 

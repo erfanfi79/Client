@@ -15,8 +15,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import models.Account;
-import models.GameStatus;
-import models.History;
 
 import java.io.IOException;
 import java.net.URL;

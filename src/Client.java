@@ -1,5 +1,5 @@
-import controller.Controller;
 import controller.ClientListener;
+import controller.Controller;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,14 +18,14 @@ public class Client extends Application {
     public static void main(String[] args) {
 
 
-                try {
-                    Socket socket=new Socket("localhost",8888);
-                    ClientListener clientListener =new ClientListener(socket);
-                    Controller.getInstance().clientListener = clientListener;
-                    clientListener.start();
-                }catch (IOException e){
-                    e.printStackTrace();
-                }
+        try {
+            Socket socket = new Socket("localhost", 8888);
+            ClientListener clientListener = new ClientListener(socket);
+            Controller.getInstance().clientListener = clientListener;
+            clientListener.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
         launch(args);
@@ -35,12 +35,12 @@ public class Client extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Controller.getInstance().stage = primaryStage;
-        FXMLLoader fxmlLoader=new FXMLLoader();
+        FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("view/AccountMenuView.fxml"));
 
 
         Parent root = fxmlLoader.load();
-        Controller.getInstance().currentController=fxmlLoader.getController();
+        Controller.getInstance().currentController = fxmlLoader.getController();
         primaryStage.initStyle(StageStyle.UNDECORATED);
 
         root.setOnMousePressed(event -> {

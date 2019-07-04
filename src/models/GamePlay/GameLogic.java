@@ -109,7 +109,7 @@ public class GameLogic {
         int player2HeroHP = ((Unit) match.getPlayer2().getHand().getHero()).getHP();
 
         if (player1HeroHP <= 0 && player2HeroHP <= 0) return DRAW;
-        if (player1HeroHP <= 0){
+        if (player1HeroHP <= 0) {
             BattleController.getInstance().setIsEndedGame(2);
             return PLAYER2_WINS;
         }
@@ -128,18 +128,16 @@ public class GameLogic {
         for (Cell[] row : cells) {
             for (Cell cell : row) {
                 if (cell.getFlag() != null && cell.getCard() != null) {
-                    if (cardOnFlag.equals("")){
+                    if (cardOnFlag.equals("")) {
                         cardOnFlag = cell.getCard().getCardID();
 
-                    }
-                    else{
-                        if (cardOnFlag.equals( cell.getCard().getCardID())){
+                    } else {
+                        if (cardOnFlag.equals(cell.getCard().getCardID())) {
                             if (cell.getCard().getTeam().equals(match.player1.getUserName()))
                                 turnsHavingFlagPlayer1++;
 
                             else turnsHavingFlagPlayer2++;
-                        }
-                        else{
+                        } else {
                             cardOnFlag = cell.getCard().getCardID();
                             turnsHavingFlagPlayer1 = 0;
                             turnsHavingFlagPlayer2 = 0;
@@ -336,16 +334,13 @@ public class GameLogic {
     private boolean isRangeValidForAttack(Unit attacker, Unit defender) {
 
         if (attacker.getUnitType() == UnitType.MELEE) {
-            if (!attacker.getCell().isAdjacent(defender.getCell()))
-                return false;
+            return attacker.getCell().isAdjacent(defender.getCell());
 
         } else if (attacker.getUnitType() == UnitType.RANGED) {
-            if (attacker.getCell().isAdjacent(defender.getCell()))
-                return false;
+            return !attacker.getCell().isAdjacent(defender.getCell());
 
         } else if (attacker.getUnitType() == UnitType.HYBRID) {
-            if (attacker.getCell().isAdjacent(defender.getCell()))
-                return false;
+            return !attacker.getCell().isAdjacent(defender.getCell());
         }
 
         return true;
@@ -502,7 +497,7 @@ public class GameLogic {
         castBuffOnCards(buff, targetData.getCards());
         //  castBuffOnCells(buff, targetData.getCells());
         castBuffOnUnits(buff, targetData.getUnits());
-      //  castBuffOnUsers(buff, targetData.getAccounts());
+        //  castBuffOnUsers(buff, targetData.getAccounts());
 
         buff.decrementDuration();
     }
@@ -653,17 +648,18 @@ public class GameLogic {
                     specialPower, findTarget(specialPower, hero.getCell(), hero.getCell(), hero.getCell()));
         }
     }
-    public void comboAttack(Unit[] attackers, Unit defender){
+
+    public void comboAttack(Unit[] attackers, Unit defender) {
 
         comboAttackLogic(attackers, defender);
         useOnDefendSpells(defender, attackers[0]);
         counterAttack(defender, attackers[0]);
     }
 
-    private void comboAttackLogic(Unit[] attackers, Unit defender){
-        for (Unit attacker: attackers){
-            damage(attacker,defender);
-            useOnAttackSpells(attacker,defender);
+    private void comboAttackLogic(Unit[] attackers, Unit defender) {
+        for (Unit attacker : attackers) {
+            damage(attacker, defender);
+            useOnAttackSpells(attacker, defender);
         }
     }
 }

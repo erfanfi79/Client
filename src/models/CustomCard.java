@@ -77,17 +77,19 @@ public class CustomCard {
         target.setTargetType(targetType);
         return target;
     }
+
     public void jsonUnit(Unit unit) throws IOException {
         Gson gson = new Gson();
-        String fileName =  "./json/customCards" + unit.getCardName() + ".json";
+        String fileName = "./json/customCards" + unit.getCardName() + ".json";
         File file = new File(fileName);
         FileWriter fileWriter = new FileWriter(file);
         fileWriter.write(gson.toJson(unit));
         fileWriter.close();
     }
-    public void jsonSpell(Spell spell) throws IOException{
+
+    public void jsonSpell(Spell spell) throws IOException {
         Gson gson = new Gson();
-        String fileName =  "./json/customCards" + spell.getCardName() + ".json";
+        String fileName = "./json/customCards" + spell.getCardName() + ".json";
         File file = new File(fileName);
         FileWriter fileWriter = new FileWriter(file);
         fileWriter.write(gson.toJson(spell));

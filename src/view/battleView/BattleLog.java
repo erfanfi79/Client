@@ -155,11 +155,11 @@ public class BattleLog {
         System.out.println("It is enemy unit");
     }
 
-    public static void PlayerOneWins(){
+    public static void PlayerOneWins() {
         System.out.println("Player One Wins");
     }
 
-    public static void PlayerTwoWins(){
+    public static void PlayerTwoWins() {
         System.out.println("Player Two Wins");
     }
 }

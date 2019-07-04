@@ -16,7 +16,6 @@ import models.History;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.ResourceBundle;
 
 public class MatchHistoryController implements Initializable {
@@ -59,10 +58,10 @@ public class MatchHistoryController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ArrayList<History> histories=Controller.getInstance().getAccount().getMatchHistories();
-        Account account=Controller.getInstance().getAccount();
+        ArrayList<History> histories = Controller.getInstance().getAccount().getMatchHistories();
+        Account account = Controller.getInstance().getAccount();
         Node[] nodes = new Node[histories.size()];
-        for (int i = vBoxMatchHistory.getChildren().size()-1; i >= 0; i--) {
+        for (int i = vBoxMatchHistory.getChildren().size() - 1; i >= 0; i--) {
             vBoxMatchHistory.getChildren().remove(vBoxMatchHistory.getChildren().get(i));
         }
 
@@ -74,9 +73,9 @@ public class MatchHistoryController implements Initializable {
                 nodes[i] = fxmlLoader.load();
                 MatchHistoryController personLeaderBoard = fxmlLoader.getController();
                 personLeaderBoard.setInformation(
-                         histories.get(i).getOponnentUserName()
+                        histories.get(i).getOponnentUserName()
                         , histories.get(i).getYourStatus()
-                ,histories.get(i).getDifference());
+                        , histories.get(i).getDifference());
                 nodes[i].setOnMouseEntered(event -> {
                     nodes[j].setStyle("-fx-background-color : #0A0E3F");
                 });
@@ -89,7 +88,8 @@ public class MatchHistoryController implements Initializable {
             }
         }
     }
-    public  void setInformation(String name, GameStatus status, String diff){
+
+    public void setInformation(String name, GameStatus status, String diff) {
         labelRank.setText(name);
         labelHighScore.setText(status.toString());
         labelUsername.setText(diff);

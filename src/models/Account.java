@@ -87,7 +87,7 @@ public class Account implements Serializable {
         Account account = new Account();
         account.setUserName("Bot");
         account.isAI = true;
-        Deck deck= Controller.getInstance().getAccount().getCollection().getSelectedDeck();
+        Deck deck = Controller.getInstance().getAccount().getCollection().getSelectedDeck();
         account.getCollection().getDecks().add(deck);
         account.getCollection().setSelectedDeck(deck);
 /*        switch (matchType) {

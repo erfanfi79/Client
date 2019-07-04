@@ -1,45 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.image.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ChatRoomController">
-   <children>
-      <ImageView fitHeight="585.0" fitWidth="1172.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../resources/scenes/backgrounds/chapter6_background@2x.jpg" />
-         </image>
-      </ImageView>
-      <ScrollPane layoutX="253.0" layoutY="35.0" prefHeight="417.0" prefWidth="780.0" stylesheets="@../resources/ui/style.css">
-         <content>
-            <VBox fx:id="vBoxChat" prefHeight="428.0" prefWidth="762.0" spacing="5.0" style="-fx-background-color: #4D5A68;">
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </VBox>
-         </content>
-      </ScrollPane>
-      <Button cancelButton="true" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#gotoStartMenu" prefHeight="502.0" prefWidth="158.0" style="-fx-background-color: #02030A;" text="BACK" textFill="WHITE">
-         <font>
-            <Font size="30.0" />
-         </font>
-      </Button>
-      <TextField fx:id="txtMessage" layoutX="314.0" layoutY="462.0" prefHeight="47.0" prefWidth="597.0" style="-fx-background-color: #4D5A68;" />
-      <Button layoutX="934.0" layoutY="446.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="80.0" prefWidth="78.0" style="-fx-background-color: transparent;">
-         <graphic>
-            <ImageView fitHeight="46.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../resources/ui/icons8-email-send-96.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
-   </children>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controller.ChatRoomController">
+    <children>
+        <ImageView fitHeight="585.0" fitWidth="1172.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../resources/scenes/backgrounds/chapter6_background@2x.jpg"/>
+            </image>
+        </ImageView>
+        <ScrollPane layoutX="253.0" layoutY="35.0" prefHeight="417.0" prefWidth="780.0"
+                    stylesheets="@../resources/ui/style.css">
+            <content>
+                <VBox fx:id="vBoxChat" prefHeight="428.0" prefWidth="762.0" spacing="5.0"
+                      style="-fx-background-color: #4D5A68;">
+                    <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                    </padding>
+                </VBox>
+            </content>
+        </ScrollPane>
+        <Button cancelButton="true" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#gotoStartMenu"
+                prefHeight="502.0" prefWidth="158.0" style="-fx-background-color: #02030A;" text="BACK"
+                textFill="WHITE">
+            <font>
+                <Font size="30.0"/>
+            </font>
+        </Button>
+        <TextField fx:id="txtMessage" layoutX="314.0" layoutY="462.0" prefHeight="47.0" prefWidth="597.0"
+                   style="-fx-background-color: #4D5A68;"/>
+        <Button layoutX="934.0" layoutY="446.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="80.0"
+                prefWidth="78.0" style="-fx-background-color: transparent;">
+            <graphic>
+                <ImageView fitHeight="46.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../resources/ui/icons8-email-send-96.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+    </children>
 </AnchorPane>

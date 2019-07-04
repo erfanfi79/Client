@@ -1,7 +1,6 @@
 package controller;
 
 import javafx.animation.PauseTransition;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,7 +13,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 
-public class Popup{
+public class Popup {
     @FXML
     Label errorLabel;
 

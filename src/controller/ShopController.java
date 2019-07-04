@@ -14,7 +14,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import models.*;
-import models.GamePlay.Match;
 import view.shopMenuView.ShopError;
 
 import java.io.IOException;
@@ -172,8 +171,8 @@ public class ShopController implements Initializable {
         ArrayList<Card> cards = new ArrayList<>();
         for (Card card : collection.getCards()) {
             try {
-                Pattern pattern=Pattern.compile(cardName);
-                Matcher matcher=pattern.matcher(card.getCardName());
+                Pattern pattern = Pattern.compile(cardName);
+                Matcher matcher = pattern.matcher(card.getCardName());
                 if (matcher.find())
                     cards.add(card);
             } catch (Exception e) {
