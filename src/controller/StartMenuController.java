@@ -15,8 +15,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import models.Account;
-import packet.clientPacket.ClientEnterPartPacket;
-import packet.clientPacket.ClientPartsPacket;
+import packet.clientPacket.ClientEnum;
+import packet.clientPacket.ClientEnumPacket;
 
 import java.io.IOException;
 import java.net.URL;
@@ -42,7 +42,7 @@ public class StartMenuController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Controller.getInstance().currentController=this;
-        Controller.getInstance().clientListener.sendPacket(new ClientEnterPartPacket(ClientPartsPacket.GET_MONEY));
+        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.GET_MONEY));
     }
 
     @FXML

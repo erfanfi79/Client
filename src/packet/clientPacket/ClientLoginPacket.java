@@ -12,5 +12,4 @@ public class ClientLoginPacket extends ClientPacket implements Serializable {
         this.password = password;
         this.isLogin=isLogin;
     }
-
 }

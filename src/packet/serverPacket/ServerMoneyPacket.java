@@ -1,6 +1,6 @@
 package packet.serverPacket;
 
-public class ServerMoneyPacket extends ServerPacket {
+public class ServerMoneyPacket extends ServerPacket{
     String money;
 
     public void setMoney(int money) {
