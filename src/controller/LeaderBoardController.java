@@ -2,14 +2,14 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class LeaderBoardController {
     double x, y;
@@ -33,24 +33,39 @@ public class LeaderBoardController {
 
     @FXML
     void gotoStartMenu() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("../view/StartMenuView.fxml"));
-            Scene scene = new Scene(root);
-            scene.setOnMousePressed(event -> {
-                x = event.getSceneX();
-                y = event.getSceneY();
-            });
-
-            scene.setOnMouseDragged(event -> {
-
-                Controller.stage.setX(event.getScreenX() - x);
-                Controller.stage.setY(event.getScreenY() - y);
-
-            });
-            Controller.stage.setScene(scene);
-        } catch (IOException e) {
-        }
-
+        Controller.getInstance().gotoStartMenu();
     }
 
+    public void initializeLeaderboard(ArrayList<String> usernames, ArrayList<Integer> winsNum) {
+        Node[] nodes = new Node[usernames.size()];
+        for (int i = vBoxLeaderBoard.getChildren().size() - 1; i >= 0; i--) {
+            vBoxLeaderBoard.getChildren().remove(vBoxLeaderBoard.getChildren().get(i));
+        }
+
+        for (int i = 0; i < nodes.length; i++) {
+            try {
+                final int j = i;
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("ItemLeaderboard.fxml"));
+                nodes[i] = fxmlLoader.load();
+                LeaderBoardController personLeaderBoard = fxmlLoader.getController();
+                personLeaderBoard.setInformation(i + 1, usernames.get(i), winsNum.get(i));
+                nodes[i].setOnMouseEntered(event -> {
+                    nodes[j].setStyle("-fx-background-color : #0A0E3F");
+                });
+                nodes[i].setOnMouseExited(event -> {
+                    nodes[j].setStyle("-fx-background-color : #3c63a3");
+                });
+                vBoxLeaderBoard.getChildren().add(nodes[i]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void setInformation(int rank, String name, int wins) {
+        labelUsername.setText(name);
+        labelRank.setText(String.valueOf(rank));
+        labelHighScore.setText(String.valueOf(wins));
+    }
 }

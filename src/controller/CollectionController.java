@@ -3,26 +3,24 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import models.Account;
 import models.Card;
+import models.Collection;
 import models.Deck;
+import packet.clientPacket.ClientCollectionPacket;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
-public class CollectionController implements Initializable {
+public class CollectionController {
+    Collection myCollection;
     private double x, y;
     @FXML
     private HBox hBox2;
@@ -48,10 +46,9 @@ public class CollectionController implements Initializable {
     @FXML
     private Label labelErrorInAdd;
 
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initializeCollection(Collection collection) {
         Controller.getInstance().collectionController = this;
+        myCollection = collection;
         showCards();
         showDecks();
     }
@@ -59,7 +56,7 @@ public class CollectionController implements Initializable {
     @FXML
     void btnNewDeck(ActionEvent event) {
         labelError.setText("");
-        for (Deck deck : Controller.getInstance().getAccount().getCollection().getDecks())
+        for (Deck deck : myCollection.getDecks())
             if (deck.getDeckName().equals(txtDeckName.getText())) {
                 createDeck(deck, deck.getDeckName());
                 return;
@@ -70,23 +67,8 @@ public class CollectionController implements Initializable {
 
     @FXML
     void gotoStartMenu() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("../view/StartMenuView.fxml"));
-            Scene scene = new Scene(root);
-            scene.setOnMousePressed(event -> {
-                x = event.getSceneX();
-                y = event.getSceneY();
-            });
-
-            scene.setOnMouseDragged(event -> {
-
-                Controller.stage.setX(event.getScreenX() - x);
-                Controller.stage.setY(event.getScreenY() - y);
-
-            });
-            Controller.stage.setScene(scene);
-        } catch (IOException e) {
-        }
+        Controller.getInstance().clientListener.sendPacket(new ClientCollectionPacket(myCollection));
+        Controller.getInstance().gotoStartMenu();
     }
 
 
@@ -94,7 +76,7 @@ public class CollectionController implements Initializable {
         String cardID = txtCardId.getText(), deckName = txtToDeckName.getText();
         if (cardID.isEmpty() || deckName.isEmpty())
             labelErrorInAdd.setText("No field can be empty");
-        CollectionErrors collectionErrors = Controller.getInstance().getAccount().getCollection().addToDeck(cardID, deckName);
+        CollectionErrors collectionErrors = myCollection.addToDeck(cardID, deckName);
         if (collectionErrors != null)
             labelErrorInAdd.setText(collectionErrors.toString());
         txtCardId.setText("");
@@ -113,7 +95,7 @@ public class CollectionController implements Initializable {
         }
         deck = new Deck();
         deck.setDeckName(deckName);
-        Controller.getInstance().getAccount().getCollection().getDecks().add(deck);
+        myCollection.getDecks().add(deck);
         showDecks();
     }
 
@@ -136,7 +118,7 @@ public class CollectionController implements Initializable {
 
     public void showCards() {
         Node[] nodes;
-        ArrayList<Card> cards = Controller.getInstance().getAccount().getCollection().getCards();
+        ArrayList<Card> cards = myCollection.getCards();
         nodes = new Node[cards.size()];
         for (int i = hBox1.getChildren().size() - 1; i >= 0; i--) {
             hBox1.getChildren().remove(hBox1.getChildren().get(i));
@@ -218,7 +200,7 @@ public class CollectionController implements Initializable {
 
     public void showDecks() {
         Node[] nodes;
-        ArrayList<Deck> decks = Controller.getInstance().getAccount().getCollection().getDecks();
+        ArrayList<Deck> decks = myCollection.getDecks();
         nodes = new Node[decks.size()];
         for (int i = deckVBox.getChildren().size() - 1; i >= 0; i--)
             deckVBox.getChildren().remove(deckVBox.getChildren().get(i));

@@ -3,9 +3,7 @@ package controller;
 
 import javafx.application.Platform;
 import packet.clientPacket.ClientPacket;
-import packet.serverPacket.ServerLogPacket;
-import packet.serverPacket.ServerMoneyPacket;
-import packet.serverPacket.ServerPacket;
+import packet.serverPacket.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -37,14 +35,24 @@ public class ClientListener extends Thread {
                 if (packet instanceof ServerLogPacket)
                     handleLogs((ServerLogPacket) packet);
                 if (packet instanceof ServerMoneyPacket)
-                    Platform.runLater(()->Controller.getInstance().showMoney(((ServerMoneyPacket) packet).getMoney()));
-
+                    Platform.runLater(() -> Controller.getInstance().showMoney(((ServerMoneyPacket) packet).getMoney()));
+                if (packet instanceof ServerMatchHistory)
+                    ((MatchHistoryController) Controller.getInstance().currentController).initializeHistorys(((ServerMatchHistory) packet).getHistories());
+                if (packet instanceof ServerLeaderBoardPacket)
+                    if (Controller.getInstance().currentController instanceof LeaderBoardController) {
+                        LeaderBoardController controller = (LeaderBoardController) Controller.getInstance().currentController;
+                        controller.initializeLeaderboard(((ServerLeaderBoardPacket) packet).getUsernames()
+                                , ((ServerLeaderBoardPacket) packet).getWinNumber());
+                    }
+                if (packet instanceof ServerCollection)
+                    handleCollection((ServerCollection) packet);
             } catch (IOException e) {
                 break;
             } catch (ClassNotFoundException e2) {
                 System.out.println(e2.getMessage());
             }
         }
+
     }
 
     public void sendPacket(ClientPacket packet) {
@@ -60,13 +68,30 @@ public class ClientListener extends Thread {
 
     }
 
+    public void handleCollection(ServerCollection serverCollection) {
+        if (serverCollection.getIsShop()) {
+            Platform.runLater(() -> {
+                if (Controller.getInstance().currentController instanceof ShopController)
+                    ((ShopController) Controller.getInstance().currentController).initializeShopCollection(
+                            serverCollection.getShopCollection(),
+                            serverCollection.getCollection());
+            });
+        } else {
+            Platform.runLater(() -> {
+                if (Controller.getInstance().currentController instanceof CollectionController)
+                    ((CollectionController) Controller.getInstance().currentController).initializeCollection(
+                            serverCollection.getCollection());
+            });
+        }
+    }
+
     public void handleLogs(ServerLogPacket logPacket) {
         if (Controller.getInstance().currentController instanceof AccountMenuController)
             if (logPacket.isSuccessful()) Platform.runLater(() -> {
-                    Controller.getInstance().gotoStartMenu(); });
+                Controller.getInstance().gotoStartMenu();
+            });
             else
-                Platform.runLater(()->((AccountMenuController) Controller.getInstance().currentController).showError(logPacket));
-
+                Platform.runLater(() -> ((AccountMenuController) Controller.getInstance().currentController).showError(logPacket));
 
 
     }

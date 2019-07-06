@@ -1,7 +1,6 @@
 package controller;
 
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,7 +13,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import models.Account;
 import packet.clientPacket.ClientEnum;
 import packet.clientPacket.ClientEnumPacket;
 
@@ -68,12 +66,14 @@ public class StartMenuController implements Initializable {
     }
 
     @FXML
-    void gotoMatchHistory(ActionEvent event) {
+    void gotoMatchHistory() {
+        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.MATCH_HISTORY));
         openPage("../view/MatchHistoryView.fxml");
     }
 
     @FXML
     void gotoLeaderboard() {
+        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.LEADER_BOARD));
         openPage("../view/LeaderBoardView.fxml");
 
     }
@@ -114,17 +114,19 @@ public class StartMenuController implements Initializable {
 
     @FXML
     void gotoCollectionMenu() {
+        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.COLLECTION));
         openPage("../view/collectionMenuView/CollectionMenuView.fxml");
     }
 
     @FXML
     void gotoShopMenu() {
+        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.SHOP));
         openPage("../view/shopMenuView/ShopMenuView.fxml");
     }
 
     @FXML
-    void save(ActionEvent event) {
-        Account.save(Controller.getInstance().getAccount());
+    void save() {
+        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.SAVE));
     }
 
     @FXML
@@ -138,6 +140,7 @@ public class StartMenuController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource(path));
             Parent root = fxmlLoader.load();
+            Controller.getInstance().currentController = fxmlLoader.getController();
             Scene scene = new Scene(root);
             scene.setOnMousePressed(event -> {
                 x = event.getSceneX();

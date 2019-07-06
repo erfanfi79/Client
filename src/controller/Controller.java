@@ -4,13 +4,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import models.Account;
+import models.Collection;
 
 import java.io.IOException;
 
 public class Controller {
     private static Controller controller;
-    private Account account = null;
+    private Collection myCollection;
     public ShopController shopController = null;
     public CollectionController collectionController = null;
     public ClientListener clientListener;
@@ -18,6 +18,13 @@ public class Controller {
     public static Stage stage;
     public double x, y;
 
+    public Collection getMyCollection() {
+        return myCollection;
+    }
+
+    public void setMyCollection(Collection myCollection) {
+        this.myCollection = myCollection;
+    }
 
     public static Controller getInstance() {
         if (controller == null)
@@ -33,14 +40,6 @@ public class Controller {
             ((StartMenuController) currentController).showMoney(money);
         else if (currentController instanceof ShopController)
             ((ShopController) currentController).showMoney(money);
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
-    public Account getAccount() {
-        return account;
     }
 
     public void gotoStartMenu() {
