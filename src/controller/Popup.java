@@ -18,6 +18,7 @@ public class Popup {
     Label errorLabel;
 
     public void showMessage(String message) {
+
         try {
             Stage dialog = new Stage();
             dialog.initModality(Modality.APPLICATION_MODAL);
@@ -37,4 +38,7 @@ public class Popup {
         } catch (Exception e) {
         }
     }
+
+
 }
+

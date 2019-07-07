@@ -49,6 +49,7 @@ public class CollectionController {
     public void initializeCollection(Collection collection) {
         Controller.getInstance().collectionController = this;
         myCollection = collection;
+        Controller.getInstance().setMyCollection(myCollection);
         showCards();
         showDecks();
     }

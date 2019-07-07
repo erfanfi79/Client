@@ -40,7 +40,7 @@ public class MatchHistoryController {
             try {
                 final int j = i;
                 FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("Item.fxml"));
+                fxmlLoader.setLocation(getClass().getResource("../view/Item.fxml"));
                 nodes[i] = fxmlLoader.load();
                 MatchHistoryController personLeaderBoard = fxmlLoader.getController();
                 personLeaderBoard.setInformation(

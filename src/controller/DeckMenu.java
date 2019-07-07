@@ -37,6 +37,8 @@ public class DeckMenu {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("../view/collectionMenuView/CollectionMenuView.fxml"));
             Parent root = fxmlLoader.load();
+            Controller.getInstance().currentController = fxmlLoader.getController();
+            ((CollectionController) Controller.getInstance().currentController).initializeCollection(Controller.getInstance().getMyCollection());
             Scene scene = new Scene(root);
             scene.setOnMousePressed(event -> {
                 x = event.getSceneX();

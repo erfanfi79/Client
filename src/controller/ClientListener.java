@@ -37,15 +37,17 @@ public class ClientListener extends Thread {
                 if (packet instanceof ServerMoneyPacket)
                     Platform.runLater(() -> Controller.getInstance().showMoney(((ServerMoneyPacket) packet).getMoney()));
                 if (packet instanceof ServerMatchHistory)
-                    ((MatchHistoryController) Controller.getInstance().currentController).initializeHistorys(((ServerMatchHistory) packet).getHistories());
+                    if (Controller.getInstance().currentController instanceof MatchHistoryController)
+                        ((MatchHistoryController) Controller.getInstance().currentController).initializeHistorys(((ServerMatchHistory) packet).getHistories());
                 if (packet instanceof ServerLeaderBoardPacket)
                     if (Controller.getInstance().currentController instanceof LeaderBoardController) {
                         LeaderBoardController controller = (LeaderBoardController) Controller.getInstance().currentController;
-                        controller.initializeLeaderboard(((ServerLeaderBoardPacket) packet).getUsernames()
-                                , ((ServerLeaderBoardPacket) packet).getWinNumber());
+                        Platform.runLater(() -> controller.initializeLeaderboard(((ServerLeaderBoardPacket) packet).getUsernames()
+                                , ((ServerLeaderBoardPacket) packet).getWinNumber()));
                     }
                 if (packet instanceof ServerCollection)
                     handleCollection((ServerCollection) packet);
+
             } catch (IOException e) {
                 break;
             } catch (ClassNotFoundException e2) {
@@ -93,6 +95,12 @@ public class ClientListener extends Thread {
             else
                 Platform.runLater(() -> ((AccountMenuController) Controller.getInstance().currentController).showError(logPacket));
 
+        else {
+            if (logPacket.isSuccessful()) Platform.runLater(() -> new Popup().showMessage("Task Compeleted"));
+
+            else
+                Platform.runLater(() -> new Popup().showMessage(logPacket.getLog()));
+        }
 
     }
 

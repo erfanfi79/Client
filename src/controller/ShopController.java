@@ -14,7 +14,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import models.Card;
-import models.CardType;
 import models.Collection;
 import packet.clientPacket.ClientBuyAndSellPacket;
 import view.shopMenuView.ShopError;
@@ -123,16 +122,6 @@ public class ShopController implements Initializable {
         }
     }
 
-
-    private boolean checkBuyItem(ArrayList<Card> cards) {
-        int numOfItemInCollection = 0;
-        for (Card card : cards)
-            if (card.getType().equals(CardType.USABLE_ITEM))
-                numOfItemInCollection++;
-
-        return numOfItemInCollection >= 3;
-    }
-
     public void buy(String cardName) {
         Controller.getInstance().clientListener.sendPacket(new ClientBuyAndSellPacket(cardName, true));
     }
@@ -160,8 +149,9 @@ public class ShopController implements Initializable {
     }
 
     public void initializeShopCollection(Collection shopCollection, Collection collection) {
-        this.shopCollection = shopCollection;
         this.myCollection = collection;
+        this.shopCollection = shopCollection;
+
         showCards(shopCollection.getCards());
     }
 

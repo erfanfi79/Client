@@ -46,7 +46,7 @@ public class LeaderBoardController {
             try {
                 final int j = i;
                 FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("ItemLeaderboard.fxml"));
+                fxmlLoader.setLocation(getClass().getResource("../view/ItemLeaderboard.fxml"));
                 nodes[i] = fxmlLoader.load();
                 LeaderBoardController personLeaderBoard = fxmlLoader.getController();
                 personLeaderBoard.setInformation(i + 1, usernames.get(i), winsNum.get(i));

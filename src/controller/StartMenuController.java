@@ -67,15 +67,15 @@ public class StartMenuController implements Initializable {
 
     @FXML
     void gotoMatchHistory() {
-        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.MATCH_HISTORY));
         openPage("../view/MatchHistoryView.fxml");
+        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.MATCH_HISTORY));
+
     }
 
     @FXML
     void gotoLeaderboard() {
-        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.LEADER_BOARD));
         openPage("../view/LeaderBoardView.fxml");
-
+        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.LEADER_BOARD));
     }
 
     @FXML
@@ -114,14 +114,15 @@ public class StartMenuController implements Initializable {
 
     @FXML
     void gotoCollectionMenu() {
-        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.COLLECTION));
         openPage("../view/collectionMenuView/CollectionMenuView.fxml");
+        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.COLLECTION));
     }
 
     @FXML
     void gotoShopMenu() {
-        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.SHOP));
         openPage("../view/shopMenuView/ShopMenuView.fxml");
+        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.SHOP));
+
     }
 
     @FXML
