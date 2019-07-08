@@ -2,11 +2,8 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -15,7 +12,6 @@ import packet.clientPacket.ClientLoginPacket;
 import packet.serverPacket.ServerLogPacket;
 import request.accountMenuRequest.AccountError;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -43,7 +39,7 @@ public class AccountMenuController implements Initializable {
             loginError.setText(AccountError.FIELDS_CAN_NOT_BE_EMPTY.toString());
             return;
         }
-        Controller.getInstance().clientListener.sendPacket(new ClientLoginPacket(userName, password, true));
+        Controller.getInstance().clientListener.sendPacketToServer(new ClientLoginPacket(userName, password, true));
     }
 
     @FXML
@@ -54,7 +50,7 @@ public class AccountMenuController implements Initializable {
             loginError.setText(AccountError.FIELDS_CAN_NOT_BE_EMPTY.toString());
             return;
         }
-        Controller.getInstance().clientListener.sendPacket(new ClientLoginPacket(userName, password, false));
+        Controller.getInstance().clientListener.sendPacketToServer(new ClientLoginPacket(userName, password, false));
     }
 
     @FXML

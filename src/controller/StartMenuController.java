@@ -42,7 +42,7 @@ public class StartMenuController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Controller.getInstance().currentController=this;
-        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.GET_MONEY));
+        Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.GET_MONEY));
     }
 
     @FXML

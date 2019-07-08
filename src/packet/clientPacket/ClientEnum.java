@@ -10,5 +10,4 @@ public enum ClientEnum {
     BATTLE_MENU,
     GET_MONEY,
     CANCEL_WAITING_FOR_MULTI_PLAYER_GAME,
-
 }
