@@ -40,7 +40,7 @@ public class StartMenuController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Controller.getInstance().currentController=this;
-        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.GET_MONEY));
+        Controller.getInstance().clientListener.sendPacketToClient(new ClientEnumPacket(ClientEnum.GET_MONEY));
     }
 
     @FXML
@@ -68,14 +68,14 @@ public class StartMenuController implements Initializable {
     @FXML
     void gotoMatchHistory() {
         openPage("../view/MatchHistoryView.fxml");
-        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.MATCH_HISTORY));
+        Controller.getInstance().clientListener.sendPacketToClient(new ClientEnumPacket(ClientEnum.MATCH_HISTORY));
 
     }
 
     @FXML
     void gotoLeaderboard() {
         openPage("../view/LeaderBoardView.fxml");
-        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.LEADER_BOARD));
+        Controller.getInstance().clientListener.sendPacketToClient(new ClientEnumPacket(ClientEnum.LEADER_BOARD));
     }
 
     @FXML
@@ -117,24 +117,24 @@ public class StartMenuController implements Initializable {
     @FXML
     void gotoCollectionMenu() {
         openPage("../view/collectionMenuView/CollectionMenuView.fxml");
-        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.COLLECTION));
+        Controller.getInstance().clientListener.sendPacketToClient(new ClientEnumPacket(ClientEnum.COLLECTION));
     }
 
     @FXML
     void gotoShopMenu() {
         openPage("../view/shopMenuView/ShopMenuView.fxml");
-        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.SHOP));
+        Controller.getInstance().clientListener.sendPacketToClient(new ClientEnumPacket(ClientEnum.SHOP));
 
     }
 
     @FXML
     void gotoChatroom() {
         openPage("../view/ChatRoom.fxml");
-        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.CHAT_ROOM));
+        Controller.getInstance().clientListener.sendPacketToClient(new ClientEnumPacket(ClientEnum.CHAT_ROOM));
     }
     @FXML
     void save() {
-        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.SAVE));
+        Controller.getInstance().clientListener.sendPacketToClient(new ClientEnumPacket(ClientEnum.SAVE));
     }
 
     @FXML
