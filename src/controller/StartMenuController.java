@@ -43,6 +43,10 @@ public class StartMenuController implements Initializable {
         Controller.getInstance().clientListener.sendPacketToClient(new ClientEnumPacket(ClientEnum.GET_MONEY));
     }
 
+    public boolean checkValidateDeck() {
+
+        return false;
+    }
     @FXML
     void mouseIn(MouseEvent event) {
         if (event.getSource() instanceof Button) {
@@ -76,6 +80,8 @@ public class StartMenuController implements Initializable {
     void gotoLeaderboard() {
         openPage("../view/LeaderBoardView.fxml");
         Controller.getInstance().clientListener.sendPacketToClient(new ClientEnumPacket(ClientEnum.LEADER_BOARD));
+
+
     }
 
     @FXML
@@ -111,6 +117,8 @@ public class StartMenuController implements Initializable {
 
     @FXML
     void gotoBattleMenu() {
+        if (!checkValidateDeck())
+            return;
         openPage("../view/battleMenuView/BattleMenuView.fxml");
     }
 

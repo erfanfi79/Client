@@ -56,7 +56,7 @@ public class ClientListener extends Thread {
                 handleCollection((ServerCollection) packet);
 
             else if (packet instanceof ServerChatRoomPacket)
-                Controller.getInstance().updateChatRoom((ServerChatRoomPacket) packet);
+                Platform.runLater(() -> Controller.getInstance().updateChatRoom((ServerChatRoomPacket) packet));
         }
     }
 
