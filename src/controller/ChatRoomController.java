@@ -1,14 +1,15 @@
 package controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import packet.clientPacket.ClientChatRoomPacket;
+import packet.clientPacket.ClientEnum;
+import packet.clientPacket.ClientEnumPacket;
+import packet.serverPacket.Massage;
 
-import java.io.IOException;
+import java.util.ArrayList;
 
 public class ChatRoomController {
     double x, y;
@@ -20,28 +21,28 @@ public class ChatRoomController {
 
     @FXML
     void gotoStartMenu() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("../view/StartMenuView.fxml"));
-            Scene scene = new Scene(root);
-            scene.setOnMousePressed(event -> {
-                x = event.getSceneX();
-                y = event.getSceneY();
-            });
+        Controller.getInstance().gotoStartMenu();
+        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.EXIT_CHATROOM));
+    }
 
-            scene.setOnMouseDragged(event -> {
+    public void updateChatroom(ArrayList<Massage> massages) {
+        for (int i = vBoxChat.getChildren().size() - 1; i >= 0; i--)
+            vBoxChat.getChildren().remove(vBoxChat.getChildren().get(i));
 
-                Controller.stage.setX(event.getScreenX() - x);
-                Controller.stage.setY(event.getScreenY() - y);
-
-            });
-            Controller.stage.setScene(scene);
-        } catch (IOException e) {
+        for (Massage massage : massages) {
+            Label label = new Label();
+            label.setText(massage.getUserName() + "  : " + massage.getMassage());
+            vBoxChat.getChildren().add(label);
         }
 
     }
 
     @FXML
-    void sendMessage(ActionEvent event) {
-
+    void sendMessage() {
+        if (txtMessage.getText().trim().isEmpty())
+            return;
+        ClientChatRoomPacket clientChatRoomPacket = new ClientChatRoomPacket();
+        clientChatRoomPacket.setString(txtMessage.getText());
+        Controller.getInstance().clientListener.sendPacket(clientChatRoomPacket);
     }
 }

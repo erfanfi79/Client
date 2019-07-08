@@ -39,7 +39,7 @@ public class StartMenuController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Controller.getInstance().currentController=this;
+        Controller.getInstance().currentController = this;
         Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.GET_MONEY));
     }
 
@@ -104,9 +104,11 @@ public class StartMenuController implements Initializable {
         } catch (IOException e) {
         }
     }
-    void showMoney(String money){
+
+    void showMoney(String money) {
         this.money.setText(money);
     }
+
     @FXML
     void gotoBattleMenu() {
         openPage("../view/battleMenuView/BattleMenuView.fxml");
@@ -125,6 +127,11 @@ public class StartMenuController implements Initializable {
 
     }
 
+    @FXML
+    void gotoChatroom() {
+        openPage("../view/ChatRoom.fxml");
+        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.CHAT_ROOM));
+    }
     @FXML
     void save() {
         Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.SAVE));

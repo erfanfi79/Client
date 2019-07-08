@@ -34,20 +34,22 @@ public class ClientListener extends Thread {
                 ServerPacket packet = (ServerPacket) objectInputStream.readObject();
                 if (packet instanceof ServerLogPacket)
                     handleLogs((ServerLogPacket) packet);
-                if (packet instanceof ServerMoneyPacket)
+                else if (packet instanceof ServerMoneyPacket)
                     Platform.runLater(() -> Controller.getInstance().showMoney(((ServerMoneyPacket) packet).getMoney()));
-                if (packet instanceof ServerMatchHistory)
+
+                else if (packet instanceof ServerMatchHistory)
                     if (Controller.getInstance().currentController instanceof MatchHistoryController)
                         ((MatchHistoryController) Controller.getInstance().currentController).initializeHistorys(((ServerMatchHistory) packet).getHistories());
-                if (packet instanceof ServerLeaderBoardPacket)
+                    else if (packet instanceof ServerLeaderBoardPacket)
                     if (Controller.getInstance().currentController instanceof LeaderBoardController) {
                         LeaderBoardController controller = (LeaderBoardController) Controller.getInstance().currentController;
                         Platform.runLater(() -> controller.initializeLeaderboard(((ServerLeaderBoardPacket) packet).getUsernames()
                                 , ((ServerLeaderBoardPacket) packet).getWinNumber()));
-                    }
-                if (packet instanceof ServerCollection)
+                    } else if (packet instanceof ServerCollection)
                     handleCollection((ServerCollection) packet);
 
+                    else if (packet instanceof ServerChatRoomPacket)
+                        Controller.getInstance().updateChatRoom((ServerChatRoomPacket) packet);
             } catch (IOException e) {
                 break;
             } catch (ClassNotFoundException e2) {

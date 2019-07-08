@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import models.Collection;
+import packet.serverPacket.ServerChatRoomPacket;
 
 import java.io.IOException;
 
@@ -60,6 +61,11 @@ public class Controller {
             Controller.stage.setScene(scene);
         } catch (IOException e) {
         }
+    }
+
+    public void updateChatRoom(ServerChatRoomPacket packet) {
+        if (currentController instanceof ChatRoomController)
+            ((ChatRoomController) currentController).updateChatroom(packet.getMassages());
     }
 }
 
