@@ -135,7 +135,8 @@ public class BattleMenuController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        account = Controller.getInstance().getAccount();
+        //todo get account from server???
+        //account = Controller.getInstance().getAccount();
     }
 
     public boolean checkValidateDeck() {

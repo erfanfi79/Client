@@ -1,7 +1,6 @@
 package controller;
 
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,7 +13,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import models.Account;
 import packet.clientPacket.ClientEnum;
 import packet.clientPacket.ClientEnumPacket;
 
@@ -42,7 +40,7 @@ public class StartMenuController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Controller.getInstance().currentController=this;
-        Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.GET_MONEY));
+        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.GET_MONEY));
     }
 
     @FXML
@@ -68,14 +66,16 @@ public class StartMenuController implements Initializable {
     }
 
     @FXML
-    void gotoMatchHistory(ActionEvent event) {
+    void gotoMatchHistory() {
         openPage("../view/MatchHistoryView.fxml");
+        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.MATCH_HISTORY));
+
     }
 
     @FXML
     void gotoLeaderboard() {
         openPage("../view/LeaderBoardView.fxml");
-
+        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.LEADER_BOARD));
     }
 
     @FXML
@@ -104,9 +104,11 @@ public class StartMenuController implements Initializable {
         } catch (IOException e) {
         }
     }
-    void showMoney(String money){
+
+    void showMoney(String money) {
         this.money.setText(money);
     }
+
     @FXML
     void gotoBattleMenu() {
         openPage("../view/battleMenuView/BattleMenuView.fxml");
@@ -115,16 +117,24 @@ public class StartMenuController implements Initializable {
     @FXML
     void gotoCollectionMenu() {
         openPage("../view/collectionMenuView/CollectionMenuView.fxml");
+        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.COLLECTION));
     }
 
     @FXML
     void gotoShopMenu() {
         openPage("../view/shopMenuView/ShopMenuView.fxml");
+        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.SHOP));
+
     }
 
     @FXML
-    void save(ActionEvent event) {
-        Account.save(Controller.getInstance().getAccount());
+    void gotoChatroom() {
+        openPage("../view/ChatRoom.fxml");
+        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.CHAT_ROOM));
+    }
+    @FXML
+    void save() {
+        Controller.getInstance().clientListener.sendPacket(new ClientEnumPacket(ClientEnum.SAVE));
     }
 
     @FXML
@@ -138,6 +148,7 @@ public class StartMenuController implements Initializable {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource(path));
             Parent root = fxmlLoader.load();
+            Controller.getInstance().currentController = fxmlLoader.getController();
             Scene scene = new Scene(root);
             scene.setOnMousePressed(event -> {
                 x = event.getSceneX();

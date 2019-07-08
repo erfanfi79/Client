@@ -10,7 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import models.Account;
 import models.Card;
 import models.Deck;
 
@@ -34,11 +33,12 @@ public class DeckMenu {
 
     @FXML
     void gotoCollectionMenu() {
-        Account.save(Controller.getInstance().getAccount());
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("../view/collectionMenuView/CollectionMenuView.fxml"));
             Parent root = fxmlLoader.load();
+            Controller.getInstance().currentController = fxmlLoader.getController();
+            ((CollectionController) Controller.getInstance().currentController).initializeCollection(Controller.getInstance().getMyCollection());
             Scene scene = new Scene(root);
             scene.setOnMousePressed(event -> {
                 x = event.getSceneX();
@@ -68,7 +68,7 @@ public class DeckMenu {
     @FXML
     void selectDeck() {
         if (deck.isDeckValidate())
-            Controller.getInstance().getAccount().getCollection().setSelectedDeck(deck);
+            Controller.getInstance().getMyCollection().setSelectedDeck(deck);
         else
             labelError.setText(CollectionErrors.DECK_IS_NOT_VALID.toString());
     }
@@ -78,7 +78,7 @@ public class DeckMenu {
         String cardID = txtCardId.getText();
         CollectionErrors collectionErrors;
 
-        collectionErrors = Controller.getInstance().getAccount().getCollection().removeFromDeck(cardID, deck.getDeckName());
+        collectionErrors = Controller.getInstance().getMyCollection().removeFromDeck(cardID, deck.getDeckName());
         if (collectionErrors != null)
             labelError.setText(collectionErrors.toString());
         txtCardId.setText("");

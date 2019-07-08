@@ -13,7 +13,9 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import models.*;
+import models.Card;
+import models.Collection;
+import packet.clientPacket.ClientBuyAndSellPacket;
 import view.shopMenuView.ShopError;
 
 import java.io.IOException;
@@ -24,7 +26,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ShopController implements Initializable {
-    private Collection shopCollection = initializeShopCollection();
+    private Collection shopCollection, myCollection;
     private double x, y;
     Node[] shopNodes;
     @FXML
@@ -51,7 +53,6 @@ public class ShopController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Controller.getInstance().shopController = this;
-        showCards(shopCollection.getCards());
     }
 
     @FXML
@@ -61,7 +62,7 @@ public class ShopController implements Initializable {
 
     @FXML
     void showCollection(ActionEvent event) {
-        showCards(Controller.getInstance().getAccount().getCollection().getCards());
+        showCards(myCollection.getCards());
     }
 
     @FXML
@@ -88,12 +89,12 @@ public class ShopController implements Initializable {
     void search() {
         if (searchCArdName.getText().trim().isEmpty()) {
             if (optSearchInCollection.isSelected())
-                showCards(Controller.getInstance().getAccount().getCollection().getCards());
+                showCards(myCollection.getCards());
             else
                 showCards(shopCollection.getCards());
         } else {
             if (optSearchInCollection.isSelected())
-                searchCollection(searchCArdName.getText(), Controller.getInstance().getAccount().getCollection());
+                searchCollection(searchCArdName.getText(), myCollection);
             else
                 searchCollection(searchCArdName.getText(), shopCollection);
         }
@@ -121,52 +122,12 @@ public class ShopController implements Initializable {
         }
     }
 
-
-    private boolean checkBuyItem(ArrayList<Card> cards) {
-        int numOfItemInCollection = 0;
-        for (Card card : cards)
-            if (card.getType().equals(CardType.USABLE_ITEM))
-                numOfItemInCollection++;
-
-        return numOfItemInCollection >= 3;
-    }
-
     public void buy(String cardName) {
-        Account account = Controller.getInstance().getAccount();
-        for (Card card : shopCollection.getCards())
-            if (card.getCardName().equals(cardName)) {
-                if (card.getType().equals(CardType.USABLE_ITEM) &&
-                        checkBuyItem(Controller.getInstance().getAccount().getCollection().getCards())) {
-                    labelErrorInShop.setText(ShopError.ALREADY_3_ITEM.toString());
-                    return;
-                }
-                if (account.getMoney() - card.getPrice() >= 0) {
-                    Card newCard = Card.deepClone(card);
-                    account.setID(newCard);
-                    account.getCollection().getCards().add(newCard);
-                    account.setMoney(account.getMoney() - card.getPrice());
-                    money.setText(String.valueOf(account.getMoney() - card.getPrice()));
-                    labelErrorInShop.setText(ShopError.SUCCESS.toString());
-                } else
-                    labelErrorInShop.setText(ShopError.NOT_ENOUGH_MONEY.toString());
-                return;
-            }
-        labelErrorInShop.setText(ShopError.CARD_NOT_FOUND.toString());
+        Controller.getInstance().clientListener.sendPacket(new ClientBuyAndSellPacket(cardName, true));
     }
 
     public void sell(String cardName) {
-        Account account = Controller.getInstance().getAccount();
-        ArrayList<Card> cards = account.getCollection().getCards();
-        for (int i = cards.size() - 1; i >= 0; i--)
-            if (cards.get(i).getCardName().equals(cardName)) {
-                account.getCollection().getCards().remove(cards.get(i));
-                account.setMoney(account.getMoney() + cards.get(i).getSellCost());
-                money.setText(String.valueOf(account.getMoney() + cards.get(i).getSellCost()));
-                account.getCollection().getCards().remove(cards.get(i));
-                labelErrorInShop.setText(ShopError.SUCCESS.toString());
-                return;
-            }
-        labelErrorInShop.setText(ShopError.CARD_NOT_FOUND.toString());
+        Controller.getInstance().clientListener.sendPacket(new ClientBuyAndSellPacket(cardName, false));
     }
 
     public void searchCollection(String cardName, Collection collection) {
@@ -187,10 +148,11 @@ public class ShopController implements Initializable {
             showCards(cards);
     }
 
-    public Collection initializeShopCollection() {
-        Collection collection = new Collection();
-        JsonToCard.moveToCollection(collection);
-        return collection;
+    public void initializeShopCollection(Collection shopCollection, Collection collection) {
+        this.myCollection = collection;
+        this.shopCollection = shopCollection;
+
+        showCards(shopCollection.getCards());
     }
 
     public void showCards(ArrayList<Card> cards) {

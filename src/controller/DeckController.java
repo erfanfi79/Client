@@ -29,10 +29,10 @@ public class DeckController {
 
     @FXML
     void deleteDeck() {
-        Deck deck = Controller.getInstance().getAccount().getCollection().getDeckByName(deckName.getText());
-        Controller.getInstance().getAccount().getCollection().getDecks().remove(deck);
+        Deck deck = Controller.getInstance().getMyCollection().getDeckByName(deckName.getText());
+        Controller.getInstance().getMyCollection().getDecks().remove(deck);
         for (Card card : deck.getCards())
-            Controller.getInstance().getAccount().getCollection().getCards().add(card);
+            Controller.getInstance().getMyCollection().getCards().add(card);
         Controller.getInstance().collectionController.showDecks();
         Controller.getInstance().collectionController.showCards();
     }

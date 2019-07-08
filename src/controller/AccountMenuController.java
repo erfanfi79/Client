@@ -28,7 +28,7 @@ public class AccountMenuController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Controller.getInstance().currentController=this;
+        Controller.getInstance().currentController = this;
     }
 
     @FXML
