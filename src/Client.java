@@ -31,7 +31,8 @@ public class Client extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Controller.getInstance().stage = primaryStage;
+        ;
+        Controller.stage = primaryStage;
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("view/AccountMenuView.fxml"));
 

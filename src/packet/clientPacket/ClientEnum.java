@@ -1,8 +1,6 @@
 package packet.clientPacket;
 
-import java.io.Serializable;
-
-public enum ClientEnum implements Serializable {
+public enum ClientEnum {
 
     CHAT_ROOM,
     LEADER_BOARD,
@@ -13,5 +11,7 @@ public enum ClientEnum implements Serializable {
     SAVE,
     CANCEL_WAITING_FOR_MULTI_PLAYER_GAME,
     EXIT_CHATROOM,
+    MULTI_PLAYER,
+    SINGLE_PLAYER
 
 }
