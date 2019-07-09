@@ -1,5 +1,6 @@
 import controller.ClientListener;
 import controller.Controller;
+import controller.MediaController.GameMusicPlayer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -31,6 +32,7 @@ public class Client extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        GameMusicPlayer.getInstance().menuSong();
         Controller.stage = primaryStage;
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("view/AccountMenuView.fxml"));
@@ -38,7 +40,6 @@ public class Client extends Application {
         Parent root = fxmlLoader.load();
         Controller.getInstance().currentController = fxmlLoader.getController();
         primaryStage.initStyle(StageStyle.UNDECORATED);
-
         root.setOnMousePressed(event -> {
             x = event.getSceneX();
             y = event.getSceneY();
