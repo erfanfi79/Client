@@ -76,7 +76,7 @@ public class TableBuilder {
         for (int row = 0; row < 5; row++) {
             for (int column = 0; column < 9; column++) {
 
-                table[row][column].getChildren().removeAll(table[row][column].getChildren());
+
 
                 if (cells[row][column].getFlag() != null)
                     table[row][column].getChildren().add(new ImageView("resources/battle/flag/flag"));

@@ -7,7 +7,7 @@ import view.ImageLibrary;
 
 public class ConstantViews {
 
-    public AnchorPane getConstantViews() {
+    public AnchorPane get() {
 
         AnchorPane anchorPane = new AnchorPane();
         anchorPane.getChildren().addAll(getBackground(), getHeaderImages());

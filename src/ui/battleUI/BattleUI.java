@@ -46,7 +46,7 @@ public class BattleUI {
 
 
         Scene scene = new Scene(pane, 1280, 720);
-        scene.getStylesheets().add(getClass().getResource("/ui/style/style.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/resources/style/style.css").toExternalForm());
         scene.setCursor(new ImageCursor(ImageLibrary.CursorImage.getImage()));
         mainStage.setScene(scene);
         mainStage.setResizable(false);

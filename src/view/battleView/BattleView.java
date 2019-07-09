@@ -1,25 +1,27 @@
 package view.battleView;
 
+import controller.ClientListener;
 import javafx.application.Application;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import packet.serverPacket.ServerLogPacket;
+import packet.serverPacket.ServerPacket;
+import packet.serverPacket.serverMatchPacket.*;
+
 import static view.Constants.*;
 
 public class BattleView extends Application {
 
     private ConstantViews constantViews = new ConstantViews();
+    private MarginView marginView = new MarginView();
+    private TableInputHandler tableInputHandler = new TableInputHandler();
 
-    private ImageView[] player1Mana = new ImageView[9];
-    private ImageView[] player2Mana = new ImageView[9];
-    private Label labelPlayer1HeroHP = new Label();
-    private Label labelPlayer2HeroHP = new Label();
+    private boolean isMatchFinished = false;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         showBattle(primaryStage);
     }
 
@@ -31,13 +33,78 @@ public class BattleView extends Application {
 
         Pane pane = new Pane();
 
-        pane.getChildren().addAll(constantViews.getConstantViews());
+        pane.getChildren().addAll(constantViews.get(), /*marginView.get(),*/ tableInputHandler.get());
 
         Scene scene = new Scene(pane, STAGE_WIDTH.get(), STAGE_HEIGHT.get());
-        scene.getStylesheets().add(getClass().getResource("/ui/style/style.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/resources/style/style.css").toExternalForm());
         scene.setCursor(new ImageCursor(ui.ImageLibrary.CursorImage.getImage()));
         mainStage.setScene(scene);
         mainStage.setResizable(false);
         mainStage.show();
+    }
+
+    private void inputHandler() {
+
+        while (!isMatchFinished) {
+
+            ServerPacket packet = ClientListener.getPacketFromServer();
+
+            if (packet instanceof ServerMatchInfoPacket)
+                matchInfoPacketHandler((ServerMatchInfoPacket) packet);
+
+            else if (packet instanceof ServerMovePacket)
+                movePacketHandler((ServerMovePacket) packet);
+
+            else if (packet instanceof ServerAttackPacket)
+                attackPacketHandler((ServerAttackPacket) packet);
+
+            else if (packet instanceof ServerLogPacket)
+                showLogPopUp((ServerLogPacket) packet);
+
+            else if (packet instanceof ServerGraveYardPacket)
+                graveYardPacketHandler((ServerGraveYardPacket) packet);
+
+            else if (packet instanceof ServerMatchEnumPacket)
+                matchEnumPacketHandler((ServerMatchEnumPacket) packet);
+
+            else if (packet instanceof ServerPlayersUserNamePacket)
+                playersNamePacketHandler((ServerPlayersUserNamePacket) packet);
+        }
+    }
+
+    private void matchInfoPacketHandler(ServerMatchInfoPacket packet) {
+
+    }
+
+    private void movePacketHandler(ServerMovePacket packet) {
+
+    }
+
+    private void attackPacketHandler(ServerAttackPacket packet) {
+
+    }
+
+    private void showLogPopUp(ServerLogPacket packet) {
+
+        //todo erfan
+    }
+
+    private void graveYardPacketHandler(ServerGraveYardPacket packet) {
+
+        //todo erfan
+    }
+
+    private void matchEnumPacketHandler(ServerMatchEnumPacket packet) {
+
+        switch (packet.getPacket()) {
+
+            case START_YOUR_TURN:
+            case MATCH_FINISHED:
+                isMatchFinished = true;
+        }
+    }
+
+    private void playersNamePacketHandler(ServerPlayersUserNamePacket packet) {
+        marginView.setPlayersName(packet.getPlayer1UserName(), packet.getPlayer2UserName());
     }
 }
