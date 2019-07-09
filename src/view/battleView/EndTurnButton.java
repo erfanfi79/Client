@@ -1,6 +1,6 @@
 package view.battleView;
 
-import controller.ClientListener;
+import controller.Controller;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -48,7 +48,7 @@ public class EndTurnButton {
         endTurnButton.setOnMouseClicked(event -> {
             if (BattleView.isMyTurn()) {
 
-                ClientListener.sendPacketToServer(new ClientMatchEnumPacket(ClientMatchEnum.END_TURN));
+                Controller.getInstance().clientListener.sendPacketToServer(new ClientMatchEnumPacket(ClientMatchEnum.END_TURN));
                 changeColor();
             }
         });

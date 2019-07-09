@@ -1,6 +1,6 @@
 package view.battleView;
 
-import controller.ClientListener;
+import controller.Controller;
 import javafx.application.Application;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
@@ -10,7 +10,8 @@ import packet.serverPacket.ServerLogPacket;
 import packet.serverPacket.ServerPacket;
 import packet.serverPacket.serverMatchPacket.*;
 
-import static view.Constants.*;
+import static view.Constants.STAGE_HEIGHT;
+import static view.Constants.STAGE_WIDTH;
 
 public class BattleView extends Application {
 
@@ -55,7 +56,7 @@ public class BattleView extends Application {
 
         while (!isMatchFinished) {
 
-            ServerPacket packet = ClientListener.getPacketFromServer();
+            ServerPacket packet = Controller.getInstance().clientListener.getPacketFromServer();
 
             if (packet instanceof ServerMatchInfoPacket)
                 matchInfoPacketHandler((ServerMatchInfoPacket) packet);

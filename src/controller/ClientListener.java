@@ -10,13 +10,13 @@ import java.net.Socket;
 
 public class ClientListener extends Thread {
 
-    private static InputStreamReader inputStreamReader;
-    private static OutputStreamWriter outputStreamWriter;
-    private static Socket socket;
+    private InputStreamReader inputStreamReader;
+    private OutputStreamWriter outputStreamWriter;
+    private Socket socket;
 
     public ClientListener(Socket socket) {
 
-        ClientListener.socket = socket;
+        this.socket = socket;
         try {
             inputStreamReader = new InputStreamReader(socket.getInputStream());
             outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());
@@ -61,7 +61,7 @@ public class ClientListener extends Thread {
     }
 
 
-    public static ServerPacket getPacketFromServer() {
+    public ServerPacket getPacketFromServer() {
 
         try {
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
@@ -73,7 +73,7 @@ public class ClientListener extends Thread {
         return null;
     }
 
-    public static void sendPacketToServer(ClientPacket clientPocket) {
+    public void sendPacketToServer(ClientPacket clientPocket) {
 
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
