@@ -67,5 +67,13 @@ public class Controller {
         if (currentController instanceof ChatRoomController)
             ((ChatRoomController) currentController).updateChatroom(packet.getMassages());
     }
+
+    public void handleSuccsesfulLogs() {
+        if (currentController instanceof StartMenuController) {
+            ((StartMenuController) currentController).validDeckToEnterBattleMenu();
+            return;
+        }
+        new Popup().showMessage("Task Compeleted");
+    }
 }
 

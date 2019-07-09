@@ -115,7 +115,7 @@ public class ClientListener extends Thread {
             else
                 Platform.runLater(() -> ((AccountMenuController) Controller.getInstance().currentController).showError(logPacket));
         else {
-            if (logPacket.isSuccessful()) Platform.runLater(() -> new Popup().showMessage("Task Compeleted"));
+            if (logPacket.isSuccessful()) Platform.runLater(() -> Controller.getInstance().handleSuccsesfulLogs());
             else
                 Platform.runLater(() -> new Popup().showMessage(logPacket.getLog()));
         }
