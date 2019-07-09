@@ -42,7 +42,10 @@ public class BattleView extends Application {
 
         Pane pane = new Pane();
 
-        pane.getChildren().addAll(constantViews.get(), headerView.get(), tableInputHandler.get(), endTurnButton.get());
+        pane.getChildren().addAll(constantViews.get(), headerView.get(), tableInputHandler.get(), endTurnButton.get(),
+                tableUnitsView.get());
+
+        inputHandler();
 
         Scene scene = new Scene(pane, STAGE_WIDTH.get(), STAGE_HEIGHT.get());
         scene.getStylesheets().add(getClass().getResource("/resources/style/BattleStyle.css").toExternalForm());
@@ -111,6 +114,7 @@ public class BattleView extends Application {
 
             case START_YOUR_TURN:
                 isMyTurn = true;
+                endTurnButton.changeColor();
 
             case MATCH_FINISHED:
                 isMatchFinished = true;
