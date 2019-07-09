@@ -22,7 +22,7 @@ public class ChatRoomController {
     @FXML
     void gotoStartMenu() {
         Controller.getInstance().gotoStartMenu();
-        Controller.getInstance().clientListener.sendPacketToClient(new ClientEnumPacket(ClientEnum.EXIT_CHATROOM));
+        Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.EXIT_CHATROOM));
     }
 
     public void updateChatroom(ArrayList<Massage> massages) {
@@ -43,6 +43,6 @@ public class ChatRoomController {
             return;
         ClientChatRoomPacket clientChatRoomPacket = new ClientChatRoomPacket();
         clientChatRoomPacket.setString(txtMessage.getText());
-        Controller.getInstance().clientListener.sendPacketToClient(clientChatRoomPacket);
+        Controller.getInstance().clientListener.sendPacketToServer(clientChatRoomPacket);
     }
 }

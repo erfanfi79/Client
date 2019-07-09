@@ -6,9 +6,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import ui.ImageLibrary;
+import view.ImageLibrary;
 
-public class MarginView {
+public class HeaderView {
 
     private Label labelPlayer1HeroHP = new Label();
     private Label labelPlayer2HeroHP = new Label();
@@ -16,6 +16,7 @@ public class MarginView {
     private Label player2Name = new Label();
     private ImageView[] player1Mana = new ImageView[9];
     private ImageView[] player2Mana = new ImageView[9];
+
 
     public AnchorPane get() {
 

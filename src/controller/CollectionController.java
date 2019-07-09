@@ -68,7 +68,7 @@ public class CollectionController {
 
     @FXML
     void gotoStartMenu() {
-        Controller.getInstance().clientListener.sendPacketToClient(new ClientCollectionPacket(myCollection));
+        Controller.getInstance().clientListener.sendPacketToServer(new ClientCollectionPacket(myCollection));
         Controller.getInstance().gotoStartMenu();
     }
 

@@ -65,12 +65,12 @@ public class BattleMenuController {
 
     @FXML
     void playSinglePlayer() {
-        Controller.getInstance().clientListener.sendPacketToClient(new ClientEnumPacket(ClientEnum.SINGLE_PLAYER));
+        Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.SINGLE_PLAYER));
     }
 
     @FXML
     public void startMultiPlayer() {
-        Controller.getInstance().clientListener.sendPacketToClient(new ClientEnumPacket(ClientEnum.MULTI_PLAYER));
+        Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.MULTI_PLAYER));
 
     }
 
@@ -103,7 +103,7 @@ public class BattleMenuController {
 
     @FXML
     void cancelFinding() {
-        Controller.getInstance().clientListener.sendPacketToClient(new ClientEnumPacket(ClientEnum.CANCEL_WAITING_FOR_MULTI_PLAYER_GAME));
+        Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.CANCEL_WAITING_FOR_MULTI_PLAYER_GAME));
         mainPane.setDisable(false);
         cancel.setVisible(false);
         loadingGif.setVisible(false);

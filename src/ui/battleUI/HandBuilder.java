@@ -5,7 +5,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import models.Card;
 import models.GamePlay.Match;
-import ui.ImageLibrary;
+import view.ImageLibrary;
 
 import java.util.ArrayList;
 

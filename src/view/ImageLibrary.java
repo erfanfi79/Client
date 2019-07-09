@@ -14,7 +14,8 @@ public enum ImageLibrary {
     RightImageHeader("src/resources/battle/gameInfo/season_rank_silver.png"),
     FillMana("src/resources/battle/gameInfo/icon_mana.png"),
     EmptyMana("src/resources/battle/gameInfo/icon_mana_inactive.png"),
-    EndTurnButton("src/resources/battle/buttons/button_end_turn_mine.png"),
+    EndTurnButtonInMyTurn("src/resources/battle/buttons/button_end_turn_mine.png"),
+    EndTurnButtonInOpponentTurn("src/resources/battle/buttons/button_end_turn_enemy.png"),
     EndTurnPopup("src/resources/battle/popup/notification_your_turn.png"),
     HandCardAround("src/resources/battle/cardsAround/handCardBackground.png");
 

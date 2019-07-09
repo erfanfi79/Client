@@ -73,7 +73,7 @@ public class ClientListener extends Thread {
         return null;
     }
 
-    public static void sendPacketToClient(ClientPacket clientPocket) {
+    public static void sendPacketToServer(ClientPacket clientPocket) {
 
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);

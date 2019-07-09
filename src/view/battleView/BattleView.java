@@ -15,10 +15,18 @@ import static view.Constants.*;
 public class BattleView extends Application {
 
     private ConstantViews constantViews = new ConstantViews();
-    private MarginView marginView = new MarginView();
+    private HeaderView headerView = new HeaderView();
     private TableInputHandler tableInputHandler = new TableInputHandler();
+    private TableUnitsView tableUnitsView = new TableUnitsView();
+    private EndTurnButton endTurnButton = new EndTurnButton();
 
     private boolean isMatchFinished = false;
+    private static boolean isMyTurn = false;   //todo in first of game server must send enum start your turn for player 1
+
+
+    public static boolean isMyTurn() {
+        return isMyTurn;
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -33,11 +41,11 @@ public class BattleView extends Application {
 
         Pane pane = new Pane();
 
-        pane.getChildren().addAll(constantViews.get(), /*marginView.get(),*/ tableInputHandler.get());
+        pane.getChildren().addAll(constantViews.get(), headerView.get(), tableInputHandler.get(), endTurnButton.get());
 
         Scene scene = new Scene(pane, STAGE_WIDTH.get(), STAGE_HEIGHT.get());
-        scene.getStylesheets().add(getClass().getResource("/resources/style/style.css").toExternalForm());
-        scene.setCursor(new ImageCursor(ui.ImageLibrary.CursorImage.getImage()));
+        scene.getStylesheets().add(getClass().getResource("/resources/style/BattleStyle.css").toExternalForm());
+        scene.setCursor(new ImageCursor(view.ImageLibrary.CursorImage.getImage()));
         mainStage.setScene(scene);
         mainStage.setResizable(false);
         mainStage.show();
@@ -74,6 +82,8 @@ public class BattleView extends Application {
 
     private void matchInfoPacketHandler(ServerMatchInfoPacket packet) {
 
+        headerView.setManas(packet.getPlayer1Mana(), packet.getPlayer2Mana());
+        tableUnitsView.setUnitsImage(packet.getTable());
     }
 
     private void movePacketHandler(ServerMovePacket packet) {
@@ -99,12 +109,14 @@ public class BattleView extends Application {
         switch (packet.getPacket()) {
 
             case START_YOUR_TURN:
+                isMyTurn = true;
+
             case MATCH_FINISHED:
                 isMatchFinished = true;
         }
     }
 
     private void playersNamePacketHandler(ServerPlayersUserNamePacket packet) {
-        marginView.setPlayersName(packet.getPlayer1UserName(), packet.getPlayer2UserName());
+        headerView.setPlayersName(packet.getPlayer1UserName(), packet.getPlayer2UserName());
     }
 }

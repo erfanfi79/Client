@@ -123,11 +123,11 @@ public class ShopController implements Initializable {
     }
 
     public void buy(String cardName) {
-        Controller.getInstance().clientListener.sendPacketToClient(new ClientBuyAndSellPacket(cardName, true));
+        Controller.getInstance().clientListener.sendPacketToServer(new ClientBuyAndSellPacket(cardName, true));
     }
 
     public void sell(String cardName) {
-        Controller.getInstance().clientListener.sendPacketToClient(new ClientBuyAndSellPacket(cardName, false));
+        Controller.getInstance().clientListener.sendPacketToServer(new ClientBuyAndSellPacket(cardName, false));
     }
 
     public void searchCollection(String cardName, Collection collection) {

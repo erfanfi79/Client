@@ -39,7 +39,7 @@ public class AccountMenuController implements Initializable {
             loginError.setText(AccountError.FIELDS_CAN_NOT_BE_EMPTY.toString());
             return;
         }
-        Controller.getInstance().clientListener.sendPacketToClient(new ClientLoginPacket(userName, password, true));
+        Controller.getInstance().clientListener.sendPacketToServer(new ClientLoginPacket(userName, password, true));
     }
 
     @FXML
@@ -50,7 +50,7 @@ public class AccountMenuController implements Initializable {
             loginError.setText(AccountError.FIELDS_CAN_NOT_BE_EMPTY.toString());
             return;
         }
-        Controller.getInstance().clientListener.sendPacketToClient(new ClientLoginPacket(userName, password, false));
+        Controller.getInstance().clientListener.sendPacketToServer(new ClientLoginPacket(userName, password, false));
     }
 
     @FXML

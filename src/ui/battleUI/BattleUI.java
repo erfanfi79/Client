@@ -15,7 +15,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import models.GamePlay.Match;
 import models.Unit;
-import ui.ImageLibrary;
+import view.ImageLibrary;
 
 public class BattleUI {
 
@@ -46,7 +46,7 @@ public class BattleUI {
 
 
         Scene scene = new Scene(pane, 1280, 720);
-        scene.getStylesheets().add(getClass().getResource("/resources/style/style.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/resources/style/BattleStyle.css").toExternalForm());
         scene.setCursor(new ImageCursor(ImageLibrary.CursorImage.getImage()));
         mainStage.setScene(scene);
         mainStage.setResizable(false);
@@ -215,7 +215,7 @@ public class BattleUI {
 
     private AnchorPane endTurnButton() {
 
-        ImageView endTurnButtonImage = new ImageView(ImageLibrary.EndTurnButton.getImage());
+        ImageView endTurnButtonImage = new ImageView(ImageLibrary.EndTurnButtonInMyTurn.getImage());
         Label endTurnLabel = new Label("END TURN");
         endTurnLabel.setTextFill(Color.WHITE);
         endTurnLabel.setFont(Font.font(20));
