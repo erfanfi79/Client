@@ -1,5 +1,13 @@
-.enterMouseOnPolygon:hover {
+.enterMouseOnRectangle:hover {
     -fx-opacity: 0.4;
+}
+
+.selectRectangle {
+    -fx-opacity: 0.6;
+}
+
+.unSelectRectangle {
+    -fx-opacity: 0.2;
 }
 
 .enterMouseOnEndTurnButton:hover {

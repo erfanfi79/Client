@@ -1,6 +1,8 @@
 package view.battleView;
 
 import controller.Controller;
+import controller.MediaController.GameMusicPlayer;
+import controller.Popup;
 import javafx.application.Application;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
@@ -13,13 +15,15 @@ import packet.serverPacket.serverMatchPacket.*;
 import static view.Constants.STAGE_HEIGHT;
 import static view.Constants.STAGE_WIDTH;
 
-public class BattleView extends Application {
+public class BattleView {
 
     private ConstantViews constantViews = new ConstantViews();
     private HeaderView headerView = new HeaderView();
     private TableInputHandler tableInputHandler = new TableInputHandler();
     private TableUnitsView tableUnitsView = new TableUnitsView();
     private EndTurnButton endTurnButton = new EndTurnButton();
+
+    private static VirtualCard[][] table;
 
     private boolean isMatchFinished = false;
     private static boolean isMyTurn = false;   //todo in first of game server must send enum start your turn for player 1
@@ -29,23 +33,17 @@ public class BattleView extends Application {
         return isMyTurn;
     }
 
-    @Override
-    public void start(Stage primaryStage) {
-        showBattle(primaryStage);
-    }
-
-    public static void main(String[] args) {
-        launch(args);
+    public static VirtualCard[][] getTable() {
+        return table;
     }
 
     public void showBattle(Stage mainStage) {
 
         Pane pane = new Pane();
+        GameMusicPlayer.getInstance().playBattleMusic();
 
         pane.getChildren().addAll(constantViews.get(), headerView.get(), tableInputHandler.get(), endTurnButton.get(),
                 tableUnitsView.get());
-
-        inputHandler();
 
         Scene scene = new Scene(pane, STAGE_WIDTH.get(), STAGE_HEIGHT.get());
         scene.getStylesheets().add(getClass().getResource("/resources/style/BattleStyle.css").toExternalForm());
@@ -53,6 +51,8 @@ public class BattleView extends Application {
         mainStage.setScene(scene);
         mainStage.setResizable(false);
         mainStage.show();
+
+        inputHandler();
     }
 
     private void inputHandler() {
@@ -71,7 +71,7 @@ public class BattleView extends Application {
                 attackPacketHandler((ServerAttackPacket) packet);
 
             else if (packet instanceof ServerLogPacket)
-                showLogPopUp((ServerLogPacket) packet);
+                new Popup().showMessage(((ServerLogPacket) packet).getLog());
 
             else if (packet instanceof ServerGraveYardPacket)
                 graveYardPacketHandler((ServerGraveYardPacket) packet);
@@ -86,6 +86,7 @@ public class BattleView extends Application {
 
     private void matchInfoPacketHandler(ServerMatchInfoPacket packet) {
 
+        table = packet.getTable();
         headerView.setManas(packet.getPlayer1Mana(), packet.getPlayer2Mana());
         tableUnitsView.setUnitsImage(packet.getTable());
     }
@@ -96,11 +97,6 @@ public class BattleView extends Application {
 
     private void attackPacketHandler(ServerAttackPacket packet) {
 
-    }
-
-    private void showLogPopUp(ServerLogPacket packet) {
-
-        //todo erfan
     }
 
     private void graveYardPacketHandler(ServerGraveYardPacket packet) {
@@ -117,6 +113,8 @@ public class BattleView extends Application {
                 endTurnButton.changeColor();
 
             case MATCH_FINISHED:
+//                Controller.getInstance().gotoStartMenu();
+//                GameMusicPlayer.getInstance().menuSong();
                 isMatchFinished = true;
         }
     }
