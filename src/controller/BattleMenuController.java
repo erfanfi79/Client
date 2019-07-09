@@ -10,6 +10,7 @@ import models.Account;
 import models.MatchType;
 import packet.clientPacket.ClientEnum;
 import packet.clientPacket.ClientEnumPacket;
+import view.battleView.BattleView;
 
 public class BattleMenuController {
     double x, y;
@@ -66,6 +67,9 @@ public class BattleMenuController {
     @FXML
     void playSinglePlayer() {
         Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.SINGLE_PLAYER));
+        BattleView battleView = new BattleView();
+        battleView.showBattle(Controller.stage);
+        new Thread(battleView::inputHandler).start();
     }
 
     @FXML

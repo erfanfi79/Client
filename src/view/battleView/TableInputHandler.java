@@ -1,18 +1,26 @@
 package view.battleView;
 
+import controller.Controller;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 import models.Coordination;
+import packet.clientPacket.clientMatchPacket.ClientAttackPacket;
+import packet.clientPacket.clientMatchPacket.ClientInsertCardPacket;
+import packet.clientPacket.clientMatchPacket.ClientMovePacket;
 
 import static view.Constants.*;
 
 public class TableInputHandler {
 
+    private BattleView battleView;
     private GridPane rectangles = new GridPane();
-    private int selectedCellRow, selectedCellColumn;
+    private Coordination selectedCell;
 
-    public GridPane get() {
+
+    public GridPane get(BattleView battleView) {
+
+        this.battleView = battleView;
 
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 9; j++) {
@@ -35,16 +43,55 @@ public class TableInputHandler {
         for (Node node : rectangles.getChildren()) {
             node.setOnMouseClicked(event -> {
 
-                selectedCellRow = GridPane.getRowIndex(node);
-                selectedCellColumn = GridPane.getColumnIndex(node);
+                if (battleView.isReadyForInsert())
+                    insertHandler(node);
 
-                if (BattleView.getTable()[selectedCellRow][selectedCellColumn] != null) {
+                else {
+                    if (selectedCell == null && battleView.getTable()[GridPane.getRowIndex(node)][GridPane.getColumnIndex(node)] != null)
+                        selectCardHandler(node);
 
-                    node.getStyleClass().remove("unSelectRectangle");
-                    node.getStyleClass().add("selectRectangle");
+                    else if (selectedCell != null && battleView.getTable()[GridPane.getRowIndex(node)][GridPane.getColumnIndex(node)] != null)
+                        attackHandler(node);
+
+                    else if (selectedCell != null)
+                        moveHandler(node);
                 }
-
             });
         }
+    }
+
+    private void insertHandler(Node node) {
+
+        battleView.setReadyForInsert(false);
+        Controller.getInstance().clientListener.sendPacketToServer(
+                new ClientInsertCardPacket(
+                        GridPane.getRowIndex(node),
+                        GridPane.getColumnIndex(node),
+                        battleView.getWhichHandCardForInsert()));
+    }
+
+    private void selectCardHandler(Node node) {
+
+        selectedCell = Coordination.getNewCoordination(GridPane.getRowIndex(node), GridPane.getColumnIndex(node));
+        node.getStyleClass().remove("unSelectRectangle");
+        node.getStyleClass().add("selectRectangle");
+    }
+
+    private void attackHandler(Node node) {
+
+        ClientAttackPacket packet = new ClientAttackPacket();
+        packet.setAttacker(selectedCell);
+        packet.setDefender(Coordination.getNewCoordination(GridPane.getRowIndex(node), GridPane.getColumnIndex(node)));
+        Controller.getInstance().clientListener.sendPacketToServer(packet);
+        selectedCell = null;
+    }
+
+    private void moveHandler(Node node) {
+
+        ClientMovePacket packet = new ClientMovePacket();
+        packet.setStart(selectedCell);
+        packet.setDestination(Coordination.getNewCoordination(GridPane.getRowIndex(node), GridPane.getColumnIndex(node)));
+        Controller.getInstance().clientListener.sendPacketToServer(packet);
+        selectedCell = null;
     }
 }

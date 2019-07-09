@@ -2,15 +2,17 @@ package view.battleView;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import packet.serverPacket.serverMatchPacket.VirtualCard;
 
 import static view.Constants.*;
 
 public class TableUnitsView {
 
-    AnchorPane[][] table = new AnchorPane[5][9];
+    private BattleView battleView;
+    private AnchorPane[][] table = new AnchorPane[5][9];
 
-    public AnchorPane get() {
+    public AnchorPane get(BattleView battleView) {
+
+        this.battleView = battleView;
 
         AnchorPane anchorPane = new AnchorPane();
 
@@ -25,18 +27,18 @@ public class TableUnitsView {
         return anchorPane;
     }
 
-    public void setUnitsImage(VirtualCard[][] cards) {
+    public void setUnitsImage() {
 
         for (int row = 0; row < 5; row++) {
             for (int column = 0; column < 9; column++) {
-                if (cards[row][column] != null) {
+                if (battleView.getTable()[row][column] != null) {
 
                     table[row][column].getChildren().removeAll(table[row][column].getChildren());
                     ImageView image;
 
                     try {
                         image = new ImageView("resources/battle/units/" +
-                                cards[row][column].getCardName() + "/stand");
+                                battleView.getTable()[row][column].getCardName() + "/stand");
 
                     } catch (Exception e) {
                         e.printStackTrace();

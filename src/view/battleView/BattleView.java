@@ -1,9 +1,7 @@
 package view.battleView;
 
 import controller.Controller;
-import controller.MediaController.GameMusicPlayer;
 import controller.Popup;
-import javafx.application.Application;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -23,27 +21,47 @@ public class BattleView {
     private TableUnitsView tableUnitsView = new TableUnitsView();
     private EndTurnButton endTurnButton = new EndTurnButton();
 
-    private static VirtualCard[][] table;
+    private VirtualCard[][] table;
 
     private boolean isMatchFinished = false;
-    private static boolean isMyTurn = false;   //todo in first of game server must send enum start your turn for player 1
+    private boolean isMyTurn = false;
+    private boolean isReadyForInsert = false;
+    private int whichHandCardForInsert = -1;
 
 
-    public static boolean isMyTurn() {
+    public boolean isMyTurn() {
         return isMyTurn;
     }
 
-    public static VirtualCard[][] getTable() {
+    public boolean isReadyForInsert() {
+        return isReadyForInsert;
+    }
+
+    public void setReadyForInsert(boolean readyForInsert) {
+        isReadyForInsert = readyForInsert;
+    }
+
+    public int getWhichHandCardForInsert() {
+        return whichHandCardForInsert;
+    }
+
+    public void setWhichHandCardForInsert(int whichHandCardForInsert) {
+        this.whichHandCardForInsert = whichHandCardForInsert;
+    }
+
+    public VirtualCard[][] getTable() {
         return table;
     }
 
     public void showBattle(Stage mainStage) {
 
         Pane pane = new Pane();
-        GameMusicPlayer.getInstance().playBattleMusic();
+        //GameMusicPlayer.getInstance().playBattleMusic();
 
-        pane.getChildren().addAll(constantViews.get(), headerView.get(), tableInputHandler.get(), endTurnButton.get(),
-                tableUnitsView.get());
+        System.err.println("before pane");
+        pane.getChildren().addAll(constantViews.get(), headerView.get(), tableInputHandler.get(this),
+                endTurnButton.get(this), tableUnitsView.get(this));
+        System.err.println("after pane");
 
         Scene scene = new Scene(pane, STAGE_WIDTH.get(), STAGE_HEIGHT.get());
         scene.getStylesheets().add(getClass().getResource("/resources/style/BattleStyle.css").toExternalForm());
@@ -51,15 +69,14 @@ public class BattleView {
         mainStage.setScene(scene);
         mainStage.setResizable(false);
         mainStage.show();
-
-        inputHandler();
     }
 
-    private void inputHandler() {
+    public void inputHandler() {
 
         while (!isMatchFinished) {
 
             ServerPacket packet = Controller.getInstance().clientListener.getPacketFromServer();
+            System.err.println("after scanner");
 
             if (packet instanceof ServerMatchInfoPacket)
                 matchInfoPacketHandler((ServerMatchInfoPacket) packet);
@@ -85,10 +102,11 @@ public class BattleView {
     }
 
     private void matchInfoPacketHandler(ServerMatchInfoPacket packet) {
+        System.err.println("matchInfoPacketHandler");
 
         table = packet.getTable();
         headerView.setManas(packet.getPlayer1Mana(), packet.getPlayer2Mana());
-        tableUnitsView.setUnitsImage(packet.getTable());
+        tableUnitsView.setUnitsImage();
     }
 
     private void movePacketHandler(ServerMovePacket packet) {
@@ -109,6 +127,7 @@ public class BattleView {
         switch (packet.getPacket()) {
 
             case START_YOUR_TURN:
+                System.err.println("start your turn");
                 isMyTurn = true;
                 endTurnButton.changeColor();
 
@@ -120,6 +139,7 @@ public class BattleView {
     }
 
     private void playersNamePacketHandler(ServerPlayersUserNamePacket packet) {
+        System.err.println("playersNamePacketHandler");
         headerView.setPlayersName(packet.getPlayer1UserName(), packet.getPlayer2UserName());
     }
 }

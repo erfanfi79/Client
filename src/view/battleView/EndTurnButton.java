@@ -12,10 +12,13 @@ import view.ImageLibrary;
 
 public class EndTurnButton {
 
+    private BattleView battleView;
     private ImageView endTurnButtonImage;
     private StackPane endTurnButton;
 
-    public StackPane get() {
+    public StackPane get(BattleView battleView) {
+
+        this.battleView = battleView;
 
         endTurnButtonImage = new ImageView(ImageLibrary.EndTurnButtonInOpponentTurn.getImage());
         Label endTurnLabel = new Label("END TURN");
@@ -33,7 +36,7 @@ public class EndTurnButton {
 
     public void changeColor() {     //todo pay attention to change it in requests
 
-        if (BattleView.isMyTurn()) {
+        if (battleView.isMyTurn()) {
             endTurnButtonImage.setImage(ImageLibrary.EndTurnButtonInMyTurn.getImage());
             endTurnButtonImage.getStyleClass().add("enterMouseOnEndTurnButton");
 
@@ -46,7 +49,7 @@ public class EndTurnButton {
     private void endTurnButtonEventsHandler() {
 
         endTurnButton.setOnMouseClicked(event -> {
-            if (BattleView.isMyTurn()) {
+            if (battleView.isMyTurn()) {
 
                 Controller.getInstance().clientListener.sendPacketToServer(new ClientMatchEnumPacket(ClientMatchEnum.END_TURN));
                 changeColor();
