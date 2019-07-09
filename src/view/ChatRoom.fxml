@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8"
             fx:controller="controller.ChatRoomController">
     <children>
         <ImageView fitHeight="585.0" fitWidth="1172.0" pickOnBounds="true" preserveRatio="true">
@@ -37,8 +37,8 @@
         </Button>
         <TextField fx:id="txtMessage" layoutX="314.0" layoutY="462.0" prefHeight="47.0" prefWidth="597.0"
                    style="-fx-background-color: #4D5A68;"/>
-        <Button layoutX="934.0" layoutY="446.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="80.0"
-                prefWidth="78.0" style="-fx-background-color: transparent;">
+        <Button defaultButton="true" layoutX="934.0" layoutY="446.0" mnemonicParsing="false" onAction="#sendMessage"
+                prefHeight="80.0" prefWidth="78.0" style="-fx-background-color: transparent;">
             <graphic>
                 <ImageView fitHeight="46.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                     <image>

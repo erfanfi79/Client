@@ -44,5 +44,6 @@ public class ChatRoomController {
         ClientChatRoomPacket clientChatRoomPacket = new ClientChatRoomPacket();
         clientChatRoomPacket.setString(txtMessage.getText());
         Controller.getInstance().clientListener.sendPacketToServer(clientChatRoomPacket);
+        txtMessage.setText("");
     }
 }
