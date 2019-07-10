@@ -2,6 +2,7 @@ package controller;
 
 
 import javafx.application.Platform;
+import models.Buff;
 import packet.clientPacket.ClientPacket;
 import packet.serverPacket.*;
 
@@ -10,24 +11,18 @@ import java.net.Socket;
 
 public class ClientListener extends Thread {
 
-    private InputStreamReader inputStreamReader;
-    private OutputStreamWriter outputStreamWriter;
-    private Socket socket;
+    private BufferedReader bufferedReader;
+    private BufferedWriter bufferedWriter;
 
-    public InputStreamReader getInputStreamReader() {
-        return inputStreamReader;
-    }
-
-    public OutputStreamWriter getOutputStreamWriter() {
-        return outputStreamWriter;
+    public BufferedReader getBufferedReader() {
+        return bufferedReader;
     }
 
     public ClientListener(Socket socket) {
 
-        this.socket = socket;
         try {
-            inputStreamReader = new InputStreamReader(socket.getInputStream());
-            outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());
+            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -72,8 +67,8 @@ public class ClientListener extends Thread {
     public ServerPacket getPacketFromServer() {
 
         try {
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             return YaGsonChanger.readServerPocket(bufferedReader.readLine());
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -84,7 +79,6 @@ public class ClientListener extends Thread {
     public void sendPacketToServer(ClientPacket clientPocket) {
 
         try {
-            BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
             bufferedWriter.write(YaGsonChanger.write(clientPocket));
             bufferedWriter.newLine();
             bufferedWriter.flush();

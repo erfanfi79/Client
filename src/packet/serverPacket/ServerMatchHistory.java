@@ -4,7 +4,7 @@ import models.History;
 
 import java.util.ArrayList;
 
-public class ServerMatchHistory extends ServerPacket {
+public class ServerMatchHistory extends ServerPacket{
     ArrayList<History> histories;
 
     public ArrayList<History> getHistories() {

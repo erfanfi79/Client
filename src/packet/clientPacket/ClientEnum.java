@@ -1,5 +1,6 @@
 package packet.clientPacket;
 
+
 public enum ClientEnum {
 
     CHAT_ROOM,
@@ -14,5 +15,4 @@ public enum ClientEnum {
     MULTI_PLAYER,
     SINGLE_PLAYER,
     CHECK_DECK
-
 }
