@@ -10,8 +10,8 @@ import view.ImageLibrary;
 
 public class HeaderView {
 
-    private Label labelPlayer1HeroHP = new Label();
-    private Label labelPlayer2HeroHP = new Label();
+//    private Label labelPlayer1HeroHP = new Label();
+//    private Label labelPlayer2HeroHP = new Label();
     private Label player1Name = new Label();
     private Label player2Name = new Label();
     private ImageView[] player1Mana = new ImageView[9];
@@ -21,7 +21,7 @@ public class HeaderView {
     public AnchorPane get() {
 
         AnchorPane anchorPane = new AnchorPane();
-        anchorPane.getChildren().addAll(getHerosHP(), getManas(), getPlayersName());
+        anchorPane.getChildren().addAll(getManas(), getPlayersName());
         anchorPane.setMouseTransparent(true);
         return anchorPane;
     }
@@ -43,7 +43,7 @@ public class HeaderView {
         headerLeftGameInfo.getChildren().add(player2Name);
         headerRightGameInfo.getChildren().add(player1Name);
 
-        headerLeftGameInfo.relocate(400, 50);
+        headerLeftGameInfo.relocate(450, 50);
         headerRightGameInfo.relocate(850, 50);
 
         player1Name.setAlignment(Pos.CENTER);
@@ -54,40 +54,41 @@ public class HeaderView {
 
         AnchorPane playersName = new AnchorPane();
         playersName.getChildren().addAll(headerLeftGameInfo, headerRightGameInfo);
+        playersName.relocate(0, 0);
         return playersName;
     }
 
     public void setPlayersName(String player1Name, String player2Name) {
 
-        labelPlayer1HeroHP.setText(player1Name);
-        labelPlayer2HeroHP.setText(player2Name);
+        this.player1Name.setText(player1Name);
+        this.player2Name.setText(player2Name);
     }
 
 
-    private AnchorPane getHerosHP() {
-
-        AnchorPane anchorPane = new AnchorPane();
-
-        labelPlayer1HeroHP.relocate(180, 75);
-        labelPlayer2HeroHP.relocate(1090, 75);
-
-        labelPlayer1HeroHP.setScaleX(1.5);
-        labelPlayer1HeroHP.setScaleY(1.5);
-        labelPlayer2HeroHP.setScaleX(1.5);
-        labelPlayer2HeroHP.setScaleY(1.5);
-
-        labelPlayer1HeroHP.setTextFill(Color.WHITE);
-        labelPlayer2HeroHP.setTextFill(Color.WHITE);
-
-        anchorPane.getChildren().addAll(labelPlayer1HeroHP, labelPlayer2HeroHP);
-        return anchorPane;
-    }
-
-    public void setHerosHP(int player1HeroHP, int Player2HeroHP) {
-
-        labelPlayer1HeroHP.setText(player1HeroHP + "");
-        labelPlayer2HeroHP.setText(Player2HeroHP + "");
-    }
+//    private AnchorPane getHerosHP() {
+//
+//        AnchorPane anchorPane = new AnchorPane();
+//
+//        labelPlayer1HeroHP.relocate(180, 75);
+//        labelPlayer2HeroHP.relocate(1090, 75);
+//
+//        labelPlayer1HeroHP.setScaleX(1.5);
+//        labelPlayer1HeroHP.setScaleY(1.5);
+//        labelPlayer2HeroHP.setScaleX(1.5);
+//        labelPlayer2HeroHP.setScaleY(1.5);
+//
+//        labelPlayer1HeroHP.setTextFill(Color.WHITE);
+//        labelPlayer2HeroHP.setTextFill(Color.WHITE);
+//
+//        anchorPane.getChildren().addAll(labelPlayer1HeroHP, labelPlayer2HeroHP);
+//        return anchorPane;
+//    }
+//
+//    public void setHerosHP(int player1HeroHP, int Player2HeroHP) {
+//
+//        labelPlayer1HeroHP.setText(player1HeroHP + "");
+//        labelPlayer2HeroHP.setText(Player2HeroHP + "");
+//    }
 
 
     private AnchorPane getManas() {
@@ -108,8 +109,8 @@ public class HeaderView {
         player2ManaBox.setSpacing(-35);
         player1ManaBox.setSpacing(-35);
 
-        player1ManaBox.setRotate(3);
-        player2ManaBox.setRotate(-3);
+        player1ManaBox.setRotate(-3);
+        player2ManaBox.setRotate(3);
 
         AnchorPane manasPane = new AnchorPane();
         manasPane.getChildren().addAll(player1ManaBox, player2ManaBox);

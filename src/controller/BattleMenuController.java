@@ -72,7 +72,7 @@ public class BattleMenuController {
         battleView.showBattle(Controller.stage);
 
         try {
-            Thread.sleep(500);
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -83,6 +83,7 @@ public class BattleMenuController {
     @FXML
     public void startMultiPlayer() {
         Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.MULTI_PLAYER));
+
 
     }
 

@@ -38,7 +38,7 @@ public class TableUnitsView {
 
                     try {
                         image = new ImageView("resources/battle/units/" +
-                                battleView.table[row][column].getCardName() + "/stand");
+                                /*battleView.table[row][column].getCardName()*/ "white_demon" + "/stand");
 
                     } catch (Exception e) {
                         e.printStackTrace();

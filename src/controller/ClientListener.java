@@ -7,6 +7,7 @@ import models.Buff;
 import packet.clientPacket.ClientPacket;
 import packet.serverPacket.*;
 import packet.serverPacket.serverMatchPacket.ServerMatchPacket;
+import view.battleView.BattleView;
 
 import java.io.*;
 import java.net.Socket;
@@ -71,6 +72,8 @@ public class ClientListener extends Thread {
                 else if (packet instanceof ServerChatRoomPacket)
                     Platform.runLater(() -> Controller.getInstance().updateChatRoom((ServerChatRoomPacket) packet));
 
+                else if (packet instanceof  ServerEnumPacket)
+                    serverEnumPacketHandler((ServerEnumPacket) packet);
             }
         } catch (Exception e) {
             close();
@@ -140,5 +143,24 @@ public class ClientListener extends Thread {
 
     }
 
+    private void serverEnumPacketHandler(ServerEnumPacket packet) {
+
+        switch (packet.getServerEnum()) {
+
+            case MULTI_PLAYER_GAME_IS_READY:
+
+                BattleView battleView = new BattleView();
+                battleView.showBattle(Controller.stage);
+
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                new Thread(battleView::inputHandler).start();
+                break;
+        }
+    }
 }
 

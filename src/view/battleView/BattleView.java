@@ -18,17 +18,19 @@ import static view.Constants.STAGE_WIDTH;
 
 public class BattleView {
 
-    public HeaderView headerView = new HeaderView();
-    public TableUnitsView tableUnitsView = new TableUnitsView();
-    public EndTurnButton endTurnButton = new EndTurnButton();
+    private HeaderView headerView = new HeaderView();
+    private TableUnitsView tableUnitsView = new TableUnitsView();
+    private EndTurnButton endTurnButton = new EndTurnButton();
     public VirtualCard[][] table;
-    GraveYardController graveYardController;
-    boolean isMyTurn = false;
-    boolean isReadyForInsert = false;
-    int whichHandCardForInsert = -1;
+    private GraveYardController graveYardController;
+
     private MatchPacketQueue matchPacketQueue = MatchPacketQueue.getInstance();
     private ConstantViews constantViews = new ConstantViews();
     private TableInputHandler tableInputHandler = new TableInputHandler();
+
+    boolean isMyTurn = false;
+    boolean isReadyForInsert = false;
+    int whichHandCardForInsert = -1;
     private boolean isMatchFinished = false;
     private double x, y;
 
