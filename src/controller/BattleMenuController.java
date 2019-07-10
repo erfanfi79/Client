@@ -67,7 +67,7 @@ public class BattleMenuController {
     void playSinglePlayer() {
         Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.SINGLE_PLAYER));
         BattleView battleView = new BattleView();
-        new Thread(() -> battleView.showBattle(Controller.stage)).start();
+        battleView.showBattle(Controller.stage);
         battleView.inputHandler();
     }
 
@@ -112,7 +112,6 @@ public class BattleMenuController {
         loadingGif.setVisible(false);
         findingLabel.setVisible(false);
     }
-
 
 
 }

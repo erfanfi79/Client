@@ -28,35 +28,38 @@ public class ClientListener extends Thread {
 
     @Override
     public void run() {
+        try {
+            while (true) {
+                ServerPacket packet = getPacketFromServer();
 
-        while (true) {
-            ServerPacket packet = getPacketFromServer();
+                if (packet instanceof ServerLogPacket)
+                    handleLogs((ServerLogPacket) packet);
 
-            if (packet instanceof ServerLogPacket)
-                handleLogs((ServerLogPacket) packet);
+                else if (packet instanceof ServerMoneyPacket)
+                    Platform.runLater(() -> Controller.getInstance().showMoney(((ServerMoneyPacket) packet).getMoney()));
 
-            else if (packet instanceof ServerMoneyPacket)
-                Platform.runLater(() -> Controller.getInstance().showMoney(((ServerMoneyPacket) packet).getMoney()));
+                else if (packet instanceof ServerMatchHistory) {
 
-            else if (packet instanceof ServerMatchHistory) {
+                    if (Controller.getInstance().currentController instanceof MatchHistoryController)
+                        ((MatchHistoryController) Controller.getInstance().currentController).initializeHistorys(((ServerMatchHistory) packet).getHistories());
 
-                if (Controller.getInstance().currentController instanceof MatchHistoryController)
-                    ((MatchHistoryController) Controller.getInstance().currentController).initializeHistorys(((ServerMatchHistory) packet).getHistories());
+                } else if (packet instanceof ServerLeaderBoardPacket) {
 
-            } else if (packet instanceof ServerLeaderBoardPacket) {
+                    if (Controller.getInstance().currentController instanceof LeaderBoardController) {
 
-                if (Controller.getInstance().currentController instanceof LeaderBoardController) {
+                        LeaderBoardController controller = (LeaderBoardController) Controller.getInstance().currentController;
+                        Platform.runLater(() -> controller.initializeLeaderboard(((ServerLeaderBoardPacket) packet).getUsernames()
+                                , ((ServerLeaderBoardPacket) packet).getWinNumber()));
 
-                    LeaderBoardController controller = (LeaderBoardController) Controller.getInstance().currentController;
-                    Platform.runLater(() -> controller.initializeLeaderboard(((ServerLeaderBoardPacket) packet).getUsernames()
-                            , ((ServerLeaderBoardPacket) packet).getWinNumber()));
+                    }
+                } else if (packet instanceof ServerCollection)
+                    handleCollection((ServerCollection) packet);
 
-                }
-            } else if (packet instanceof ServerCollection)
-                handleCollection((ServerCollection) packet);
-
-            else if (packet instanceof ServerChatRoomPacket)
-                Platform.runLater(() -> Controller.getInstance().updateChatRoom((ServerChatRoomPacket) packet));
+                else if (packet instanceof ServerChatRoomPacket)
+                    Platform.runLater(() -> Controller.getInstance().updateChatRoom((ServerChatRoomPacket) packet));
+            }
+        } catch (Exception e) {
+            close();
         }
     }
 
@@ -86,8 +89,13 @@ public class ClientListener extends Thread {
         }
     }
 
-    public void disconnect() {
-
+    public void close() {
+        try {
+            if (socket != null) socket.close();
+            if (inputStreamReader != null) inputStreamReader.close();
+            if (outputStreamWriter != null) outputStreamWriter.close();
+        } catch (Exception e) {
+        }
     }
 
     public void handleCollection(ServerCollection serverCollection) {

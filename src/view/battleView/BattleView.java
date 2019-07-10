@@ -68,7 +68,6 @@ public class BattleView {
         scene.getStylesheets().add(getClass().getResource("/resources/style/BattleStyle.css").toExternalForm());
         scene.setCursor(new ImageCursor(view.ImageLibrary.CursorImage.getImage()));
         mainStage.setScene(scene);
-        mainStage.setResizable(false);
         mainStage.show();
     }
 
