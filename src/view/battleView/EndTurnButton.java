@@ -36,7 +36,7 @@ public class EndTurnButton {
 
     public void changeColor() {     //todo pay attention to change it in requests
 
-        if (battleView.isMyTurn()) {
+        if (battleView.isMyTurn) {
             endTurnButtonImage.setImage(ImageLibrary.EndTurnButtonInMyTurn.getImage());
             endTurnButtonImage.getStyleClass().add("enterMouseOnEndTurnButton");
 
@@ -49,7 +49,7 @@ public class EndTurnButton {
     private void endTurnButtonEventsHandler() {
 
         endTurnButton.setOnMouseClicked(event -> {
-            if (battleView.isMyTurn()) {
+            if (battleView.isMyTurn) {
 
                 Controller.getInstance().clientListener.sendPacketToServer(new ClientMatchEnumPacket(ClientMatchEnum.END_TURN));
                 changeColor();

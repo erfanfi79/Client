@@ -1,15 +1,10 @@
 package view.battleView;
 
-import controller.Controller;
-import controller.Popup;
-import javafx.application.Platform;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import packet.serverPacket.ServerLogPacket;
-import packet.serverPacket.ServerPacket;
-import packet.serverPacket.serverMatchPacket.*;
+import packet.serverPacket.serverMatchPacket.VirtualCard;
 
 import static view.Constants.STAGE_HEIGHT;
 import static view.Constants.STAGE_WIDTH;
@@ -17,42 +12,17 @@ import static view.Constants.STAGE_WIDTH;
 public class BattleView {
 
     private ConstantViews constantViews = new ConstantViews();
-    private HeaderView headerView = new HeaderView();
+    public HeaderView headerView = new HeaderView();
     private TableInputHandler tableInputHandler = new TableInputHandler();
-    private TableUnitsView tableUnitsView = new TableUnitsView();
-    private EndTurnButton endTurnButton = new EndTurnButton();
+    public TableUnitsView tableUnitsView = new TableUnitsView();
+    public EndTurnButton endTurnButton = new EndTurnButton();
 
-    private VirtualCard[][] table;
+    public VirtualCard[][] table;
 
-    private boolean isMatchFinished = false;
-    private boolean isMyTurn = false;
-    private boolean isReadyForInsert = false;
-    private int whichHandCardForInsert = -1;
+    public boolean isMyTurn = false;
+    boolean isReadyForInsert = false;
+    int whichHandCardForInsert = -1;
 
-
-    public boolean isMyTurn() {
-        return isMyTurn;
-    }
-
-    public boolean isReadyForInsert() {
-        return isReadyForInsert;
-    }
-
-    public void setReadyForInsert(boolean readyForInsert) {
-        isReadyForInsert = readyForInsert;
-    }
-
-    public int getWhichHandCardForInsert() {
-        return whichHandCardForInsert;
-    }
-
-    public void setWhichHandCardForInsert(int whichHandCardForInsert) {
-        this.whichHandCardForInsert = whichHandCardForInsert;
-    }
-
-    public VirtualCard[][] getTable() {
-        return table;
-    }
 
     public void showBattle(Stage mainStage) {
 
@@ -69,84 +39,5 @@ public class BattleView {
         scene.setCursor(new ImageCursor(view.ImageLibrary.CursorImage.getImage()));
         mainStage.setScene(scene);
         mainStage.show();
-    }
-
-    public void inputHandler() {
-
-        while (!isMatchFinished) {
-
-            ServerPacket packet = Controller.getInstance().clientListener.getPacketFromServer();
-            System.err.println("after scanner");
-
-            if (packet instanceof ServerMatchInfoPacket)
-                matchInfoPacketHandler((ServerMatchInfoPacket) packet);
-
-            else if (packet instanceof ServerMovePacket)
-                movePacketHandler((ServerMovePacket) packet);
-
-            else if (packet instanceof ServerAttackPacket)
-                attackPacketHandler((ServerAttackPacket) packet);
-
-            else if (packet instanceof ServerLogPacket)
-                new Popup().showMessage(((ServerLogPacket) packet).getLog());
-
-            else if (packet instanceof ServerGraveYardPacket)
-                graveYardPacketHandler((ServerGraveYardPacket) packet);
-
-            else if (packet instanceof ServerMatchEnumPacket)
-                matchEnumPacketHandler((ServerMatchEnumPacket) packet);
-
-            else if (packet instanceof ServerPlayersUserNamePacket)
-                playersNamePacketHandler((ServerPlayersUserNamePacket) packet);
-        }
-    }
-
-    private void matchInfoPacketHandler(ServerMatchInfoPacket packet) {
-        System.err.println("matchInfoPacketHandler");
-
-        Platform.runLater(() -> {
-            table = packet.getTable();
-            headerView.setManas(packet.getPlayer1Mana(), packet.getPlayer2Mana());
-            tableUnitsView.setUnitsImage();
-        });
-    }
-
-    private void movePacketHandler(ServerMovePacket packet) {
-
-    }
-
-    private void attackPacketHandler(ServerAttackPacket packet) {
-
-    }
-
-    private void graveYardPacketHandler(ServerGraveYardPacket packet) {
-
-        //todo erfan
-    }
-
-    private void matchEnumPacketHandler(ServerMatchEnumPacket packet) {
-
-        switch (packet.getPacket()) {
-
-            case START_YOUR_TURN:
-                System.err.println("start your turn");
-
-                Platform.runLater(() -> {
-                    isMyTurn = true;
-                    endTurnButton.changeColor();
-                });
-
-            case MATCH_FINISHED:
-//                Controller.getInstance().gotoStartMenu();
-//                GameMusicPlayer.getInstance().menuSong();
-                Platform.runLater(() -> {
-                    isMatchFinished = true;
-                });
-        }
-    }
-
-    private void playersNamePacketHandler(ServerPlayersUserNamePacket packet) {
-        System.err.println("playersNamePacketHandler");
-        Platform.runLater(() -> headerView.setPlayersName(packet.getPlayer1UserName(), packet.getPlayer2UserName()));
     }
 }
