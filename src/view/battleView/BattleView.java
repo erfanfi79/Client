@@ -88,8 +88,8 @@ public class BattleView {
             else if (packet instanceof ServerAttackPacket)
                 attackPacketHandler((ServerAttackPacket) packet);
 
-//            else if (packet instanceof ServerLogPacket)
-//                new Popup().showMessage(((ServerLogPacket) packet).getLog());
+            else if (packet instanceof ServerLogPacket)
+                new Popup().showMessage(((ServerLogPacket) packet).getLog());
 
             else if (packet instanceof ServerGraveYardPacket)
                 graveYardPacketHandler((ServerGraveYardPacket) packet);
