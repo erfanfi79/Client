@@ -1,5 +1,6 @@
 package controller;
 
+import com.gilecode.yagson.YaGsonBuilder;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -10,10 +11,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
 import models.Card;
 import models.Deck;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class DeckMenu {
@@ -91,6 +95,30 @@ public class DeckMenu {
             Button button = (Button) event.getSource();
             button.setOpacity(1);
 
+        }
+    }
+
+    @FXML
+    void exportDeck() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON FILE", "*.json"));
+        File selectedFile = fileChooser.showSaveDialog(Controller.stage);
+        try {
+            System.out.println("1");
+            YaGsonBuilder yaGsonBuilder = new YaGsonBuilder();
+            com.gilecode.yagson.YaGson yaGson = yaGsonBuilder.create();
+            saveTextToFile(yaGson.toJson(deck), selectedFile);
+        } catch (Exception e) {
+            new Popup().showMessage("save is not possible,please try again with another file");
+        }
+    }
+
+    private void saveTextToFile(String content, File file) {
+        try {
+            PrintWriter writer = new PrintWriter(file);
+            writer.println(content);
+            writer.close();
+        } catch (IOException ex) {
         }
     }
 
