@@ -2,6 +2,7 @@ package view.battleView;
 
 import controller.Controller;
 import controller.Popup;
+import javafx.application.Platform;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -87,8 +88,8 @@ public class BattleView {
             else if (packet instanceof ServerAttackPacket)
                 attackPacketHandler((ServerAttackPacket) packet);
 
-            else if (packet instanceof ServerLogPacket)
-                new Popup().showMessage(((ServerLogPacket) packet).getLog());
+//            else if (packet instanceof ServerLogPacket)
+//                new Popup().showMessage(((ServerLogPacket) packet).getLog());
 
             else if (packet instanceof ServerGraveYardPacket)
                 graveYardPacketHandler((ServerGraveYardPacket) packet);
@@ -104,9 +105,11 @@ public class BattleView {
     private void matchInfoPacketHandler(ServerMatchInfoPacket packet) {
         System.err.println("matchInfoPacketHandler");
 
-        table = packet.getTable();
-        headerView.setManas(packet.getPlayer1Mana(), packet.getPlayer2Mana());
-        tableUnitsView.setUnitsImage();
+        Platform.runLater(() -> {
+            table = packet.getTable();
+            headerView.setManas(packet.getPlayer1Mana(), packet.getPlayer2Mana());
+            tableUnitsView.setUnitsImage();
+        });
     }
 
     private void movePacketHandler(ServerMovePacket packet) {
@@ -128,18 +131,23 @@ public class BattleView {
 
             case START_YOUR_TURN:
                 System.err.println("start your turn");
-                isMyTurn = true;
-                endTurnButton.changeColor();
+
+                Platform.runLater(() -> {
+                    isMyTurn = true;
+                    endTurnButton.changeColor();
+                });
 
             case MATCH_FINISHED:
 //                Controller.getInstance().gotoStartMenu();
 //                GameMusicPlayer.getInstance().menuSong();
-                isMatchFinished = true;
+                Platform.runLater(() -> {
+                    isMatchFinished = true;
+                });
         }
     }
 
     private void playersNamePacketHandler(ServerPlayersUserNamePacket packet) {
         System.err.println("playersNamePacketHandler");
-        headerView.setPlayersName(packet.getPlayer1UserName(), packet.getPlayer2UserName());
+        Platform.runLater(() -> headerView.setPlayersName(packet.getPlayer1UserName(), packet.getPlayer2UserName()));
     }
 }

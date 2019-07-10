@@ -68,8 +68,8 @@ public class BattleMenuController {
     void playSinglePlayer() {
         Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.SINGLE_PLAYER));
         BattleView battleView = new BattleView();
-        battleView.showBattle(Controller.stage);
-        new Thread(battleView::inputHandler).start();
+        new Thread(() -> battleView.showBattle(Controller.stage)).start();
+        battleView.inputHandler();
     }
 
     @FXML
