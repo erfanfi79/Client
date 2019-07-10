@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8"
             fx:controller="controller.CollectionController">
     <children>
         <ImageView fitHeight="726.0" fitWidth="1287.0" pickOnBounds="true" preserveRatio="true">
@@ -30,11 +30,23 @@
                 <TextField fx:id="txtDeckName" layoutX="39.0" layoutY="631.0" promptText="Deck Name"
                            style="-fx-background-color: #215272;"/>
                 <Label fx:id="labelError" layoutX="39.0" layoutY="593.0" prefHeight="32.0" prefWidth="171.0"/>
-                <Button alignment="CENTER" contentDisplay="CENTER" layoutX="33.0" layoutY="656.0"
-                        mnemonicParsing="false" onAction="#btnNewDeck" style="-fx-background-color: transparent;"
-                        text="New Deck" textFill="WHITE">
+                <Button alignment="CENTER" contentDisplay="CENTER" layoutX="5.0" layoutY="664.0" mnemonicParsing="false"
+                        onAction="#btnNewDeck" prefHeight="39.0" prefWidth="109.0"
+                        style="-fx-background-color: transparent;" text="New Deck" textFill="WHITE">
                     <graphic>
-                        <ImageView fitHeight="57.0" fitWidth="165.0" opacity="0.6" pickOnBounds="true"
+                        <ImageView fitHeight="36.0" fitWidth="102.0" opacity="0.6" pickOnBounds="true"
+                                   preserveRatio="true">
+                            <image>
+                                <Image url="@../../resources/ui/button_secondary@2x.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Button alignment="CENTER" contentDisplay="CENTER" layoutX="123.0" layoutY="664.0"
+                        mnemonicParsing="false" onAction="#importDeck" prefHeight="39.0" prefWidth="109.0"
+                        style="-fx-background-color: transparent;" text="Import" textFill="WHITE">
+                    <graphic>
+                        <ImageView fitHeight="36.0" fitWidth="102.0" opacity="0.6" pickOnBounds="true"
                                    preserveRatio="true">
                             <image>
                                 <Image url="@../../resources/ui/button_secondary@2x.png"/>

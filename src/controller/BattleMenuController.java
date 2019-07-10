@@ -6,7 +6,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import models.Account;
 import models.MatchType;
 import packet.clientPacket.ClientEnum;
 import packet.clientPacket.ClientEnumPacket;
@@ -100,7 +99,7 @@ public class BattleMenuController {
     }
 
 
-    public void startMultiPlayerGame(Account player2) {
+    public void startMultiPlayerGame() {
 
     }
 

@@ -1,5 +1,6 @@
 package controller;
 
+import com.gilecode.yagson.YaGsonBuilder;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,15 +9,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import models.Account;
+import javafx.stage.FileChooser;
 import models.Card;
 import models.Collection;
 import models.Deck;
 import packet.clientPacket.ClientCollectionPacket;
 
-import java.io.FileOutputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class CollectionController {
@@ -63,7 +65,24 @@ public class CollectionController {
                 return;
             }
         createDeck(null, txtDeckName.getText());
+    }
 
+    @FXML
+    void importDeck() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON FILE", "*.json"));
+        File selectedFile = fileChooser.showOpenDialog(Controller.stage);
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(selectedFile.getPath()));
+            YaGsonBuilder yaGsonBuilder = new YaGsonBuilder();
+            com.gilecode.yagson.YaGson yaGson = yaGsonBuilder.create();
+            Deck deck = yaGson.fromJson(bufferedReader, Deck.class);
+            if (deck != null)
+                myCollection.getDecks().add(deck);
+            showDecks();
+        } catch (Exception e) {
+            new Popup().showMessage("file is not compatible,please try again with another file");
+        }
     }
 
     @FXML
@@ -100,22 +119,6 @@ public class CollectionController {
         showDecks();
     }
 
-
-    public void saveDeckToName(String name, Account account) {
-        if (account.getUserName().isEmpty())
-            return;
-        try {
-            FileOutputStream fos = new FileOutputStream("defaultDecks/" + name + ".ser");
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            // write object to file
-            oos.writeObject(account.getCollection().getSelectedDeck());
-            // closing resources
-            oos.close();
-            fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void showCards() {
         Node[] nodes;
