@@ -102,6 +102,8 @@ public class ClientListener extends Thread {
     public void close() {
         try {
             if (socket != null) socket.close();
+            if (bufferedReader != null) bufferedReader.close();
+            if (bufferedWriter != null) bufferedWriter.close();
         } catch (Exception e) {
         }
     }
