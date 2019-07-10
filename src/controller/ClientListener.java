@@ -14,6 +14,14 @@ public class ClientListener extends Thread {
     private OutputStreamWriter outputStreamWriter;
     private Socket socket;
 
+    public InputStreamReader getInputStreamReader() {
+        return inputStreamReader;
+    }
+
+    public OutputStreamWriter getOutputStreamWriter() {
+        return outputStreamWriter;
+    }
+
     public ClientListener(Socket socket) {
 
         this.socket = socket;

@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import models.MatchType;
 import packet.clientPacket.ClientEnum;
@@ -67,13 +68,13 @@ public class BattleMenuController {
     void playSinglePlayer() {
         Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.SINGLE_PLAYER));
 
+        new Thread(() -> InputFromServerGetter.
+                getInstance().startToGetInput(Controller.getInstance().clientListener.getInputStreamReader())).start();
+
         BattleView battleView = new BattleView();
         battleView.showBattle(Controller.stage);
 
-        new Thread(() -> {
-            InputFromServerHandler handler = new InputFromServerHandler(battleView);
-            handler.inputHandler();
-        }).start();
+        new Thread(() -> battleView.inputHandler(InputFromServerGetter.getInstance())).start();
     }
 
     @FXML
