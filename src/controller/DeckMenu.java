@@ -1,6 +1,7 @@
 package controller;
 
 import com.gilecode.yagson.YaGsonBuilder;
+import controller.MediaController.GameSfxPlayer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -63,6 +64,7 @@ public class DeckMenu {
 
     @FXML
     void validateDeck() {
+        new GameSfxPlayer().onSelect();
         if (deck.isDeckValidate())
             labelError.setText(CollectionErrors.DECK_IS_VALID.toString());
         else
@@ -71,6 +73,7 @@ public class DeckMenu {
 
     @FXML
     void selectDeck() {
+        new GameSfxPlayer().onSelect();
         if (deck.isDeckValidate())
             Controller.getInstance().getMyCollection().setSelectedDeck(deck);
         else
@@ -79,6 +82,7 @@ public class DeckMenu {
 
     @FXML
     void removeCard() {
+        new GameSfxPlayer().onSelect();
         String cardID = txtCardId.getText();
         CollectionErrors collectionErrors;
 
@@ -100,7 +104,7 @@ public class DeckMenu {
 
     @FXML
     void exportDeck() {
-
+        new GameSfxPlayer().onSelect();
         try {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON FILE", "*.json"));

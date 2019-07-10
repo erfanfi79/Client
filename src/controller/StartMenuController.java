@@ -1,6 +1,7 @@
 package controller;
 
 
+import controller.MediaController.GameSfxPlayer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -39,7 +40,7 @@ public class StartMenuController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Controller.getInstance().currentController=this;
+        Controller.getInstance().currentController = this;
         Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.GET_MONEY));
     }
 
@@ -67,6 +68,7 @@ public class StartMenuController implements Initializable {
 
     @FXML
     void gotoMatchHistory() {
+        new GameSfxPlayer().onSelect();
         openPage("../view/MatchHistoryView.fxml");
         Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.MATCH_HISTORY));
 
@@ -74,6 +76,7 @@ public class StartMenuController implements Initializable {
 
     @FXML
     void gotoLeaderboard() {
+        new GameSfxPlayer().onSelect();
         openPage("../view/LeaderBoardView.fxml");
         Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.LEADER_BOARD));
 
@@ -113,6 +116,7 @@ public class StartMenuController implements Initializable {
 
     @FXML
     void gotoBattleMenu() {
+        new GameSfxPlayer().onSelect();
         Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.CHECK_DECK));
 
     }
@@ -123,12 +127,14 @@ public class StartMenuController implements Initializable {
 
     @FXML
     void gotoCollectionMenu() {
+        new GameSfxPlayer().onSelect();
         openPage("../view/collectionMenuView/CollectionMenuView.fxml");
         Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.COLLECTION));
     }
 
     @FXML
     void gotoShopMenu() {
+        new GameSfxPlayer().onSelect();
         openPage("../view/shopMenuView/ShopMenuView.fxml");
         Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.SHOP));
 
@@ -136,16 +142,20 @@ public class StartMenuController implements Initializable {
 
     @FXML
     void gotoChatroom() {
+        new GameSfxPlayer().onSelect();
         openPage("../view/ChatRoom.fxml");
         Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.CHAT_ROOM));
     }
+
     @FXML
     void save() {
+        new GameSfxPlayer().onSelect();
         Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.SAVE));
     }
 
     @FXML
     void exit(MouseEvent event) {
+        new GameSfxPlayer().onSelect();
         Controller.getInstance().clientListener.close();
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();

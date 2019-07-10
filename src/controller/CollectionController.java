@@ -1,6 +1,7 @@
 package controller;
 
 import com.gilecode.yagson.YaGsonBuilder;
+import controller.MediaController.GameSfxPlayer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -58,6 +59,7 @@ public class CollectionController {
 
     @FXML
     void btnNewDeck(ActionEvent event) {
+        new GameSfxPlayer().onSelect();
         labelError.setText("");
         for (Deck deck : myCollection.getDecks())
             if (deck.getDeckName().equals(txtDeckName.getText())) {
@@ -69,6 +71,8 @@ public class CollectionController {
 
     @FXML
     void importDeck() {
+        new GameSfxPlayer().onSelect();
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON FILE", "*.json"));
         File selectedFile = fileChooser.showOpenDialog(Controller.stage);
@@ -87,12 +91,14 @@ public class CollectionController {
 
     @FXML
     void gotoStartMenu() {
+        new GameSfxPlayer().onSelect();
         Controller.getInstance().clientListener.sendPacketToServer(new ClientCollectionPacket(myCollection));
         Controller.getInstance().gotoStartMenu();
     }
 
 
     public void add() {
+        new GameSfxPlayer().onSelect();
         String cardID = txtCardId.getText(), deckName = txtToDeckName.getText();
         if (cardID.isEmpty() || deckName.isEmpty())
             labelErrorInAdd.setText("No field can be empty");

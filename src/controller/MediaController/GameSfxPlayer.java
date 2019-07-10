@@ -18,4 +18,12 @@ public class GameSfxPlayer {
     public void onMousClickUnit() {
 
     }
+
+    public void onVictory() {
+
+    }
+
+    public void onYourTurn() {
+
+    }
 }

@@ -1,5 +1,6 @@
 package controller;
 
+import controller.MediaController.GameSfxPlayer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -59,13 +60,14 @@ public class BattleMenuController {
 
     @FXML
     void gotoStartMenu() {
+        new GameSfxPlayer().onSelect();
         Controller.getInstance().gotoStartMenu();
     }
 
 
     @FXML
     void playSinglePlayer() {
-
+        new GameSfxPlayer().onSelect();
         Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.SINGLE_PLAYER));
 
         BattleView battleView = new BattleView();
@@ -82,6 +84,7 @@ public class BattleMenuController {
 
     @FXML
     public void startMultiPlayer() {
+        new GameSfxPlayer().onSelect();
         Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.MULTI_PLAYER));
         loadingGif.setVisible(true);
         mainPane.setVisible(false);
@@ -118,13 +121,13 @@ public class BattleMenuController {
 
     @FXML
     void cancelFinding() {
+        new GameSfxPlayer().onSelect();
         Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.CANCEL_WAITING_FOR_MULTI_PLAYER_GAME));
         mainPane.setVisible(true);
         cancel.setVisible(false);
         loadingGif.setVisible(false);
         findingLabel.setVisible(false);
     }
-
 
 
 }

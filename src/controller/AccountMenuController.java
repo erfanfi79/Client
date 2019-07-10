@@ -1,5 +1,6 @@
 package controller;
 
+import controller.MediaController.GameSfxPlayer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -33,6 +34,7 @@ public class AccountMenuController implements Initializable {
 
     @FXML
     void signIn() {
+        new GameSfxPlayer().onSelect();
         String userName = txtUsername.getText();
         String password = txtPassword.getText();
         if (userName.trim().isEmpty() || password.trim().isEmpty()) {
@@ -44,6 +46,7 @@ public class AccountMenuController implements Initializable {
 
     @FXML
     void signUp() {
+        new GameSfxPlayer().onSelect();
         String userName = txtUsername.getText();
         String password = txtPassword.getText();
         if (userName.trim().isEmpty() || password.trim().isEmpty()) {

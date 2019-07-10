@@ -1,5 +1,6 @@
 package controller;
 
+import controller.MediaController.GameSfxPlayer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -27,6 +28,7 @@ public class MatchHistoryController {
 
     @FXML
     void gotoStartMenu() {
+        new GameSfxPlayer().onSelect();
         Controller.getInstance().gotoStartMenu();
     }
 

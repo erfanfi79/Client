@@ -1,5 +1,6 @@
 package controller;
 
+import controller.MediaController.GameSfxPlayer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -57,11 +58,13 @@ public class ShopController implements Initializable {
 
     @FXML
     void showShop(ActionEvent event) {
+        new GameSfxPlayer().onSelect();
         showCards(shopCollection.getCards());
     }
 
     @FXML
     void showCollection(ActionEvent event) {
+        new GameSfxPlayer().onSelect();
         showCards(myCollection.getCards());
     }
 
@@ -87,6 +90,7 @@ public class ShopController implements Initializable {
 
     @FXML
     void search() {
+        new GameSfxPlayer().onSelect();
         if (searchCArdName.getText().trim().isEmpty()) {
             if (optSearchInCollection.isSelected())
                 showCards(myCollection.getCards());
@@ -103,6 +107,7 @@ public class ShopController implements Initializable {
 
     @FXML
     void gotoStartMenu() {
+        new GameSfxPlayer().onSelect();
         try {
             Parent root = FXMLLoader.load(getClass().getResource("../view/StartMenuView.fxml"));
             Scene scene = new Scene(root);
