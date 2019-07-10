@@ -65,22 +65,28 @@ public class ClientListener extends Thread {
 
                 else if (packet instanceof ServerChatRoomPacket)
                     Platform.runLater(() -> Controller.getInstance().updateChatRoom((ServerChatRoomPacket) packet));
+
+                else sendPacketToWaitingList(packet);
+
             }
         } catch (Exception e) {
             close();
         }
     }
 
+    public void sendPacketToWaitingList(ServerPacket packet) {
+        Platform.runLater(() -> {
+            InputFromServerGetter.getInstance().startToGetInput(packet);
+        });
 
+    }
     public ServerPacket getPacketFromServer() {
-
         try {
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
             return YaGsonChanger.readServerPocket(bufferedReader.readLine());
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 

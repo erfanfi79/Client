@@ -25,6 +25,8 @@ public class GameMusicPlayer {
     }
 
     public void menuSong() {
+        if (mediaPlayer != null)
+            mediaPlayer.pause();
         media = new Media(Paths.get(MediaPath.MENU.getPath()).toUri().toString());
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setOnEndOfMedia(new Runnable() {
@@ -47,6 +49,7 @@ public class GameMusicPlayer {
     }
 
     public void playBattleMusic() {
+        if (mediaPlayer != null) mediaPlayer.pause();
         media = new Media(getRandomBattleMusicPath().toUri().toString());
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setOnEndOfMedia(new Runnable() {
