@@ -146,7 +146,7 @@ public class ClientListener extends Thread {
         switch (packet.getServerEnum()) {
 
             case MULTI_PLAYER_GAME_IS_READY:
-
+                System.err.println("multi player is ready");
                 BattleView battleView = new BattleView();
                 battleView.showBattle(Controller.stage);
 
