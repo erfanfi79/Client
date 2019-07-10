@@ -83,6 +83,10 @@ public class BattleMenuController {
     @FXML
     public void startMultiPlayer() {
         Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.MULTI_PLAYER));
+        loadingGif.setVisible(true);
+        mainPane.setVisible(false);
+        findingLabel.setVisible(true);
+        cancel.setVisible(true);
 
     }
 
@@ -116,7 +120,7 @@ public class BattleMenuController {
     @FXML
     void cancelFinding() {
         Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.CANCEL_WAITING_FOR_MULTI_PLAYER_GAME));
-        mainPane.setDisable(false);
+        mainPane.setVisible(true);
         cancel.setVisible(false);
         loadingGif.setVisible(false);
         findingLabel.setVisible(false);
