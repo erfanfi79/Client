@@ -31,14 +31,14 @@ public class TableUnitsView {
 
         for (int row = 0; row < 5; row++) {
             for (int column = 0; column < 9; column++) {
-                if (battleView.getTable()[row][column] != null) {
+                if (battleView.table[row][column] != null) {
 
                     table[row][column].getChildren().removeAll(table[row][column].getChildren());
                     ImageView image;
 
                     try {
                         image = new ImageView("resources/battle/units/" +
-                                battleView.getTable()[row][column].getCardName() + "/stand");
+                                battleView.table[row][column].getCardName() + "/stand");
 
                     } catch (Exception e) {
                         e.printStackTrace();

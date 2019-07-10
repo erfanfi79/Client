@@ -43,14 +43,14 @@ public class TableInputHandler {
         for (Node node : rectangles.getChildren()) {
             node.setOnMouseClicked(event -> {
 
-                if (battleView.isReadyForInsert())
+                if (battleView.isReadyForInsert)
                     insertHandler(node);
 
                 else {
-                    if (selectedCell == null && battleView.getTable()[GridPane.getRowIndex(node)][GridPane.getColumnIndex(node)] != null)
+                    if (selectedCell == null && battleView.table[GridPane.getRowIndex(node)][GridPane.getColumnIndex(node)] != null)
                         selectCardHandler(node);
 
-                    else if (selectedCell != null && battleView.getTable()[GridPane.getRowIndex(node)][GridPane.getColumnIndex(node)] != null)
+                    else if (selectedCell != null && battleView.table[GridPane.getRowIndex(node)][GridPane.getColumnIndex(node)] != null)
                         attackHandler(node);
 
                     else if (selectedCell != null)
@@ -62,12 +62,12 @@ public class TableInputHandler {
 
     private void insertHandler(Node node) {
 
-        battleView.setReadyForInsert(false);
+        battleView.isReadyForInsert = false;
         Controller.getInstance().clientListener.sendPacketToServer(
                 new ClientInsertCardPacket(
                         GridPane.getRowIndex(node),
                         GridPane.getColumnIndex(node),
-                        battleView.getWhichHandCardForInsert()));
+                        battleView.whichHandCardForInsert));
     }
 
     private void selectCardHandler(Node node) {
