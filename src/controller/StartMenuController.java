@@ -146,6 +146,7 @@ public class StartMenuController implements Initializable {
 
     @FXML
     void exit(MouseEvent event) {
+        Controller.getInstance().clientListener.close();
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
     }

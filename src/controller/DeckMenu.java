@@ -100,11 +100,11 @@ public class DeckMenu {
 
     @FXML
     void exportDeck() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON FILE", "*.json"));
-        File selectedFile = fileChooser.showSaveDialog(Controller.stage);
+
         try {
-            System.out.println("1");
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON FILE", "*.json"));
+            File selectedFile = fileChooser.showSaveDialog(Controller.stage);
             YaGsonBuilder yaGsonBuilder = new YaGsonBuilder();
             com.gilecode.yagson.YaGson yaGson = yaGsonBuilder.create();
             saveTextToFile(yaGson.toJson(deck), selectedFile);

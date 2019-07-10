@@ -1,6 +1,9 @@
 package view.battleView;
 
+import controller.Controller;
+import controller.GraveYardController;
 import controller.InputFromServerGetter;
+import controller.MediaController.GameMusicPlayer;
 import controller.Popup;
 import javafx.application.Platform;
 import javafx.scene.ImageCursor;
@@ -21,27 +24,34 @@ public class BattleView {
     private TableInputHandler tableInputHandler = new TableInputHandler();
     public TableUnitsView tableUnitsView = new TableUnitsView();
     public EndTurnButton endTurnButton = new EndTurnButton();
-
+    GraveYardController graveYardController;
     public VirtualCard[][] table;
 
     boolean isMyTurn = false;
     boolean isReadyForInsert = false;
     private boolean isMatchFinished = false;
     int whichHandCardForInsert = -1;
-
+    private double x, y;
 
 
     public void showBattle(Stage mainStage) {
 
         Pane pane = new Pane();
-        //GameMusicPlayer.getInstance().playBattleMusic();
-
-
         pane.getChildren().addAll(constantViews.get(), headerView.get(), tableInputHandler.get(this),
                 endTurnButton.get(this), tableUnitsView.get(this));
-
-
+        GameMusicPlayer.getInstance().playBattleMusic();
         Scene scene = new Scene(pane, STAGE_WIDTH.get(), STAGE_HEIGHT.get());
+        scene.setOnMousePressed(event -> {
+            x = event.getSceneX();
+            y = event.getSceneY();
+        });
+
+        scene.setOnMouseDragged(event -> {
+
+            Controller.stage.setX(event.getScreenX() - x);
+            Controller.stage.setY(event.getScreenY() - y);
+
+        });
         scene.getStylesheets().add(getClass().getResource("/resources/style/BattleStyle.css").toExternalForm());
         scene.setCursor(new ImageCursor(view.ImageLibrary.CursorImage.getImage()));
         mainStage.setScene(scene);
@@ -100,7 +110,6 @@ public class BattleView {
 
     private void graveYardPacketHandler(ServerGraveYardPacket packet) {
 
-        //todo erfan
     }
 
     private void matchEnumPacketHandler(ServerMatchEnumPacket packet) {

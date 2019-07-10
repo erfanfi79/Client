@@ -8,7 +8,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import models.Card;
-import models.GamePlay.Match;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,8 +50,8 @@ public class GraveYardController {
         this.typelabel.setText(type);
     }
 
-    public void loadCards(Match match) {
-        ArrayList<Card> cards = match.getPlayer1GraveYard().getCards();
+    public void loadCards(ArrayList<Card> cards) {
+
         Node[] nodes;
         for (int i = vboxGraveYardCards.getChildren().size() - 1; i >= 0; i--)
             vboxGraveYardCards.getChildren().remove(vboxGraveYardCards.getChildren().get(i));
