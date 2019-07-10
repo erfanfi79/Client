@@ -3,7 +3,6 @@ package controller;
 
 import controller.MediaController.MatchPacketQueue;
 import javafx.application.Platform;
-import models.Buff;
 import packet.clientPacket.ClientPacket;
 import packet.serverPacket.*;
 import packet.serverPacket.serverMatchPacket.ServerMatchPacket;
@@ -11,8 +10,6 @@ import view.battleView.BattleView;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.LinkedList;
-import java.util.Queue;
 
 public class ClientListener extends Thread {
 
@@ -85,6 +82,7 @@ public class ClientListener extends Thread {
             return YaGsonChanger.readServerPocket(bufferedReader.readLine());
 
         } catch (IOException e) {
+
             e.printStackTrace();
         }
         return null;
