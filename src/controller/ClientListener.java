@@ -148,7 +148,7 @@ public class ClientListener extends Thread {
             case MULTI_PLAYER_GAME_IS_READY:
                 System.err.println("multi player is ready");
                 BattleView battleView = new BattleView();
-                battleView.showBattle(Controller.stage);
+                new Thread(() -> battleView.showBattle(Controller.stage)).start();
 
                 try {
                     Thread.sleep(200);
