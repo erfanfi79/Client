@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.*?>
-<AnchorPane prefHeight="651.0" prefWidth="1087.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="651.0" prefWidth="1087.0" xmlns="http://javafx.com/javafx/8"
             fx:controller="controller.LeaderBoardController">
     <children>
         <ImageView fitHeight="745.0" fitWidth="1447.0" pickOnBounds="true" preserveRatio="true">
@@ -73,5 +73,11 @@
                 <Font size="30.0"/>
             </font>
         </Button>
+        <CheckBox fx:id="checkBox" layoutX="1081.0" layoutY="76.0" mnemonicParsing="false" onAction="#onlineCheckBox"
+                  prefHeight="43.0" prefWidth="155.0" text="Online Users">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </CheckBox>
     </children>
 </AnchorPane>

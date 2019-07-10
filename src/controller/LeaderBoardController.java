@@ -4,9 +4,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import packet.clientPacket.ClientEnum;
+import packet.clientPacket.ClientEnumPacket;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,7 +21,8 @@ public class LeaderBoardController {
 
     @FXML
     private HBox item;
-
+    @FXML
+    private CheckBox checkBox;
     @FXML
     private VBox vBoxLeaderBoard;
 
@@ -31,6 +35,13 @@ public class LeaderBoardController {
     @FXML
     private Label labelHighScore;
 
+    @FXML
+    void onlineCheckBox() {
+        if (checkBox.isSelected())
+            Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.LEADER_BOARD_ONLINE));
+        else
+            Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.LEADER_BOARD));
+    }
     @FXML
     void gotoStartMenu() {
         Controller.getInstance().gotoStartMenu();
