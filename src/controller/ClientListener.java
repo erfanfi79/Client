@@ -1,18 +1,24 @@
 package controller;
 
 
+import controller.MediaController.MatchPacketQueue;
 import javafx.application.Platform;
 import models.Buff;
 import packet.clientPacket.ClientPacket;
 import packet.serverPacket.*;
+import packet.serverPacket.serverMatchPacket.ServerMatchPacket;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class ClientListener extends Thread {
 
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
+    private Socket socket;
+    private MatchPacketQueue matchPacketQueue = MatchPacketQueue.getInstance();
 
     public BufferedReader getBufferedReader() {
         return bufferedReader;
@@ -21,6 +27,7 @@ public class ClientListener extends Thread {
     public ClientListener(Socket socket) {
 
         try {
+            this.socket = socket;
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         } catch (IOException e) {
@@ -35,7 +42,10 @@ public class ClientListener extends Thread {
             while (true) {
                 ServerPacket packet = getPacketFromServer();
 
-                if (packet instanceof ServerLogPacket)
+                if (packet instanceof ServerMatchPacket)
+                    Platform.runLater(() -> matchPacketQueue.add(packet));
+
+                else if (packet instanceof ServerLogPacket)
                     handleLogs((ServerLogPacket) packet);
 
                 else if (packet instanceof ServerMoneyPacket)
@@ -61,20 +71,12 @@ public class ClientListener extends Thread {
                 else if (packet instanceof ServerChatRoomPacket)
                     Platform.runLater(() -> Controller.getInstance().updateChatRoom((ServerChatRoomPacket) packet));
 
-                else sendPacketToWaitingList(packet);
-
             }
         } catch (Exception e) {
             close();
         }
     }
 
-    public void sendPacketToWaitingList(ServerPacket packet) {
-        Platform.runLater(() -> {
-            InputFromServerGetter.getInstance().startToGetInput(packet);
-        });
-
-    }
     public ServerPacket getPacketFromServer() {
         try {
             return YaGsonChanger.readServerPocket(bufferedReader.readLine());
@@ -100,8 +102,6 @@ public class ClientListener extends Thread {
     public void close() {
         try {
             if (socket != null) socket.close();
-            if (inputStreamReader != null) inputStreamReader.close();
-            if (outputStreamWriter != null) outputStreamWriter.close();
         } catch (Exception e) {
         }
     }

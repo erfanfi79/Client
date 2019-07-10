@@ -2,8 +2,7 @@ package view.battleView;
 
 import controller.Controller;
 import controller.GraveYardController;
-import controller.InputFromServerGetter;
-import controller.MediaController.GameMusicPlayer;
+import controller.MediaController.MatchPacketQueue;
 import controller.Popup;
 import javafx.application.Platform;
 import javafx.scene.ImageCursor;
@@ -19,28 +18,40 @@ import static view.Constants.STAGE_WIDTH;
 
 public class BattleView {
 
-    private ConstantViews constantViews = new ConstantViews();
     public HeaderView headerView = new HeaderView();
-    private TableInputHandler tableInputHandler = new TableInputHandler();
     public TableUnitsView tableUnitsView = new TableUnitsView();
     public EndTurnButton endTurnButton = new EndTurnButton();
-    GraveYardController graveYardController;
     public VirtualCard[][] table;
-
+    GraveYardController graveYardController;
     boolean isMyTurn = false;
     boolean isReadyForInsert = false;
-    private boolean isMatchFinished = false;
     int whichHandCardForInsert = -1;
+    private MatchPacketQueue matchPacketQueue = MatchPacketQueue.getInstance();
+    private ConstantViews constantViews = new ConstantViews();
+    private TableInputHandler tableInputHandler = new TableInputHandler();
+    private boolean isMatchFinished = false;
     private double x, y;
 
 
     public void showBattle(Stage mainStage) {
 
         Pane pane = new Pane();
+
         pane.getChildren().addAll(constantViews.get(), headerView.get(), tableInputHandler.get(this),
                 endTurnButton.get(this), tableUnitsView.get(this));
-        GameMusicPlayer.getInstance().playBattleMusic();
+
+        //GameMusicPlayer.getInstance().playBattleMusic();
+
         Scene scene = new Scene(pane, STAGE_WIDTH.get(), STAGE_HEIGHT.get());
+        dragScene(scene);
+        scene.getStylesheets().add(getClass().getResource("/resources/style/BattleStyle.css").toExternalForm());
+        scene.setCursor(new ImageCursor(view.ImageLibrary.CursorImage.getImage()));
+        mainStage.setScene(scene);
+        mainStage.show();
+    }
+
+    private void dragScene(Scene scene) {
+
         scene.setOnMousePressed(event -> {
             x = event.getSceneX();
             y = event.getSceneY();
@@ -52,17 +63,13 @@ public class BattleView {
             Controller.stage.setY(event.getScreenY() - y);
 
         });
-        scene.getStylesheets().add(getClass().getResource("/resources/style/BattleStyle.css").toExternalForm());
-        scene.setCursor(new ImageCursor(view.ImageLibrary.CursorImage.getImage()));
-        mainStage.setScene(scene);
-        mainStage.show();
     }
 
-    public void inputHandler(InputFromServerGetter inputFromServerGetter) {
+    public void inputHandler() {
 
         while (!isMatchFinished) {
 
-            ServerPacket packet = inputFromServerGetter.get();
+            ServerPacket packet = matchPacketQueue.poll();
             if (packet == null) continue;
             System.err.println(packet.getClass().getName());
 

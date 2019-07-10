@@ -68,13 +68,16 @@ public class BattleMenuController {
 
         Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.SINGLE_PLAYER));
 
-        new Thread(() -> InputFromServerGetter.
-                getInstance().startToGetInput(Controller.getInstance().clientListener.getBufferedReader())).start();
-
         BattleView battleView = new BattleView();
         battleView.showBattle(Controller.stage);
 
-        new Thread(() -> battleView.inputHandler(InputFromServerGetter.getInstance())).start();
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        new Thread(battleView::inputHandler).start();
     }
 
     @FXML
