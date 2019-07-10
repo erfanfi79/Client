@@ -87,8 +87,6 @@ public class BattleMenuController {
         mainPane.setVisible(false);
         findingLabel.setVisible(true);
         cancel.setVisible(true);
-
-
     }
 
     @FXML

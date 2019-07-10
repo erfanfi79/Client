@@ -3,8 +3,10 @@ package controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import models.Collection;
+import packet.clientPacket.ClientCheatPacket;
 import packet.serverPacket.ServerChatRoomPacket;
 
 import java.io.IOException;
@@ -47,16 +49,33 @@ public class Controller {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("../view/StartMenuView.fxml"));
             Scene scene = new Scene(root);
-            scene.setOnMousePressed(event -> {
-                x = event.getSceneX();
-                y = event.getSceneY();
-            });
 
+            scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
+                ClientCheatPacket packet = new ClientCheatPacket();
+                switch (key.getCode()) {
+                    case F8:
+                        packet.setDoubleMoney();
+                        clientListener.sendPacketToServer(packet);
+                        break;
+                    case F7:
+                        packet.setHalfPrice();
+                        clientListener.sendPacketToServer(packet);
+                        break;
+                    case F9:
+                        packet.setEqualSell();
+                        clientListener.sendPacketToServer(packet);
+                        break;
+                }
+            });
             scene.setOnMouseDragged(event -> {
 
                 Controller.stage.setX(event.getScreenX() - x);
                 Controller.stage.setY(event.getScreenY() - y);
 
+            });
+            scene.setOnMousePressed(event -> {
+                x = event.getSceneX();
+                y = event.getSceneY();
             });
             Controller.stage.setScene(scene);
         } catch (IOException e) {
