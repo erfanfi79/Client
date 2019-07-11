@@ -3,8 +3,6 @@ package controller;
 
 import controller.MediaController.MatchPacketQueue;
 import javafx.application.Platform;
-import packet.clientPacket.ClientEnum;
-import packet.clientPacket.ClientEnumPacket;
 import packet.clientPacket.ClientPacket;
 import packet.serverPacket.*;
 import packet.serverPacket.serverMatchPacket.ServerMatchPacket;
@@ -108,10 +106,6 @@ public class ClientListener extends Thread {
     }
 
     public void close() {
-        try {
-            sendPacketToServer(new ClientEnumPacket(ClientEnum.CLOSE));
-        } catch (Exception e) {
-        }
         try {
             if (socket != null) socket.close();
 
