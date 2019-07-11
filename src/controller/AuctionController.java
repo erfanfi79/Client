@@ -1,6 +1,7 @@
 package controller;
 
 import controller.MediaController.GameSfxPlayer;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -12,6 +13,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import models.Card;
 import packet.clientPacket.ClientAuctionPacket;
+import packet.clientPacket.ClientEnum;
+import packet.clientPacket.ClientEnumPacket;
 import packet.serverPacket.ServerAuctionPacket;
 
 import java.io.IOException;
@@ -44,10 +47,12 @@ public class AuctionController {
                 new Popup().showMessage("Your price can not be less than highest");
                 return;
             }
+            labelhighestPrice.setText(txtPrice.getText());
             clientAuctionPacket.setPrice(price);
             Controller.getInstance().clientListener.sendPacketToServer(clientAuctionPacket);
         } catch (Exception e) {
         }
+        txtPrice.setText("");
     }
 
     @FXML
@@ -58,6 +63,8 @@ public class AuctionController {
             fxmlLoader.setLocation(getClass().getResource("../view/shopMenuView/ShopMenuView.fxml"));
             Parent root = fxmlLoader.load();
             Controller.getInstance().currentController = fxmlLoader.getController();
+            Controller.getInstance().shopController = fxmlLoader.getController();
+            Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.SHOP));
             Scene scene = new Scene(root);
             scene.setOnMousePressed(event -> {
                 x = event.getSceneX();
@@ -83,8 +90,8 @@ public class AuctionController {
             @Override
             public void run() {
                 while (System.currentTimeMillis() - time < 180000) {
-                    labelRemainingTime.setText(String.valueOf((int) (System.currentTimeMillis() - time) / 1000));
                     try {
+                        Platform.runLater(() -> labelRemainingTime.setText(String.valueOf(180 - (int) (System.currentTimeMillis() - time) / 1000) + "s"));
                         Thread.sleep(100);
                     } catch (Exception e) {
                     }
