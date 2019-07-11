@@ -12,9 +12,9 @@ public enum Constants {
     POLYGON_HEIGHT(50),
     POLYGON_WIDTH(60),
 
-    HAND_Pane_LAYOUT_X(330),
+    HAND_Pane_LAYOUT_X(290),
     HAND_Pane_LAYOUT_Y(600),
-    HAND_H_DISTANCE_BETWEEN(70);
+    HAND_H_DISTANCE_BETWEEN(120);
 
 
     private int number;

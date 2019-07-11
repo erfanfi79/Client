@@ -6,6 +6,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import view.ImageLibrary;
 
 public class HeaderView {
@@ -37,6 +38,9 @@ public class HeaderView {
         player2Name.setScaleX(2);
         player2Name.setScaleY(2);
 
+        player1Name.setFont(Font.font("Dyuhti", 20));
+        player2Name.setFont(Font.font("Dyuhti", 20));
+
         player1Name.setTextFill(Color.WHITE);
         player2Name.setTextFill(Color.WHITE);
 
@@ -44,7 +48,7 @@ public class HeaderView {
         headerRightGameInfo.getChildren().add(player1Name);
 
         headerLeftGameInfo.relocate(450, 50);
-        headerRightGameInfo.relocate(850, 50);
+        headerRightGameInfo.relocate(830, 50);
 
         player1Name.setAlignment(Pos.CENTER);
         player2Name.setAlignment(Pos.CENTER);

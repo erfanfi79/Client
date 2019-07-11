@@ -25,19 +25,20 @@ public class BattleView {
     private HeaderView headerView = new HeaderView();
     private TableUnitsView tableUnitsView = new TableUnitsView();
     private EndTurnButton endTurnButton = new EndTurnButton();
-    public VirtualCard[][] table;
-    private GraveYardController graveYardController;
-
     private MatchPacketQueue matchPacketQueue = MatchPacketQueue.getInstance();
     private ConstantViews constantViews = new ConstantViews();
     private TableInputHandler tableInputHandler = new TableInputHandler();
+    private HandView handView = new HandView();
+    private GraveYardController graveYardController;
+
+    VirtualCard[][] table;
+    VirtualCard[] hand;
 
     boolean isMyTurn = false;
-    boolean isReadyForInsert = false;
-    int whichHandCardForInsert = -1;
+    double xOfCursor, yOfCursor;
+
     private boolean isMatchFinished = false;
     private double x, y;
-    double xOfCursor, yOfCursor;
 
 
     public void showBattle(Stage mainStage) {
@@ -45,7 +46,7 @@ public class BattleView {
         Pane pane = new Pane();
 
         pane.getChildren().addAll(constantViews.get(), headerView.get(), tableInputHandler.get(this, pane),
-                endTurnButton.get(this), tableUnitsView.get(this));
+                endTurnButton.get(this), tableUnitsView.get(this), handView.get(this, pane));
 
         GameMusicPlayer.getInstance().playBattleMusic();
         try {
@@ -112,6 +113,9 @@ public class BattleView {
             else if (packet instanceof ServerLogPacket)
                 new Popup().showMessage(((ServerLogPacket) packet).getLog());
 
+            else if (packet instanceof ServerHandPacket)
+                newHandHandler((ServerHandPacket) packet);
+
             else if (packet instanceof ServerGraveYardPacket)
                 graveYardPacketHandler((ServerGraveYardPacket) packet);
 
@@ -136,15 +140,23 @@ public class BattleView {
 
     private void movePacketHandler(ServerMovePacket packet) {
         System.out.println("movePacketHandler");
+        new GameSfxPlayer().onMove();
     }
 
     private void attackPacketHandler(ServerAttackPacket packet) {
         System.out.println("attackPacketHandler");
+        new GameSfxPlayer().onAttack();
+    }
+
+    private void newHandHandler(ServerHandPacket packet) {
+
+        this.hand = packet.getHand();
+        Platform.runLater(() -> handView.setHandCards());
     }
 
     private void graveYardPacketHandler(ServerGraveYardPacket packet) {
         System.out.println("graveYardPacketHandler");
-        graveYardController.loadCards(packet.getDeadCards());
+        Platform.runLater(() -> graveYardController.loadCards(packet.getDeadCards()));
     }
 
     private void matchEnumPacketHandler(ServerMatchEnumPacket packet) {
