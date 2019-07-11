@@ -1,7 +1,6 @@
 package controller;
 
 
-import controller.MediaController.GameSfxPlayer;
 import controller.MediaController.MatchPacketQueue;
 import javafx.application.Platform;
 import packet.clientPacket.ClientPacket;
@@ -16,8 +15,6 @@ public class ClientListener extends Thread {
 
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
-    private InputStreamReader inputStreamReader;
-    private OutputStreamWriter outputStreamWriter;
     private Socket socket;
     private MatchPacketQueue matchPacketQueue = MatchPacketQueue.getInstance();
 
@@ -26,10 +23,8 @@ public class ClientListener extends Thread {
 
         try {
             this.socket = socket;
-            inputStreamReader = new InputStreamReader(socket.getInputStream());
-            outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());
-            bufferedReader = new BufferedReader(inputStreamReader);
-            bufferedWriter = new BufferedWriter(outputStreamWriter);
+            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -48,31 +43,35 @@ public class ClientListener extends Thread {
                 else if (packet instanceof ServerLogPacket)
                     handleLogs((ServerLogPacket) packet);
 
-                else if (packet instanceof ServerMoneyPacket)
-                    Platform.runLater(() -> Controller.getInstance().showMoney(((ServerMoneyPacket) packet).getMoney()));
+                else if (packet instanceof ServerAuctionPacket)
+                    if (Controller.getInstance().currentController instanceof ShopController)
+                        ((ShopController) Controller.getInstance().currentController).auctionHandler((ServerAuctionPacket) packet);
 
-                else if (packet instanceof ServerMatchHistory) {
+                    else if (packet instanceof ServerMoneyPacket)
+                        Platform.runLater(() -> Controller.getInstance().showMoney(((ServerMoneyPacket) packet).getMoney()));
 
-                    if (Controller.getInstance().currentController instanceof MatchHistoryController)
-                        ((MatchHistoryController) Controller.getInstance().currentController).initializeHistorys(((ServerMatchHistory) packet).getHistories());
+                    else if (packet instanceof ServerMatchHistory) {
 
-                } else if (packet instanceof ServerLeaderBoardPacket) {
+                        if (Controller.getInstance().currentController instanceof MatchHistoryController)
+                            ((MatchHistoryController) Controller.getInstance().currentController).initializeHistorys(((ServerMatchHistory) packet).getHistories());
 
-                    if (Controller.getInstance().currentController instanceof LeaderBoardController) {
+                    } else if (packet instanceof ServerLeaderBoardPacket) {
 
-                        LeaderBoardController controller = (LeaderBoardController) Controller.getInstance().currentController;
-                        Platform.runLater(() -> controller.initializeLeaderboard(((ServerLeaderBoardPacket) packet).getUsernames()
-                                , ((ServerLeaderBoardPacket) packet).getWinNumber()));
+                        if (Controller.getInstance().currentController instanceof LeaderBoardController) {
 
-                    }
-                } else if (packet instanceof ServerCollection)
-                    handleCollection((ServerCollection) packet);
+                            LeaderBoardController controller = (LeaderBoardController) Controller.getInstance().currentController;
+                            Platform.runLater(() -> controller.initializeLeaderboard(((ServerLeaderBoardPacket) packet).getUsernames()
+                                    , ((ServerLeaderBoardPacket) packet).getWinNumber()));
 
-                else if (packet instanceof ServerChatRoomPacket)
-                    Platform.runLater(() -> Controller.getInstance().updateChatRoom((ServerChatRoomPacket) packet));
+                        }
+                    } else if (packet instanceof ServerCollection)
+                        handleCollection((ServerCollection) packet);
 
-                else if (packet instanceof  ServerEnumPacket)
-                    serverEnumPacketHandler((ServerEnumPacket) packet);
+                    else if (packet instanceof ServerChatRoomPacket)
+                        Platform.runLater(() -> Controller.getInstance().updateChatRoom((ServerChatRoomPacket) packet));
+
+                    else if (packet instanceof ServerEnumPacket)
+                        serverEnumPacketHandler((ServerEnumPacket) packet);
             }
         } catch (Exception e) {
             close();
@@ -84,7 +83,7 @@ public class ClientListener extends Thread {
             return YaGsonChanger.readServerPocket(bufferedReader.readLine());
 
         } catch (IOException e) {
-
+            close();
             e.printStackTrace();
         }
         return null;
@@ -98,6 +97,7 @@ public class ClientListener extends Thread {
             bufferedWriter.flush();
 
         } catch (IOException e) {
+            close();
             e.printStackTrace();
         }
     }
@@ -105,12 +105,18 @@ public class ClientListener extends Thread {
     public void close() {
         try {
             if (socket != null) socket.close();
-            if (inputStreamReader != null) inputStreamReader.close();
-            if (outputStreamWriter != null) outputStreamWriter.close();
+
+        } catch (Exception e) {
+        }
+        try {
             if (bufferedReader != null) bufferedReader.close();
+        } catch (Exception e) {
+        }
+        try {
             if (bufferedWriter != null) bufferedWriter.close();
         } catch (Exception e) {
         }
+
     }
 
     public void handleCollection(ServerCollection serverCollection) {
@@ -152,7 +158,7 @@ public class ClientListener extends Thread {
             case MULTI_PLAYER_GAME_IS_READY:
                 System.err.println("multi player is ready");
                 BattleView battleView = new BattleView();
-                new Thread(() -> Platform.runLater(() -> battleView.showBattle(Controller.stage))).start();
+                new Thread(() -> battleView.showBattle(Controller.stage)).start();
 
                 try {
                     Thread.sleep(200);
@@ -161,6 +167,14 @@ public class ClientListener extends Thread {
                 }
 
                 new Thread(battleView::inputHandler).start();
+                break;
+            case UPDATE_LEADER_BOARD:
+                if (Controller.getInstance().currentController instanceof LeaderBoardController)
+                    ((LeaderBoardController) Controller.getInstance().currentController).onlineCheckBox();
+                break;
+
+            case CLOSE:
+                close();
                 break;
         }
     }

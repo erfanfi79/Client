@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -20,6 +21,7 @@ import packet.clientPacket.ClientAuctionPacket;
 import packet.clientPacket.ClientBuyAndSellPacket;
 import packet.clientPacket.ClientEnum;
 import packet.clientPacket.ClientEnumPacket;
+import packet.serverPacket.ServerAuctionPacket;
 import view.shopMenuView.ShopError;
 
 import java.io.IOException;
@@ -124,6 +126,31 @@ public class ShopController implements Initializable {
 
     public void sell(String cardName) {
         Controller.getInstance().clientListener.sendPacketToServer(new ClientBuyAndSellPacket(cardName, false));
+    }
+
+    public void auctionHandler(ServerAuctionPacket packet) {
+        if (packet.isSetForAuction) {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("../view/AuctionView.fxml"));
+                Parent root = fxmlLoader.load();
+                ((AuctionController) fxmlLoader.getController()).initializeAuction(packet);
+                Scene scene = new Scene(root);
+                scene.setOnMouseDragged(event -> {
+
+                    Controller.stage.setX(event.getScreenX() - x);
+                    Controller.stage.setY(event.getScreenY() - y);
+
+                });
+                scene.setOnMousePressed(event -> {
+                    x = event.getSceneX();
+                    y = event.getSceneY();
+                });
+                Controller.stage.setScene(scene);
+            } catch (IOException e) {
+            }
+        } else
+            new Popup().showMessage("Currently ,no Auction exist");
     }
 
     public void searchCollection(String cardName, Collection collection) {
