@@ -39,6 +39,7 @@ public class Controller {
     }
 
     public void showMoney(String money) {
+        System.out.println(32);
         if (currentController instanceof StartMenuController)
             ((StartMenuController) currentController).showMoney(money);
         else if (currentController instanceof ShopController)

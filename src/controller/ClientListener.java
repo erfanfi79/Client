@@ -45,7 +45,8 @@ public class ClientListener extends Thread {
 
                 else if (packet instanceof ServerAuctionPacket)
                     if (Controller.getInstance().currentController instanceof ShopController)
-                        ((ShopController) Controller.getInstance().currentController).auctionHandler((ServerAuctionPacket) packet);
+                        Platform.runLater(() -> ((ShopController) Controller.getInstance().currentController).auctionHandler((ServerAuctionPacket) packet));
+
 
                     else if (packet instanceof ServerMoneyPacket)
                         Platform.runLater(() -> Controller.getInstance().showMoney(((ServerMoneyPacket) packet).getMoney()));
@@ -81,7 +82,6 @@ public class ClientListener extends Thread {
     public ServerPacket getPacketFromServer() {
         try {
             return YaGsonChanger.readServerPocket(bufferedReader.readLine());
-
         } catch (IOException e) {
             close();
             e.printStackTrace();
@@ -90,7 +90,6 @@ public class ClientListener extends Thread {
     }
 
     public void sendPacketToServer(ClientPacket clientPocket) {
-
         try {
             bufferedWriter.write(YaGsonChanger.write(clientPocket));
             bufferedWriter.newLine();
@@ -173,9 +172,6 @@ public class ClientListener extends Thread {
                     ((LeaderBoardController) Controller.getInstance().currentController).onlineCheckBox();
                 break;
 
-            case CLOSE:
-                close();
-                break;
         }
     }
 }

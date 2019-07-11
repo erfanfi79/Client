@@ -7,4 +7,6 @@ public class ServerAuctionPacket extends ServerPacket {
     public long startTime;
     public int highestPrice;
     public boolean isSetForAuction = false;
+
+
 }
