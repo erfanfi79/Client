@@ -1,5 +1,6 @@
 package controller;
 
+import controller.MediaController.GameSfxPlayer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -30,6 +31,7 @@ public class AuctionController {
 
     @FXML
     void sendPrice() {
+        new GameSfxPlayer().onSelect();
         ClientAuctionPacket clientAuctionPacket = new ClientAuctionPacket();
         clientAuctionPacket.setInAuctionMenu(true);
         try {
@@ -42,6 +44,7 @@ public class AuctionController {
 
     @FXML
     void goBack() {
+        new GameSfxPlayer().onSelect();
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getResource("../view/shopMenuView/ShopMenuView.fxml"));
