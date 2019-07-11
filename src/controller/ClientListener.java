@@ -3,6 +3,8 @@ package controller;
 
 import controller.MediaController.MatchPacketQueue;
 import javafx.application.Platform;
+import packet.clientPacket.ClientEnum;
+import packet.clientPacket.ClientEnumPacket;
 import packet.clientPacket.ClientPacket;
 import packet.serverPacket.*;
 import packet.serverPacket.serverMatchPacket.ServerMatchPacket;
@@ -46,31 +48,35 @@ public class ClientListener extends Thread {
                 else if (packet instanceof ServerLogPacket)
                     handleLogs((ServerLogPacket) packet);
 
-                else if (packet instanceof ServerMoneyPacket)
-                    Platform.runLater(() -> Controller.getInstance().showMoney(((ServerMoneyPacket) packet).getMoney()));
+                else if (packet instanceof ServerAuctionPacket)
+                    if (Controller.getInstance().currentController instanceof ShopController)
+                        ((ShopController) Controller.getInstance().currentController).auctionHandler((ServerAuctionPacket) packet);
 
-                else if (packet instanceof ServerMatchHistory) {
+                    else if (packet instanceof ServerMoneyPacket)
+                        Platform.runLater(() -> Controller.getInstance().showMoney(((ServerMoneyPacket) packet).getMoney()));
 
-                    if (Controller.getInstance().currentController instanceof MatchHistoryController)
-                        ((MatchHistoryController) Controller.getInstance().currentController).initializeHistorys(((ServerMatchHistory) packet).getHistories());
+                    else if (packet instanceof ServerMatchHistory) {
 
-                } else if (packet instanceof ServerLeaderBoardPacket) {
+                        if (Controller.getInstance().currentController instanceof MatchHistoryController)
+                            ((MatchHistoryController) Controller.getInstance().currentController).initializeHistorys(((ServerMatchHistory) packet).getHistories());
 
-                    if (Controller.getInstance().currentController instanceof LeaderBoardController) {
+                    } else if (packet instanceof ServerLeaderBoardPacket) {
 
-                        LeaderBoardController controller = (LeaderBoardController) Controller.getInstance().currentController;
-                        Platform.runLater(() -> controller.initializeLeaderboard(((ServerLeaderBoardPacket) packet).getUsernames()
-                                , ((ServerLeaderBoardPacket) packet).getWinNumber()));
+                        if (Controller.getInstance().currentController instanceof LeaderBoardController) {
 
-                    }
-                } else if (packet instanceof ServerCollection)
-                    handleCollection((ServerCollection) packet);
+                            LeaderBoardController controller = (LeaderBoardController) Controller.getInstance().currentController;
+                            Platform.runLater(() -> controller.initializeLeaderboard(((ServerLeaderBoardPacket) packet).getUsernames()
+                                    , ((ServerLeaderBoardPacket) packet).getWinNumber()));
 
-                else if (packet instanceof ServerChatRoomPacket)
-                    Platform.runLater(() -> Controller.getInstance().updateChatRoom((ServerChatRoomPacket) packet));
+                        }
+                    } else if (packet instanceof ServerCollection)
+                        handleCollection((ServerCollection) packet);
 
-                else if (packet instanceof  ServerEnumPacket)
-                    serverEnumPacketHandler((ServerEnumPacket) packet);
+                    else if (packet instanceof ServerChatRoomPacket)
+                        Platform.runLater(() -> Controller.getInstance().updateChatRoom((ServerChatRoomPacket) packet));
+
+                    else if (packet instanceof ServerEnumPacket)
+                        serverEnumPacketHandler((ServerEnumPacket) packet);
             }
         } catch (Exception e) {
             close();
@@ -82,7 +88,7 @@ public class ClientListener extends Thread {
             return YaGsonChanger.readServerPocket(bufferedReader.readLine());
 
         } catch (IOException e) {
-
+            close();
             e.printStackTrace();
         }
         return null;
@@ -96,17 +102,30 @@ public class ClientListener extends Thread {
             bufferedWriter.flush();
 
         } catch (IOException e) {
+            close();
             e.printStackTrace();
         }
     }
 
     public void close() {
         try {
+            sendPacketToServer(new ClientEnumPacket(ClientEnum.CLOSE));
+        } catch (Exception e) {
+        }
+        try {
             if (socket != null) socket.close();
+
+        } catch (Exception e) {
+        }
+        try {
             if (bufferedReader != null) bufferedReader.close();
+        } catch (Exception e) {
+        }
+        try {
             if (bufferedWriter != null) bufferedWriter.close();
         } catch (Exception e) {
         }
+
     }
 
     public void handleCollection(ServerCollection serverCollection) {
@@ -161,6 +180,10 @@ public class ClientListener extends Thread {
             case UPDATE_LEADER_BOARD:
                 if (Controller.getInstance().currentController instanceof LeaderBoardController)
                     ((LeaderBoardController) Controller.getInstance().currentController).onlineCheckBox();
+                break;
+
+            case CLOSE:
+                close();
                 break;
         }
     }
