@@ -17,7 +17,8 @@ public enum ImageLibrary {
     EndTurnButtonInMyTurn("src/resources/battle/buttons/button_end_turn_mine.png"),
     EndTurnButtonInOpponentTurn("src/resources/battle/buttons/button_end_turn_enemy.png"),
     EndTurnPopup("src/resources/battle/popup/notification_your_turn.png"),
-    HandCardAround("src/resources/battle/cardsAround/handCardBackground.png");
+    HandCardAround("src/resources/battle/cardsAround/handCardBackground.png"),
+    CardInfo("src/resources/battle/cardsAround/card_info.png");
 
     private Image image;
 

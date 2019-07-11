@@ -1,6 +1,7 @@
 package controller;
 
 
+import controller.MediaController.GameSfxPlayer;
 import controller.MediaController.MatchPacketQueue;
 import javafx.application.Platform;
 import packet.clientPacket.ClientPacket;
@@ -15,19 +16,20 @@ public class ClientListener extends Thread {
 
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
+    private InputStreamReader inputStreamReader;
+    private OutputStreamWriter outputStreamWriter;
     private Socket socket;
     private MatchPacketQueue matchPacketQueue = MatchPacketQueue.getInstance();
 
-    public BufferedReader getBufferedReader() {
-        return bufferedReader;
-    }
 
     public ClientListener(Socket socket) {
 
         try {
             this.socket = socket;
-            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            inputStreamReader = new InputStreamReader(socket.getInputStream());
+            outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());
+            bufferedReader = new BufferedReader(inputStreamReader);
+            bufferedWriter = new BufferedWriter(outputStreamWriter);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -103,6 +105,8 @@ public class ClientListener extends Thread {
     public void close() {
         try {
             if (socket != null) socket.close();
+            if (inputStreamReader != null) inputStreamReader.close();
+            if (outputStreamWriter != null) outputStreamWriter.close();
             if (bufferedReader != null) bufferedReader.close();
             if (bufferedWriter != null) bufferedWriter.close();
         } catch (Exception e) {
@@ -148,7 +152,7 @@ public class ClientListener extends Thread {
             case MULTI_PLAYER_GAME_IS_READY:
                 System.err.println("multi player is ready");
                 BattleView battleView = new BattleView();
-                new Thread(() -> battleView.showBattle(Controller.stage)).start();
+                new Thread(() -> Platform.runLater(() -> battleView.showBattle(Controller.stage))).start();
 
                 try {
                     Thread.sleep(200);

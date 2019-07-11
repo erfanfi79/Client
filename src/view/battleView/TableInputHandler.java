@@ -2,12 +2,20 @@ package view.battleView;
 
 import controller.Controller;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import models.Coordination;
 import packet.clientPacket.clientMatchPacket.ClientAttackPacket;
 import packet.clientPacket.clientMatchPacket.ClientInsertCardPacket;
 import packet.clientPacket.clientMatchPacket.ClientMovePacket;
+import packet.serverPacket.serverMatchPacket.VirtualCard;
+import view.ImageLibrary;
+
 
 import static view.Constants.*;
 
@@ -16,11 +24,14 @@ public class TableInputHandler {
     private BattleView battleView;
     private GridPane rectangles = new GridPane();
     private Coordination selectedCell;
+    private Pane mainPane;
+    private AnchorPane cardInfo = new AnchorPane();
 
 
-    public GridPane get(BattleView battleView) {
+    public GridPane get(BattleView battleView, Pane pane) {
 
         this.battleView = battleView;
+        this.mainPane = pane;
 
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 9; j++) {
@@ -30,6 +41,8 @@ public class TableInputHandler {
                 rectangles.add(rectangle, j, i);
             }
         }
+
+        showUnitsInTableInfo();
 
         rectangles.setVgap(GRID_PANE_V_SPACE.get());
         rectangles.setHgap(GRID_PANE_H_SPACE.get());
@@ -93,5 +106,50 @@ public class TableInputHandler {
         packet.setDestination(Coordination.getNewCoordination(GridPane.getRowIndex(node), GridPane.getColumnIndex(node)));
         Controller.getInstance().clientListener.sendPacketToServer(packet);
         selectedCell = null;
+    }
+
+
+    private void showUnitsInTableInfo() {
+
+        for (Node node : rectangles.getChildren()) {
+            node.setOnMouseEntered(event -> {
+                if (battleView.table[GridPane.getRowIndex(node)][GridPane.getColumnIndex(node)] != null) {
+
+                    AnchorPane anchorPane = cardInfo(battleView.table[GridPane.getRowIndex(node)][GridPane.getColumnIndex(node)]);
+                    anchorPane.relocate(battleView.xOfCursor, battleView.yOfCursor - 300);
+                    mainPane.getChildren().
+                            add(cardInfo(battleView.table[GridPane.getRowIndex(node)][GridPane.getColumnIndex(node)]));
+
+                }
+            });
+
+            node.setOnMouseExited(event -> {
+                if (battleView.table[GridPane.getRowIndex(node)][GridPane.getColumnIndex(node)] != null)
+                    mainPane.getChildren().remove(cardInfo);
+            });
+        }
+    }
+
+    private AnchorPane cardInfo(VirtualCard card) {
+
+        cardInfo.getChildren().removeAll(cardInfo.getChildren());
+
+        ImageView background = new ImageView(ImageLibrary.CardInfo.getImage());
+        Label name = new Label(card.getCardName() + "");
+        Label HP = new Label(card.getHealthPoint() + "");
+        Label AP = new Label(card.getAttackPoint() + "");
+        Label MP = new Label(card.getManaPoint() + "");
+
+        name.setTextFill(Color.WHITE);
+        HP.setTextFill(Color.WHITE);
+        AP.setTextFill(Color.WHITE);
+
+        name.relocate(50, 80);
+        HP.relocate(165, 176);
+        AP.relocate(48, 176);
+        MP.relocate(110, 233);
+
+        cardInfo.getChildren().addAll(background, name, HP, AP, MP);
+        return cardInfo;
     }
 }

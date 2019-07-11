@@ -31,9 +31,11 @@ public class TableUnitsView {
 
         for (int row = 0; row < 5; row++) {
             for (int column = 0; column < 9; column++) {
+
+                table[row][column].getChildren().removeAll(table[row][column].getChildren());
+
                 if (battleView.table[row][column] != null) {
 
-                    table[row][column].getChildren().removeAll(table[row][column].getChildren());
                     ImageView image;
 
                     try {
@@ -44,7 +46,6 @@ public class TableUnitsView {
                         e.printStackTrace();
                         image = new ImageView("resources/battle/units/default/stand");
                     }
-
 
                     if (column > 4) {
                         image.setScaleX(-1);
@@ -57,6 +58,7 @@ public class TableUnitsView {
                     table[row][column].getChildren().add(image);
                 }
             }
+            System.out.println();
         }
     }
 

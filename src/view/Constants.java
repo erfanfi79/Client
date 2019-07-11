@@ -10,7 +10,11 @@ public enum Constants {
     GRID_PANE_V_SPACE(5),
     GRID_PANE_H_SPACE(8),
     POLYGON_HEIGHT(50),
-    POLYGON_WIDTH(60);
+    POLYGON_WIDTH(60),
+
+    HAND_Pane_LAYOUT_X(330),
+    HAND_Pane_LAYOUT_Y(600),
+    HAND_H_DISTANCE_BETWEEN(70);
 
 
     private int number;

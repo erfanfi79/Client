@@ -38,11 +38,11 @@ public class EndTurnButton {
 
         if (battleView.isMyTurn) {
             endTurnButtonImage.setImage(ImageLibrary.EndTurnButtonInMyTurn.getImage());
-            endTurnButtonImage.getStyleClass().add("enterMouseOnEndTurnButton");
+            endTurnButton.getStyleClass().add("enterMouseOnEndTurnButton");
 
         } else {
             endTurnButtonImage.setImage(ImageLibrary.EndTurnButtonInOpponentTurn.getImage());
-            endTurnButtonImage.getStyleClass().remove("enterMouseOnEndTurnButton");
+            endTurnButton.getStyleClass().remove("enterMouseOnEndTurnButton");
         }
     }
 
@@ -50,7 +50,7 @@ public class EndTurnButton {
 
         endTurnButton.setOnMouseClicked(event -> {
             if (battleView.isMyTurn) {
-
+                battleView.isMyTurn = false;
                 Controller.getInstance().clientListener.sendPacketToServer(new ClientMatchEnumPacket(ClientMatchEnum.END_TURN));
                 changeColor();
             }

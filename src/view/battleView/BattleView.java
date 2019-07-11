@@ -2,6 +2,8 @@ package view.battleView;
 
 import controller.Controller;
 import controller.GraveYardController;
+import controller.MediaController.GameMusicPlayer;
+import controller.MediaController.GameSfxPlayer;
 import controller.MediaController.MatchPacketQueue;
 import controller.Popup;
 import javafx.application.Platform;
@@ -33,23 +35,33 @@ public class BattleView {
     int whichHandCardForInsert = -1;
     private boolean isMatchFinished = false;
     private double x, y;
+    double xOfCursor, yOfCursor;
 
 
     public void showBattle(Stage mainStage) {
 
         Pane pane = new Pane();
 
-        pane.getChildren().addAll(constantViews.get(), headerView.get(), tableInputHandler.get(this),
+        pane.getChildren().addAll(constantViews.get(), headerView.get(), tableInputHandler.get(this, pane),
                 endTurnButton.get(this), tableUnitsView.get(this));
 
-        //GameMusicPlayer.getInstance().playBattleMusic();
+        GameMusicPlayer.getInstance().playBattleMusic();
 
         Scene scene = new Scene(pane, STAGE_WIDTH.get(), STAGE_HEIGHT.get());
         dragScene(scene);
+        setCursorLocation(scene);
         scene.getStylesheets().add(getClass().getResource("/resources/style/BattleStyle.css").toExternalForm());
         scene.setCursor(new ImageCursor(view.ImageLibrary.CursorImage.getImage()));
         mainStage.setScene(scene);
         mainStage.show();
+    }
+
+    private void setCursorLocation(Scene scene) {
+
+        scene.setOnMouseMoved(event -> {
+            xOfCursor = event.getX();
+            yOfCursor = event.getY();
+        });
     }
 
     private void dragScene(Scene scene) {
@@ -99,7 +111,7 @@ public class BattleView {
     }
 
     private void matchInfoPacketHandler(ServerMatchInfoPacket packet) {
-        System.err.println("matchInfoPacketHandler");
+        System.out.println("matchInfoPacketHandler");
 
         table = packet.getTable();
 
@@ -110,15 +122,15 @@ public class BattleView {
     }
 
     private void movePacketHandler(ServerMovePacket packet) {
-
+        System.out.println("movePacketHandler");
     }
 
     private void attackPacketHandler(ServerAttackPacket packet) {
-
+        System.out.println("attackPacketHandler");
     }
 
     private void graveYardPacketHandler(ServerGraveYardPacket packet) {
-
+        System.out.println("graveYardPacketHandler");
     }
 
     private void matchEnumPacketHandler(ServerMatchEnumPacket packet) {
@@ -126,24 +138,27 @@ public class BattleView {
         switch (packet.getPacket()) {
 
             case START_YOUR_TURN:
-                System.err.println("start your turn");
-
+                System.out.println("start Your Turn");
+                new GameSfxPlayer().onYourTurn();
                 Platform.runLater(() -> {
                     isMyTurn = true;
                     endTurnButton.changeColor();
                 });
+                break;
 
             case MATCH_FINISHED:
-//                Controller.getInstance().gotoStartMenu();
-//                GameMusicPlayer.getInstance().menuSong();
                 Platform.runLater(() -> {
                     isMatchFinished = true;
+                    Controller.getInstance().gotoStartMenu();
+                    GameMusicPlayer.getInstance().menuSong();
                 });
+                break;
+
         }
     }
 
     private void playersNamePacketHandler(ServerPlayersUserNamePacket packet) {
-        System.err.println("playersNamePacketHandler");
+        System.out.println("playersNamePacketHandler");
         Platform.runLater(() -> headerView.setPlayersName(packet.getPlayer1UserName(), packet.getPlayer2UserName()));
     }
 }
