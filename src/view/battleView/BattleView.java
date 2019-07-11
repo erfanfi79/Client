@@ -59,7 +59,7 @@ public class BattleView {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //GameMusicPlayer.getInstance().playBattleMusic();
+        GameMusicPlayer.getInstance().playBattleMusic();
 
         Scene scene = new Scene(pane, STAGE_WIDTH.get(), STAGE_HEIGHT.get());
         dragScene(scene);
@@ -179,7 +179,6 @@ public class BattleView {
                     GameMusicPlayer.getInstance().menuSong();
                 });
                 break;
-
         }
     }
 

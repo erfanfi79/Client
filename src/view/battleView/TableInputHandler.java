@@ -124,7 +124,6 @@ public class TableInputHandler {
                     anchorPane.relocate(battleView.xOfCursor, battleView.yOfCursor - 300);
                     mainPane.getChildren().
                             add(cardInfo(battleView.table[GridPane.getRowIndex(node)][GridPane.getColumnIndex(node)]));
-
                 }
             });
 

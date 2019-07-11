@@ -139,7 +139,7 @@ public class HandView {
         if (row >= 0 && row < 5 && column >= 0 && column < 9 && whichHandCardSelected >= 0) {
             System.out.println("rad shod");
             ClientInsertCardPacket packet = new ClientInsertCardPacket(row, column, whichHandCardSelected);
-            Platform.runLater(() -> Controller.getInstance().clientListener.sendPacketToServer(packet));
+            Controller.getInstance().clientListener.sendPacketToServer(packet);
             System.out.println("insert successfully");
         }
     }
