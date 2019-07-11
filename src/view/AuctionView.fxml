@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:id="givenPricetxt" prefHeight="473.0" prefWidth="782.0"
+            style="-fx-background-color: #1B3244;" xmlns="http://javafx.com/javafx/8"
+            fx:controller="controller.AuctionController">
+    <children>
+        <Pane fx:id="cardPane" layoutX="35.0" layoutY="35.0" prefHeight="383.0" prefWidth="306.0"/>
+        <TextField fx:id="txtPrice" layoutX="392.0" layoutY="350.0" prefHeight="37.0" prefWidth="220.0"
+                   promptText="Your Price"/>
+        <Button layoutX="637.0" layoutY="350.0" mnemonicParsing="false" onAction="#sendPrice" prefHeight="37.0"
+                prefWidth="83.0" style="-fx-background-color: #4D5775;" text="Send"/>
+        <Label fx:id="labelhighestPrice" alignment="CENTER" layoutX="391.0" layoutY="37.0" prefHeight="152.0"
+               prefWidth="330.0" text="Higest Price" textFill="WHITE">
+            <font>
+                <Font size="40.0"/>
+            </font>
+        </Label>
+        <Label fx:id="labelRemainingTime" alignment="CENTER" layoutX="391.0" layoutY="198.0" prefHeight="152.0"
+               prefWidth="330.0" text="Remainig Time" textFill="WHITE">
+            <font>
+                <Font size="40.0"/>
+            </font>
+        </Label>
+        <Label layoutX="391.0" layoutY="37.0" text="Highest Price:" textFill="WHITE"/>
+        <Label layoutX="391.0" layoutY="191.0" text="Remainig Time:" textFill="WHITE"/>
+        <Button layoutX="390.0" layoutY="400.0" mnemonicParsing="false" onAction="#goBack" prefHeight="37.0"
+                prefWidth="330.0" style="-fx-background-color: #4D5775;" text="Back"/>
+    </children>
+</AnchorPane>

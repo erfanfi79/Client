@@ -1,22 +1,25 @@
 package controller;
 
 import controller.MediaController.GameSfxPlayer;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import models.Card;
 import models.Collection;
+import packet.clientPacket.ClientAuctionPacket;
 import packet.clientPacket.ClientBuyAndSellPacket;
+import packet.clientPacket.ClientEnum;
+import packet.clientPacket.ClientEnumPacket;
 import view.shopMenuView.ShopError;
 
 import java.io.IOException;
@@ -106,25 +109,13 @@ public class ShopController implements Initializable {
     }
 
     @FXML
+    void gotoAuction(ActionEvent event) {
+        Controller.getInstance().clientListener.sendPacketToServer(new ClientEnumPacket(ClientEnum.AUCTION));
+    }
+    @FXML
     void gotoStartMenu() {
         new GameSfxPlayer().onSelect();
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("../view/StartMenuView.fxml"));
-            Scene scene = new Scene(root);
-            scene.setOnMousePressed(event -> {
-                x = event.getSceneX();
-                y = event.getSceneY();
-            });
-
-            scene.setOnMouseDragged(event -> {
-
-                Controller.stage.setX(event.getScreenX() - x);
-                Controller.stage.setY(event.getScreenY() - y);
-
-            });
-            Controller.stage.setScene(scene);
-        } catch (IOException e) {
-        }
+        Controller.getInstance().gotoStartMenu();
     }
 
     public void buy(String cardName) {
@@ -194,7 +185,7 @@ public class ShopController implements Initializable {
                 nodes[i].setOnMouseClicked(event -> {
                     if (cards.equals(shopCollection.getCards()))
                         buy(card.getCardName());
-                    else sell(card.getCardName());
+                    else checkSell(card.getCardName());
                 });
                 hBox1.getChildren().add(nodes[i]);
             } catch (IOException e) {
@@ -229,7 +220,8 @@ public class ShopController implements Initializable {
                 nodes[i].setOnMouseClicked(event -> {
                     if (cards.equals(shopCollection.getCards()))
                         buy(card.getCardName());
-                    else sell(card.getCardName());
+                    else
+                        checkSell(card.getCardName());
                 });
                 CardController cardController = fxmlLoader.getController();
                 cardController.setInformation(card);
@@ -238,5 +230,44 @@ public class ShopController implements Initializable {
 
             }
         }
+    }
+
+    public void checkSell(String cardName) {
+        Stage stage = new Stage();
+        TextField textField = new TextField("Price");
+        RadioButton auctionRB = new RadioButton();
+        auctionRB.setText("Set For Auction");
+        RadioButton sellRB = new RadioButton();
+        sellRB.setText("Sell");
+        ToggleGroup toggleGroup = new ToggleGroup();
+        sellRB.setToggleGroup(toggleGroup);
+        auctionRB.setToggleGroup(toggleGroup);
+        sellRB.setSelected(true);
+        Button ok = new Button();
+        ok.setText("Ok");
+        ok.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (sellRB.isSelected())
+                    sell(cardName);
+                else {
+                    ClientAuctionPacket clientAuctionPacket = new ClientAuctionPacket();
+                    clientAuctionPacket.setCardName(cardName);
+                    clientAuctionPacket.setInAuctionMenu(false);
+                    try {
+                        int price = Integer.parseInt(textField.getText());
+                        clientAuctionPacket.setPrice(price);
+                        Platform.runLater(() -> Controller.getInstance().clientListener.sendPacketToServer(clientAuctionPacket));
+                    } catch (Exception e) {
+                        return;
+                    }
+
+                }
+
+            }
+        });
+        stage.setScene(new Scene(new VBox(8, textField, sellRB, auctionRB, ok)));
+        stage.showAndWait();
+        stage.close();
     }
 }

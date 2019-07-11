@@ -5,7 +5,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8"
             fx:controller="controller.ShopController">
     <children>
         <ImageView fitHeight="720.0" fitWidth="1280.0" pickOnBounds="true" preserveRatio="true"
@@ -33,13 +33,13 @@
                 <Image url="@../../resources/ui/icon_gold@2x.png"/>
             </image>
         </ImageView>
-        <Label fx:id="labelErrorInShop" alignment="CENTER" layoutX="1033.0" layoutY="469.0" prefHeight="77.0"
+        <Label fx:id="labelErrorInShop" alignment="CENTER" layoutX="1027.0" layoutY="493.0" prefHeight="77.0"
                prefWidth="207.0" textFill="RED" wrapText="true">
             <font>
                 <Font name="System Bold" size="18.0"/>
             </font>
         </Label>
-        <Pane layoutX="1019.0" layoutY="234.0" prefHeight="200.0" prefWidth="233.0"
+        <Pane layoutX="1014.0" layoutY="293.0" prefHeight="200.0" prefWidth="233.0"
               style="-fx-border-color: #215272; -fx-border-radius: 25;">
             <children>
                 <RadioButton fx:id="optSearchInCollection" layoutX="113.0" layoutY="51.0" mnemonicParsing="false"
@@ -70,7 +70,7 @@
                 </Button>
             </children>
         </Pane>
-        <Button contentDisplay="CENTER" layoutX="1027.0" layoutY="133.0" mnemonicParsing="false"
+        <Button contentDisplay="CENTER" layoutX="1029.0" layoutY="130.0" mnemonicParsing="false"
                 onAction="#showCollection" onMouseEntered="#mouseIn" onMouseExited="#mouseOut" opacity="0.6"
                 style="-fx-background-color: transparent;" text="Collection" textFill="WHITE">
             <graphic>
@@ -126,5 +126,16 @@
                 </VBox>
             </content>
         </ScrollPane>
+        <Button contentDisplay="CENTER" layoutX="1027.0" layoutY="194.0" mnemonicParsing="false" onAction="#gotoAuction"
+                onMouseEntered="#mouseIn" onMouseExited="#mouseOut" opacity="0.6"
+                style="-fx-background-color: transparent;" text="Auction" textFill="WHITE">
+            <graphic>
+                <ImageView fitHeight="150.0" fitWidth="200.0" opacity="0.6" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../resources/ui/button_primary@2x.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
     </children>
 </AnchorPane>
