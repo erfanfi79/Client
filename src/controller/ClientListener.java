@@ -17,14 +17,17 @@ public class ClientListener extends Thread {
     private BufferedWriter bufferedWriter;
     private Socket socket;
     private MatchPacketQueue matchPacketQueue = MatchPacketQueue.getInstance();
-
+    private InputStreamReader inputStreamReader;
+    private OutputStreamWriter outputStreamWriter;
 
     public ClientListener(Socket socket) {
 
         try {
             this.socket = socket;
-            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            inputStreamReader = new InputStreamReader(socket.getInputStream());
+            bufferedReader = new BufferedReader(inputStreamReader);
+            outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());
+            bufferedWriter = new BufferedWriter(outputStreamWriter);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -45,7 +48,10 @@ public class ClientListener extends Thread {
 
                 else if (packet instanceof ServerAuctionPacket) {
                     if (Controller.getInstance().currentController instanceof ShopController)
-                        ((ShopController) Controller.getInstance().currentController).auctionHandler((ServerAuctionPacket) packet);
+                        Platform.runLater(() -> ((ShopController) Controller.getInstance().currentController).auctionHandler((ServerAuctionPacket) packet));
+                    else if (Controller.getInstance().currentController instanceof AuctionController)
+                        Platform.runLater(() -> ((AuctionController) Controller.getInstance().currentController).initializeAuction((ServerAuctionPacket) packet));
+
 
                 } else if (packet instanceof ServerMoneyPacket)
                     Platform.runLater(() -> Controller.getInstance().showMoney(((ServerMoneyPacket) packet).getMoney()));
@@ -81,7 +87,6 @@ public class ClientListener extends Thread {
     public ServerPacket getPacketFromServer() {
         try {
             return YaGsonChanger.readServerPocket(bufferedReader.readLine());
-
         } catch (IOException e) {
             close();
             e.printStackTrace();
@@ -90,7 +95,6 @@ public class ClientListener extends Thread {
     }
 
     public void sendPacketToServer(ClientPacket clientPocket) {
-
         try {
             bufferedWriter.write(YaGsonChanger.write(clientPocket));
             bufferedWriter.newLine();
@@ -114,6 +118,14 @@ public class ClientListener extends Thread {
         }
         try {
             if (bufferedWriter != null) bufferedWriter.close();
+        } catch (Exception e) {
+        }
+        try {
+            if (inputStreamReader != null) inputStreamReader.close();
+        } catch (Exception e) {
+        }
+        try {
+            if (outputStreamWriter != null) outputStreamWriter.close();
         } catch (Exception e) {
         }
 
@@ -174,9 +186,6 @@ public class ClientListener extends Thread {
                     ((LeaderBoardController) Controller.getInstance().currentController).onlineCheckBox();
                 break;
 
-            case CLOSE:
-                close();
-                break;
         }
     }
 }

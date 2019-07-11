@@ -134,7 +134,8 @@ public class ShopController implements Initializable {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("../view/AuctionView.fxml"));
                 Parent root = fxmlLoader.load();
-                ((AuctionController) fxmlLoader.getController()).initializeAuction(packet);
+                Controller.getInstance().currentController = fxmlLoader.getController();
+                ((AuctionController) Controller.getInstance().currentController).initializeAuction(packet);
                 Scene scene = new Scene(root);
                 scene.setOnMouseDragged(event -> {
 
