@@ -1,6 +1,5 @@
 package controller;
 
-import com.gilecode.yagson.YaGsonBuilder;
 import controller.MediaController.GameSfxPlayer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,10 +15,10 @@ import models.Collection;
 import models.Deck;
 import packet.clientPacket.ClientCollectionPacket;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 public class CollectionController {
@@ -74,9 +73,24 @@ public class CollectionController {
         new GameSfxPlayer().onSelect();
 
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON FILE", "*.json"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SER FILE", "*.ser"));
         File selectedFile = fileChooser.showOpenDialog(Controller.stage);
         try {
+            FileInputStream fos = new FileInputStream(selectedFile.getPath());
+            ObjectInputStream ois = new ObjectInputStream(fos);
+            // write object to file
+            Deck deck = (Deck) ois.readObject();
+            if (deck != null)
+                myCollection.getDecks().add(deck);
+            showDecks();
+            System.out.println("deck added");
+            // closing resources
+            ois.close();
+            fos.close();
+        } catch (Exception e) {
+            new Popup().showMessage("file is not compatible,please try again with another file");
+        }
+/*        try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(selectedFile.getPath()));
             YaGsonBuilder yaGsonBuilder = new YaGsonBuilder();
             com.gilecode.yagson.YaGson yaGson = yaGsonBuilder.create();
@@ -86,7 +100,7 @@ public class CollectionController {
             showDecks();
         } catch (Exception e) {
             new Popup().showMessage("file is not compatible,please try again with another file");
-        }
+        }*/
     }
 
     @FXML

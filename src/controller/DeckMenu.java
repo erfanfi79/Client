@@ -1,6 +1,5 @@
 package controller;
 
-import com.gilecode.yagson.YaGsonBuilder;
 import controller.MediaController.GameSfxPlayer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,9 +15,7 @@ import javafx.stage.FileChooser;
 import models.Card;
 import models.Deck;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 
 public class DeckMenu {
@@ -107,11 +104,19 @@ public class DeckMenu {
         new GameSfxPlayer().onSelect();
         try {
             FileChooser fileChooser = new FileChooser();
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON FILE", "*.json"));
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("SER FILE", "*.ser"));
             File selectedFile = fileChooser.showSaveDialog(Controller.stage);
-            YaGsonBuilder yaGsonBuilder = new YaGsonBuilder();
+            FileOutputStream fos = new FileOutputStream(selectedFile.getPath());
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            // write object to file
+            oos.writeObject(deck);
+            System.out.println("deck saved");
+            // closing resources
+            oos.close();
+            fos.close();
+/*            YaGsonBuilder yaGsonBuilder = new YaGsonBuilder();
             com.gilecode.yagson.YaGson yaGson = yaGsonBuilder.create();
-            saveTextToFile(yaGson.toJson(deck), selectedFile);
+            saveTextToFile(yaGson.toJson(deck), selectedFile);*/
         } catch (Exception e) {
             new Popup().showMessage("save is not possible,please try again with another file");
         }
