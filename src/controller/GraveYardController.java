@@ -31,16 +31,16 @@ public class GraveYardController {
 
     @FXML
     void change() {
-        if (forward.isDisable()) {
-            pane.setLayoutX(pane.getLayoutX() - 240);
-            forward.setDisable(false);
-            back.setDisable(true);
+        if (forward.isVisible()) {
+            pane.setLayoutX(pane.getLayoutX() + 240);
+            forward.setVisible(false);
+            back.setVisible(true);
 
         } else {
 
-            pane.setLayoutX(pane.getLayoutX() + 240);
-            forward.setDisable(true);
-            back.setDisable(false);
+            pane.setLayoutX(pane.getLayoutX() - 240);
+            forward.setVisible(true);
+            back.setVisible(false);
 
         }
     }

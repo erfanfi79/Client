@@ -5,7 +5,9 @@ import controller.GraveYardController;
 import controller.MediaController.MatchPacketQueue;
 import controller.Popup;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -41,7 +43,16 @@ public class BattleView {
 
         pane.getChildren().addAll(constantViews.get(), headerView.get(), tableInputHandler.get(this),
                 endTurnButton.get(this), tableUnitsView.get(this));
-
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource("../cardBackground/GraveYard.fxml"));
+            Node node = fxmlLoader.load();
+            node.relocate(-240, 0);
+            graveYardController = fxmlLoader.getController();
+            pane.getChildren().add(node);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //GameMusicPlayer.getInstance().playBattleMusic();
 
         Scene scene = new Scene(pane, STAGE_WIDTH.get(), STAGE_HEIGHT.get());
@@ -66,7 +77,6 @@ public class BattleView {
 
         });
     }
-
     public void inputHandler() {
 
         while (!isMatchFinished) {
@@ -118,7 +128,7 @@ public class BattleView {
     }
 
     private void graveYardPacketHandler(ServerGraveYardPacket packet) {
-
+        graveYardController.loadCards(packet.getDeadCards());
     }
 
     private void matchEnumPacketHandler(ServerMatchEnumPacket packet) {

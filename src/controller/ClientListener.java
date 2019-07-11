@@ -158,6 +158,10 @@ public class ClientListener extends Thread {
 
                 new Thread(battleView::inputHandler).start();
                 break;
+            case UPDATE_LEADER_BOARD:
+                if (Controller.getInstance().currentController instanceof LeaderBoardController)
+                    ((LeaderBoardController) Controller.getInstance().currentController).onlineCheckBox();
+                break;
         }
     }
 }
