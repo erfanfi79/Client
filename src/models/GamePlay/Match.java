@@ -99,8 +99,8 @@ public class Match {
         Card hero1 = player1.getHand().getHero();
         Card hero2 = player2.getHand().getHero();
 
-        Cell cellHero1 = table.getCells()[2][1];
-        Cell cellHero2 = table.getCells()[2][7];
+        Cell cellHero1 = table.getCells()[2][7];
+        Cell cellHero2 = table.getCells()[2][1];
         cellHero1.setCard(hero1);
         cellHero2.setCard(hero2);
         hero1.setCell(cellHero1);

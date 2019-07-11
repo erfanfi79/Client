@@ -43,36 +43,36 @@ public class ClientListener extends Thread {
                 else if (packet instanceof ServerLogPacket)
                     handleLogs((ServerLogPacket) packet);
 
-                else if (packet instanceof ServerAuctionPacket)
+                else if (packet instanceof ServerAuctionPacket) {
                     if (Controller.getInstance().currentController instanceof ShopController)
                         Platform.runLater(() -> ((ShopController) Controller.getInstance().currentController).auctionHandler((ServerAuctionPacket) packet));
 
 
-                    else if (packet instanceof ServerMoneyPacket)
-                        Platform.runLater(() -> Controller.getInstance().showMoney(((ServerMoneyPacket) packet).getMoney()));
+                } else if (packet instanceof ServerMoneyPacket)
+                    Platform.runLater(() -> Controller.getInstance().showMoney(((ServerMoneyPacket) packet).getMoney()));
 
-                    else if (packet instanceof ServerMatchHistory) {
+                else if (packet instanceof ServerMatchHistory) {
 
-                        if (Controller.getInstance().currentController instanceof MatchHistoryController)
-                            ((MatchHistoryController) Controller.getInstance().currentController).initializeHistorys(((ServerMatchHistory) packet).getHistories());
+                    if (Controller.getInstance().currentController instanceof MatchHistoryController)
+                        ((MatchHistoryController) Controller.getInstance().currentController).initializeHistorys(((ServerMatchHistory) packet).getHistories());
 
-                    } else if (packet instanceof ServerLeaderBoardPacket) {
+                } else if (packet instanceof ServerLeaderBoardPacket) {
 
-                        if (Controller.getInstance().currentController instanceof LeaderBoardController) {
+                    if (Controller.getInstance().currentController instanceof LeaderBoardController) {
 
-                            LeaderBoardController controller = (LeaderBoardController) Controller.getInstance().currentController;
-                            Platform.runLater(() -> controller.initializeLeaderboard(((ServerLeaderBoardPacket) packet).getUsernames()
-                                    , ((ServerLeaderBoardPacket) packet).getWinNumber()));
+                        LeaderBoardController controller = (LeaderBoardController) Controller.getInstance().currentController;
+                        Platform.runLater(() -> controller.initializeLeaderboard(((ServerLeaderBoardPacket) packet).getUsernames()
+                                , ((ServerLeaderBoardPacket) packet).getWinNumber()));
 
-                        }
-                    } else if (packet instanceof ServerCollection)
-                        handleCollection((ServerCollection) packet);
+                    }
+                } else if (packet instanceof ServerCollection)
+                    handleCollection((ServerCollection) packet);
 
-                    else if (packet instanceof ServerChatRoomPacket)
-                        Platform.runLater(() -> Controller.getInstance().updateChatRoom((ServerChatRoomPacket) packet));
+                else if (packet instanceof ServerChatRoomPacket)
+                    Platform.runLater(() -> Controller.getInstance().updateChatRoom((ServerChatRoomPacket) packet));
 
-                    else if (packet instanceof ServerEnumPacket)
-                        serverEnumPacketHandler((ServerEnumPacket) packet);
+                else if (packet instanceof ServerEnumPacket)
+                    serverEnumPacketHandler((ServerEnumPacket) packet);
             }
         } catch (Exception e) {
             close();
@@ -157,16 +157,17 @@ public class ClientListener extends Thread {
             case MULTI_PLAYER_GAME_IS_READY:
                 System.err.println("multi player is ready");
                 BattleView battleView = new BattleView();
-                new Thread(() -> battleView.showBattle(Controller.stage)).start();
+                new Thread(() -> Platform.runLater(() -> battleView.showBattle(Controller.stage))).start();
 
                 try {
-                    Thread.sleep(200);
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
                 new Thread(battleView::inputHandler).start();
                 break;
+
             case UPDATE_LEADER_BOARD:
                 if (Controller.getInstance().currentController instanceof LeaderBoardController)
                     ((LeaderBoardController) Controller.getInstance().currentController).onlineCheckBox();

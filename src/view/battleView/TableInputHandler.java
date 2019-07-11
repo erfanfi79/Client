@@ -1,6 +1,7 @@
 package view.battleView;
 
 import controller.Controller;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -9,13 +10,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import models.Coordination;
 import packet.clientPacket.clientMatchPacket.ClientAttackPacket;
-import packet.clientPacket.clientMatchPacket.ClientInsertCardPacket;
 import packet.clientPacket.clientMatchPacket.ClientMovePacket;
 import packet.serverPacket.serverMatchPacket.VirtualCard;
 import view.ImageLibrary;
-
 
 import static view.Constants.*;
 
@@ -24,6 +24,7 @@ public class TableInputHandler {
     private BattleView battleView;
     private GridPane rectangles = new GridPane();
     private Coordination selectedCell;
+    private Node selectedNode;
     private Pane mainPane;
     private AnchorPane cardInfo = new AnchorPane();
 
@@ -43,6 +44,7 @@ public class TableInputHandler {
         }
 
         showUnitsInTableInfo();
+        eventHandler();
 
         rectangles.setVgap(GRID_PANE_V_SPACE.get());
         rectangles.setHgap(GRID_PANE_H_SPACE.get());
@@ -56,11 +58,15 @@ public class TableInputHandler {
         for (Node node : rectangles.getChildren()) {
             node.setOnMouseClicked(event -> {
 
-                if (battleView.isReadyForInsert)
-                    insertHandler(node);
+                if (battleView.isMyTurn) {
 
-                else {
-                    if (selectedCell == null && battleView.table[GridPane.getRowIndex(node)][GridPane.getColumnIndex(node)] != null)
+                    if (node == selectedNode) {
+                        selectedNode.getStyleClass().remove("selectRectangle");
+                        selectedNode.getStyleClass().add("unSelectRectangle");
+                        selectedCell = null;
+                        selectedNode = null;
+
+                    } else if (selectedCell == null && battleView.table[GridPane.getRowIndex(node)][GridPane.getColumnIndex(node)] != null)
                         selectCardHandler(node);
 
                     else if (selectedCell != null && battleView.table[GridPane.getRowIndex(node)][GridPane.getColumnIndex(node)] != null)
@@ -73,19 +79,10 @@ public class TableInputHandler {
         }
     }
 
-    private void insertHandler(Node node) {
-
-        battleView.isReadyForInsert = false;
-        Controller.getInstance().clientListener.sendPacketToServer(
-                new ClientInsertCardPacket(
-                        GridPane.getRowIndex(node),
-                        GridPane.getColumnIndex(node),
-                        battleView.whichHandCardForInsert));
-    }
-
     private void selectCardHandler(Node node) {
 
         selectedCell = Coordination.getNewCoordination(GridPane.getRowIndex(node), GridPane.getColumnIndex(node));
+        selectedNode = node;
         node.getStyleClass().remove("unSelectRectangle");
         node.getStyleClass().add("selectRectangle");
     }
@@ -96,7 +93,11 @@ public class TableInputHandler {
         packet.setAttacker(selectedCell);
         packet.setDefender(Coordination.getNewCoordination(GridPane.getRowIndex(node), GridPane.getColumnIndex(node)));
         Controller.getInstance().clientListener.sendPacketToServer(packet);
+
+        selectedNode.getStyleClass().remove("selectRectangle");
+        selectedNode.getStyleClass().add("unSelectRectangle");
         selectedCell = null;
+        selectedNode = null;
     }
 
     private void moveHandler(Node node) {
@@ -105,7 +106,11 @@ public class TableInputHandler {
         packet.setStart(selectedCell);
         packet.setDestination(Coordination.getNewCoordination(GridPane.getRowIndex(node), GridPane.getColumnIndex(node)));
         Controller.getInstance().clientListener.sendPacketToServer(packet);
+
+        selectedNode.getStyleClass().remove("selectRectangle");
+        selectedNode.getStyleClass().add("unSelectRectangle");
         selectedCell = null;
+        selectedNode = null;
     }
 
 
@@ -144,10 +149,17 @@ public class TableInputHandler {
         HP.setTextFill(Color.WHITE);
         AP.setTextFill(Color.WHITE);
 
+        name.setFont(Font.font("Dyuthi", 15));
+        HP.setFont(Font.font("Dyuthi", 20));
+        AP.setFont(Font.font("Dyuthi", 20));
+        MP.setFont(Font.font("Dyuthi", 20));
+
+        name.setAlignment(Pos.CENTER);
+
         name.relocate(50, 80);
-        HP.relocate(165, 176);
-        AP.relocate(48, 176);
-        MP.relocate(110, 233);
+        HP.relocate(162, 165);
+        AP.relocate(45, 165);
+        MP.relocate(107, 225);
 
         cardInfo.getChildren().addAll(background, name, HP, AP, MP);
         return cardInfo;
